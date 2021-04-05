@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <GameScreen id='hogehoge'/>
+    <App/>
   </React.StrictMode>,
   document.getElementById('root')
 );
