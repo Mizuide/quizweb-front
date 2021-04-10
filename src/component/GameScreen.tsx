@@ -1,31 +1,24 @@
-// import axios from 'axios';
+import { useState } from "react";
+import * as fetch from "../util/fetchAPI";
 
+type prop ={
+    id:number
+}
 
-// type prop ={
-//     id:string
-// }
-
-// type question ={
-//     id:String,
-//     content:String
-// }
-
-// function GameScreen(props:prop){
-//    let num:question = fetchQuestion(props.id);
-//     return(
-        
-//         <div className="GameScreen">{num.content}</div>
-//     )
-
-// }
+const [qustion,setQuestion] = useState<fetch.question>();
 
 
 
-//  function fetchQuestion(id:string):question{
-//     let question:question;
-//     axios.get("").then(res => {return JSON.parse(res.data)})
-//     // return question;
+function GameScreen(props:prop){
+    fetch.fetchQuestion(props.id).then(res => console.log(res)).catch(res => console.log());
+    return(
+        <div className="GameScreen">{props.id}</div>
+    )
 
-// }
+}
 
-// export default GameScreen;
+
+
+
+
+export default GameScreen;
