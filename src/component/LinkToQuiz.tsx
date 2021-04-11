@@ -11,8 +11,7 @@ type prop = {
 
 export function LinkToQuiz() {
   return (
-    <Link to="">
-    </Link>
+    <Link to=""/>
 
   )
 }

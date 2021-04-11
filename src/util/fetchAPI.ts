@@ -1,15 +1,14 @@
 import axios, { AxiosResponse } from 'axios';
 
 
-const QUESTION_URL:string = "/quizWeb/getQuestion"
+const QUESTION_URL:string = "/quizWeb/getQuestions"
 
 
-export type question ={
+export type question =[{
     id:String,
     content:String
-}
+}]
 
- 
-export function fetchQuestion(id:number):Promise<AxiosResponse<question>>{
-   return axios.get<question>(QUESTION_URL,{params:{'id':id}});
+export function fetchQuestion():Promise<AxiosResponse<question>>{
+   return axios.get<question>(QUESTION_URL);
 }
