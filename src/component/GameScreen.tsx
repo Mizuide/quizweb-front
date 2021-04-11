@@ -1,18 +1,22 @@
 import { useState } from "react";
 import * as fetch from "../util/fetchAPI";
+import {
+    useParams
+  } from 'react-router-dom'
 
-type prop ={
-    id:number
+export type param ={
+    id:string
 }
 
-const [qustion,setQuestion] = useState<fetch.question>();
+// const [qustion,setQuestion] = useState<fetch.question>();
 
 
 
-function GameScreen(props:prop){
-    fetch.fetchQuestion(props.id).then(res => console.log(res)).catch(res => console.log());
+function GameScreen(){
+    // fetch.fetchQuestion(props.id).then(res => console.log(res)).catch(res => console.log());
+    let prop:param = useParams<param>();
     return(
-        <div className="GameScreen">{props.id}</div>
+        <div className="GameScreen">{prop.id}</div>
     )
 
 }
