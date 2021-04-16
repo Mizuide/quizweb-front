@@ -1,17 +1,15 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch
-} from 'react-router-dom'
+import  { ReactElement } from "react";
+import {Link} from 'react-router-dom'
+import quiz from '../type/quiz'
 
-type prop = {
-  id: number;
+interface LinkToQuiz extends ReactElement{
+
 }
 
-export function LinkToQuiz() {
+const LinkToQuiz:React.FC<quiz> =  function (prop:quiz):LinkToQuiz {
   return (
-    <Link to=""/>
-
+    <li><Link to={'/game/'+prop.id}>{prop.title}</Link></li>
   )
 }
+
+export default LinkToQuiz;
