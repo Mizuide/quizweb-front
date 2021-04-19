@@ -40,13 +40,18 @@ function QuizIndex() {
             setFetchQuiz();
         }
     }
-
+    useEffect(() =>{
+        setFetchQuiz();
+        setPage(1);
+        setIndex(page);
+    },[])
     useEffect(changeOnPage, [page]);
 
 
     return (
         <div>
             {index}
+            {page}
             <button onClick={() => setPage(page + 1)}  value="hogehoge"/>
         </div>
     )
