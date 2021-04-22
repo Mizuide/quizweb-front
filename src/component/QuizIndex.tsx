@@ -5,25 +5,28 @@ import LinkToQuiz from "./LinkToQuiz";
 
 const displayNum = 10;
 const fetchSize = 100;
-const maxPage = displayNum / fetchSize;
+const maxPage = fetchSize / fetchSize;
 
-const useFetchQuizes = function (): [quiz[] | null, () => void] {
-    let [count, setCount] = useState<number>(1);
+const useFetchQuizes = function (): [quiz[], () => void] {
+    //TODO:countをどっかに保存できるようにしたい、
+    // let [count, setCount] = useState<number>(1);
+    let count = 1;
     let [quizes, setQuizes] = useState<quiz[]>([]);
     let setFetchQuiz = function () {
-        fetch.fetchQuestions(count).then(res => setQuizes(quizes.concat(quizes))).then(() => setCount(count + 1));
+        fetch.fetchQuestions(count).then(res => quizes.concat(res.data)).then(newQuizes => { setQuizes(newQuizes) });
     }
+
     return [quizes, setFetchQuiz];
 }
 
-const useIndex = function (quizes: quiz[] | null, displayNum: number): [LinkToQuiz[] | null, (num: number) => void] {
+const useIndex = function (displayNum: number): [LinkToQuiz[] | null, (quizes: quiz[], num: number) => void] {
     let [index, setIndex] = useState<(ReactElement)[] | null>(null);
-    let setter = function (page: number) {
-            if (quizes !== null) {
-                let links: (LinkToQuiz | null)[] = quizes.map((q) => LinkToQuiz(q));
-                setIndex(links.filter((l): l is LinkToQuiz => l !== null));
-                quizes.slice((page - 1) * displayNum, page * displayNum);
-            }
+    let setter = function (quizes: quiz[], page: number) {
+        if (quizes !== null) {
+            let links: (LinkToQuiz | null)[] = quizes.map((q) => LinkToQuiz(q));
+            let disp = links.slice((page - 1) * displayNum, page * displayNum);
+            setIndex(disp.filter((l): l is LinkToQuiz => l !== null));
+        }
     }
     return [index, setter];
 }
@@ -31,28 +34,28 @@ const useIndex = function (quizes: quiz[] | null, displayNum: number): [LinkToQu
 
 function QuizIndex() {
     let [quizes, setFetchQuiz] = useFetchQuizes();
-    let [page, setPage] = useState(0);
-    let [index, setIndex] = useIndex(quizes, displayNum);
+    let [page, setPage] = useState(1);
+    let [index, setIndex] = useIndex(displayNum);
 
     const changeOnPage = () => {
-        setIndex(page);
-        if (page % maxPage === 1) {
+        if (quizes != null) {
+           setIndex(quizes, page);
+       }
+        if (maxPage % page === 1) {
+            //useEffectで setIndexが二回走っちゃうけどまあいいか
             setFetchQuiz();
         }
     }
-    useEffect(() =>{
-        setFetchQuiz();
-        setPage(1);
-        setIndex(page);
-    },[])
+    useEffect(() => setFetchQuiz(), [])
+
+    useEffect(() => setIndex(quizes, page), [quizes]);
     useEffect(changeOnPage, [page]);
 
 
     return (
         <div>
             {index}
-            {page}
-            <button onClick={() => setPage(page + 1)}  value="hogehoge"/>
+            <button onClick={() => setPage(page + 1)} >next page</button>
         </div>
     )
 }
