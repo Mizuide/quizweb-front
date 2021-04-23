@@ -8,9 +8,10 @@ import {
     Route,
     Switch
 } from 'react-router-dom'
+import { debug } from 'webpack';
 jest.mock('axios');
 
-test('', async () => {
+test('rendered', async () => {
     jest.mock("axios");
     const mockedAxios = axios as jest.Mocked<typeof axios>
     mockedAxios.get.mockResolvedValue(createTestData());
@@ -23,13 +24,15 @@ test('', async () => {
         </Switch>
     </Router>)
 
-    expect(await screen.findByText("5", {}, { timeout: 4000 })).toBeInTheDocument();
-    for(let i =0;i < 10;i++){
-        fireEvent.click(screen.getByText('next page'));
-    }
-    expect(await screen.findByText("5", {}, { timeout: 4000 })).toBeInTheDocument();
-    
-   
+    expect(await screen.findByText("title5", {}, { timeout: 4000 })).toBeInTheDocument();
+    // let target = document.querySelector<Element>('#a')
+    // for (let i = 0; i < 10; i++) {
+    //     if(target !== null)
+    //       fireEvent.click(target);
+    // }
+    // expect(await screen.findByText("title5", {}, { timeout: 4000 })).toBeInTheDocument();
+    screen.debug();
+
 
 })
 
@@ -39,8 +42,10 @@ function createTestData(): any {
         quiz.push({
             id: i,
             crete_username: "user",
-            title: "title",
+            title: "title"+i,
             category: "test",
+            description: 'sample',
+            thumbnail: "http://hogehoge.png",
             tag: "test",
             questions: []
         })

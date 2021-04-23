@@ -39,10 +39,9 @@ function QuizIndex() {
 
     const changeOnPage = () => {
         if (quizes != null) {
-           setIndex(quizes, page);
+            setIndex(quizes, page);
        }
         if (maxPage % page === 1) {
-            //useEffectで setIndexが二回走っちゃうけどまあいいか
             setFetchQuiz();
         }
     }
@@ -55,7 +54,7 @@ function QuizIndex() {
     return (
         <div>
             {index}
-            <button onClick={() => setPage(page + 1)} >next page</button>
+            <button id="a" onClick={() => setPage(page + 1)} >next page</button>
         </div>
     )
 }

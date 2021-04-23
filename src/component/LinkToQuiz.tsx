@@ -8,11 +8,19 @@ interface LinkToQuiz extends ReactElement {
 
 const LinkToQuiz: React.FC<quiz> = function (prop: quiz): LinkToQuiz {
   return (
-    <li key={prop.id}>
-      <Link to={'/game/' + prop.id}>
-        {prop.id}
-      </Link>
-    </li>
+    <Link to={'/game/' + prop.id} key ={prop.id}>
+      <div>
+          <div className='title'>
+            {prop.title}
+          </div>
+          <div className='description'>
+            {prop.description}
+          </div>
+          <div className='thumbnail'>
+            <img src ={prop.thumbnail}/>
+          </div>
+      </div>
+    </Link>
   )
 }
 
