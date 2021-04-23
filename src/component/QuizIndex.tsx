@@ -32,7 +32,7 @@ const useIndex = function (displayNum: number): [LinkToQuiz[] | null, (quizes: q
 }
 
 
-function QuizIndex() {
+const QuizIndex:React.FC<void> = function() {
     let [quizes, setFetchQuiz] = useFetchQuizes();
     let [page, setPage] = useState(1);
     let [index, setIndex] = useIndex(displayNum);
