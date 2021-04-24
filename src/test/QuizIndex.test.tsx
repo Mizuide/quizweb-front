@@ -8,7 +8,8 @@ import {
     Route,
     Switch
 } from 'react-router-dom'
-import { debug } from 'webpack';
+
+
 jest.mock('axios');
 
 test('rendered', async () => {
@@ -25,12 +26,12 @@ test('rendered', async () => {
     </Router>)
 
     expect(await screen.findByText("title5", {}, { timeout: 4000 })).toBeInTheDocument();
-    // let target = document.querySelector<Element>('#a')
-    // for (let i = 0; i < 10; i++) {
-    //     if(target !== null)
-    //       fireEvent.click(target);
-    // }
-    // expect(await screen.findByText("title5", {}, { timeout: 4000 })).toBeInTheDocument();
+    let target = document.querySelector<Element>('#a')
+    for (let i = 0; i < 10; i++) {
+        if(target !== null)
+          fireEvent.click(target);
+    }
+    expect(await screen.findByText("title5", {}, { timeout: 4000 })).toBeInTheDocument();
     screen.debug();
 
 

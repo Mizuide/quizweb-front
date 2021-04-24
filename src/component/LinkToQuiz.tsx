@@ -6,7 +6,7 @@ interface LinkToQuiz extends ReactElement {
 
 }
 
-const LinkToQuiz: React.FC<quiz> = function (prop: quiz): LinkToQuiz {
+const LinkToQuiz: React.FC<quiz> =  (prop: quiz): LinkToQuiz => {
   return (
     <Link to={'/game/' + prop.id} key ={prop.id}>
       <div>

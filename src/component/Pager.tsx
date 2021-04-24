@@ -1,8 +1,8 @@
 
- const Panel:React.FC<number> = (number:number) =>{
 
-    return(<div className='panel'> </div>)
- } 
+ const Panel:React.FC<string> = (display:string,onClick:()=>{}) =>{
+    return(<div className='panel' onClick={onClick}>{display}</div>)
+   } 
 
 
  const Pager:React.FC<[number,React.Dispatch<React.SetStateAction<number>>]> = ([page,setPage]) => {

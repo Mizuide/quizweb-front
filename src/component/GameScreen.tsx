@@ -7,14 +7,14 @@ export type param = {
 
 
 
-const GameScreen:React.FC = function () {
+const GameScreen: React.FC =  () => {
     // fetch.fetchQuestion(props.id).then(res => console.log(res)).catch(res => console.log());
     let prop: param = useParams<param>();
     return (
-        <div className="GameScreen">{prop.id
-        }</div>
-        
-        )
+        <div className="GameScreen">
+            {prop.id}
+        </div>
+    )
 }
 
 export default GameScreen;
