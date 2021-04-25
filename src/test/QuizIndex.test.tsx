@@ -12,38 +12,60 @@ import {
 
 jest.mock('axios');
 
-test('rendered', async () => {
+beforeEach(() => {
     jest.mock("axios");
     const mockedAxios = axios as jest.Mocked<typeof axios>
-    mockedAxios.get.mockResolvedValue(createTestData());
+    mockedAxios.get.mockResolvedValueOnce(createTestData(1)).mockResolvedValueOnce(createTestData(2)).mockResolvedValue(createTestData(3));
+}
+)
 
+test('rendered', async () => {
+    //テストケースに書かずに、beforeachに書くと動くけど、hould actのエラーが出て不快なのでtestcase内に書く
     render(<Router basename='/quizWeb/react'>
-        <Switch>
-            <Route exact path='/'>
-                <QuizIndex />
-            </Route>
-        </Switch>
-    </Router>)
+    <Switch>
+        <Route exact path='/'>
+            <QuizIndex />
+        </Route>
+    </Switch>
+</Router>)
 
     expect(await screen.findByText("title5", {}, { timeout: 4000 })).toBeInTheDocument();
-    let target = document.querySelector<Element>('#a')
-    for (let i = 0; i < 10; i++) {
-        if(target !== null)
-          fireEvent.click(target);
-    }
-    expect(await screen.findByText("title5", {}, { timeout: 4000 })).toBeInTheDocument();
-    screen.debug();
+})
 
+test('click',async () =>{
+    render(<Router basename='/quizWeb/react'>
+    <Switch>
+        <Route exact path='/'>
+            <QuizIndex />
+        </Route>
+    </Switch>
+</Router>)
+
+    let target = screen.getByText('next');
+   try{
+       for (let i = 0; i < 10; i++) {
+           if (target !== null)
+           fireEvent.click(target);
+        }
+        expect(await screen.findByText("title100", {}, { timeout: 4000 })).toBeInTheDocument();
+    }catch{
+    const mockedAxios = axios as jest.Mocked<typeof axios>
+    console.log(mockedAxios.get.mock.calls)
+   }
 
 })
 
-function createTestData(): any {
+
+
+
+
+function createTestData(num: number): any {
     let quiz: quiz[] = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = (num - 1) * 100; i < num * 100; i++) {
         quiz.push({
             id: i,
             crete_username: "user",
-            title: "title"+i,
+            title: "title" + i,
             category: "test",
             description: 'sample',
             thumbnail: "http://hogehoge.png",

@@ -2,20 +2,19 @@ import { ReactElement, useEffect, useState } from "react";
 import * as fetch from "../util/fetchAPI";
 import quiz from "../type/quiz";
 import LinkToQuiz from "./LinkToQuiz";
+import Pager from "./Pager";
 
 const displayNum = 10;
 const fetchSize = 100;
-const maxPage = fetchSize / fetchSize;
+const maxPage = fetchSize / displayNum;
+
+let fetchCount = 1;
 
 const useFetchQuizes = function (): [quiz[], () => void] {
-    //TODO:countをどっかに保存できるようにしたい、
-    // let [count, setCount] = useState<number>(1);
-    let count = 1;
     let [quizes, setQuizes] = useState<quiz[]>([]);
     let setFetchQuiz = function () {
-        fetch.fetchQuestions(count).then(res => quizes.concat(res.data)).then(newQuizes => { setQuizes(newQuizes) });
+        fetch.fetchQuizs(fetchCount).then(res => quizes.concat(res.data)).then(newQuizes => setQuizes(newQuizes)).then(() => fetchCount++);
     }
-
     return [quizes, setFetchQuiz];
 }
 
@@ -41,7 +40,7 @@ const QuizIndex:() => ReactElement = () => {
         if (quizes != null) {
             setIndex(quizes, page);
        }
-        if (maxPage % page === 1) {
+        if (maxPage - page === 1) {
             setFetchQuiz();
         }
     }
@@ -49,12 +48,12 @@ const QuizIndex:() => ReactElement = () => {
 
     useEffect(() => setIndex(quizes, page), [quizes]);
     useEffect(changeOnPage, [page]);
-
+    
 
     return (
         <div>
             {index}
-            <button id="a" onClick={() => setPage(page + 1)} >next page</button>
+            <Pager page={page} setPage={setPage}/>
         </div>
     )
 }
