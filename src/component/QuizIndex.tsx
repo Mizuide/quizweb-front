@@ -1,59 +1,58 @@
 import { ReactElement, useEffect, useState } from "react";
-import * as fetch from "../util/fetchAPI";
 import quiz from "../type/quiz";
-import LinkToQuiz from "./LinkToQuiz";
+import fetchQuizParam from "../type/fetchQuizParam";
+import useIndex from "../hooks/useIndex";
+import useFetchQuizes from "../hooks/useFetchQuizes";
 import Pager from "./Pager";
+import Index from "./Index";
+import * as categoryConst from '../const/category';
+import * as orderConst from '../const/order';
+
 
 const displayNum = 10;
 const fetchSize = 100;
 const maxPage = fetchSize / displayNum;
 
-let fetchCount = 1;
 
-const useFetchQuizes = function (): [quiz[], () => void] {
-    let [quizes, setQuizes] = useState<quiz[]>([]);
-    let setFetchQuiz = function () {
-        fetch.fetchQuizs(fetchCount).then(res => quizes.concat(res.data)).then(newQuizes => setQuizes(newQuizes)).then(() => fetchCount++);
-    }
-    return [quizes, setFetchQuiz];
-}
-
-const useIndex = function (displayNum: number): [LinkToQuiz[] | null, (quizes: quiz[], num: number) => void] {
-    let [index, setIndex] = useState<(ReactElement)[] | null>(null);
-    let setter = function (quizes: quiz[], page: number) {
-        if (quizes !== null) {
-            let links: (LinkToQuiz | null)[] = quizes.map((q) => LinkToQuiz(q));
-            let disp = links.slice((page - 1) * displayNum, page * displayNum);
-            setIndex(disp.filter((l): l is LinkToQuiz => l !== null));
-        }
-    }
-    return [index, setter];
-}
-
-
-const QuizIndex:() => ReactElement = () => {
+const QuizIndex: () => ReactElement = () => {
     let [quizes, setFetchQuiz] = useFetchQuizes();
-    let [page, setPage] = useState(1);
+    let [page, setPage] = useState<number>(1);
     let [index, setIndex] = useIndex(displayNum);
+
+    let initialFetchParan: fetchQuizParam = {
+        fetchCount: 0,
+        where: {
+            category: categoryConst.categoryId.all,
+            title: ''
+        },
+        order: orderConst.orderId.new
+    };
+    let [fetchParam, setFetchParam] = useState<fetchQuizParam>(initialFetchParan);
+
+
 
     const changeOnPage = () => {
         if (quizes != null) {
             setIndex(quizes, page);
-       }
+        }
+        //TODO:条件に不備あり
         if (maxPage - page === 1) {
-            setFetchQuiz();
+            if (fetchParam !== undefined) {
+                setFetchParam({ ...fetchParam, fetchCount: fetchParam.fetchCount + 1 });
+            }
         }
     }
-    useEffect(() => setFetchQuiz(), [])
-
+    useEffect(() => {
+            setFetchQuiz(fetchParam)
+    }, [fetchParam])
     useEffect(() => setIndex(quizes, page), [quizes]);
     useEffect(changeOnPage, [page]);
-    
+
 
     return (
         <div>
-            {index}
-            <Pager page={page} setPage={setPage}/>
+            <Index dispaly={index} />
+            <Pager page={page} setPage={setPage} />
         </div>
     )
 }
