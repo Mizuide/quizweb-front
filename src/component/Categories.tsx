@@ -1,18 +1,16 @@
 import { ReactElement } from 'react';
-import * as categoryConst from '../const/categorie'
+import * as categoryConst from '../const/category'
+
+interface Categories extends ReactElement{}
 
 type prop = {
         setCategory: (id:categoryConst.categoryId) => void
 }
 
-const Categories = (prop: prop) => {
+const Categories:React.FC<prop> = (prop: prop) => {
     type CategotyProp = {
         key:number,
-        category: {
-            id:categoryConst.categoryId;
-            name:string;
-            img:string;
-        },
+        category:categoryConst.category,
         setCategory: (id:categoryConst.categoryId) => void
     }
 
