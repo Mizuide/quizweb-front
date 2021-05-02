@@ -14,7 +14,7 @@ jest.mock('axios');
 
 beforeEach(() => {
     jest.mock("axios");
-    const mockedAxios = axios as jest.Mocked<typeof axios>
+    const mockedAxios = axios as jest.Mocked<typeof axios>;
     mockedAxios.get.mockResolvedValueOnce(createTestData(1)).mockResolvedValueOnce(createTestData(2)).mockResolvedValue(createTestData(3));
 }
 )
@@ -22,36 +22,35 @@ beforeEach(() => {
 test('rendered', async () => {
     //テストケースに書かずに、beforeachに書くと動くけど、hould actのエラーが出て不快なのでtestcase内に書く
     render(<Router basename='/quizWeb/react'>
-    <Switch>
-        <Route exact path='/'>
-            <QuizIndex />
-        </Route>
-    </Switch>
-</Router>)
+        <Switch>
+            <Route exact path='/'>
+                <QuizIndex />
+            </Route>
+        </Switch>
+    </Router>)
 
     expect(await screen.findByText("title5", {}, { timeout: 4000 })).toBeInTheDocument();
 })
 
-test('click',async () =>{
+test('click', async () => {
     render(<Router basename='/quizWeb/react'>
-    <Switch>
-        <Route exact path='/'>
-            <QuizIndex />
-        </Route>
-    </Switch>
-</Router>)
+        <Switch>
+            <Route exact path='/'>
+                <QuizIndex />
+            </Route>
+        </Switch>
+    </Router>)
 
     let target = screen.getByText('next');
-   try{
-       for (let i = 0; i < 10; i++) {
-           if (target !== null)
-           fireEvent.click(target);
-        }
-        expect(await screen.findByText("title100", {}, { timeout: 4000 })).toBeInTheDocument();
-    }catch{
+    expect(await screen.findByText("title5", {}, { timeout: 4000 })).toBeInTheDocument();
+
+    for (let i = 0; i < 10; i++) {
+        if (target !== null)
+            fireEvent.click(target);
+    }
+    expect(await screen.findByText("title100", {}, { timeout: 4000 })).toBeInTheDocument();
     const mockedAxios = axios as jest.Mocked<typeof axios>
-    console.log(mockedAxios.get.mock.calls)
-   }
+    console.log(mockedAxios.get.mock.calls[1][1]);
 
 })
 
@@ -73,7 +72,6 @@ function createTestData(num: number): any {
             questions: []
         })
     }
-
     return { data: quiz };
 
 
