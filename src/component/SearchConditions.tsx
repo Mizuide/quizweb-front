@@ -7,12 +7,14 @@ import * as categoryConst from '../const/category';
 import * as orderConst from '../const/order';
 
 import WhereTitle from "./WhereTitle";
+import fetchQuizParam from "../type/fetchQuizParam";
 
 interface SearchConditions extends ReactElement { }
 
-type prop = {}
+type prop = {setParam:React.Dispatch<React.SetStateAction<fetchQuizParam>>}
 
-const SearchConditions: React.FC = () => {
+const SearchConditions: React.FC<prop> = (prop:prop) => {
+    //TODO:useRedcerを使用する形に書き換える
     const [category, setCategory] = useState<categoryConst.categoryId>(categoryConst.categoryId.all);
     const [order, setOrder] = useState<orderConst.orderId>(orderConst.orderId.new);
     const [wheretitle,setWhereTitle] = useState<string>('');
@@ -22,7 +24,7 @@ const SearchConditions: React.FC = () => {
             <Categories setCategory={(categoryId) => setCategory(categoryId)} />
             <OrderList setOrder={(orderId) => setOrder(orderId)} />
             <WhereTitle setWhereTitle={(title) => setWhereTitle(title)} />
-            <button onClick={} />
+            <button onClick={() => prop.setParam()} />
         </div>
     )
 }
