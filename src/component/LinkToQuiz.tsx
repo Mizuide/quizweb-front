@@ -2,9 +2,7 @@ import { ReactElement } from "react";
 import { Link } from 'react-router-dom'
 import quiz from '../type/quiz'
 
-interface LinkToQuiz extends ReactElement {
-
-}
+interface LinkToQuiz extends ReactElement {}
 
 const LinkToQuiz: React.FC<quiz> =  (prop: quiz): LinkToQuiz => {
   return (

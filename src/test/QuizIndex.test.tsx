@@ -50,6 +50,7 @@ test('click', async () => {
     }
     expect(await screen.findByText("title100", {}, { timeout: 4000 })).toBeInTheDocument();
     const mockedAxios = axios as jest.Mocked<typeof axios>
+    console.log(mockedAxios.get.mock.calls[0][1]);
     console.log(mockedAxios.get.mock.calls[1][1]);
 
 })
