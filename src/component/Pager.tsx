@@ -11,7 +11,7 @@ const Panel: React.FC<panelProp> = (prop) => {
 
 type prop = {
    page: number,
-   setPage: React.Dispatch<React.SetStateAction<number>>
+   setPage: (number:number) => void
 }
 
 const Pager: React.FC<prop> = (prop) => {
