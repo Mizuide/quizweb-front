@@ -8,8 +8,5 @@ type quiz = {
     thumbnail:string,
     category:string,
     tag:string,
-    //TODO:個別のページを開いたときにフェッチされるべき？
-    questions:question[];
-
 }
 export default quiz ;
