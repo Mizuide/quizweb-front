@@ -6,8 +6,6 @@ export type param = {
     id: string
 }
 
-
-
 const GameScreen: React.FC =  () => {
     let prop: param = useParams<param>();
     fetch.fetchQuestions(prop.id).then(res => console.log(res)).catch(res => console.log());

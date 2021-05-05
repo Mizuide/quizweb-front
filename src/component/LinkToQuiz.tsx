@@ -2,21 +2,25 @@ import { ReactElement } from "react";
 import { Link } from 'react-router-dom'
 import quiz from '../type/quiz'
 
-interface LinkToQuiz extends ReactElement {}
+interface LinkToQuiz extends ReactElement { }
 
-const LinkToQuiz: React.FC<quiz> =  (prop: quiz): LinkToQuiz => {
+type prop = {
+  quiz: quiz
+}
+
+const LinkToQuiz: React.FC<prop> = (prop: prop): LinkToQuiz => {
   return (
-    <Link to={'/game/' + prop.id} key ={prop.id}>
+    <Link to={'/game/' + prop.quiz.id} key={prop.quiz.id}>
       <div>
-          <div className='title'>
-            {prop.title}
-          </div>
-          <div className='description'>
-            {prop.description}
-          </div>
-          <div className='thumbnail'>
-            <img src ={prop.thumbnail}/>
-          </div>
+        <div className='title'>
+          {prop.quiz.title}
+        </div>
+        <div className='description'>
+          {prop.quiz.description}
+        </div>
+        <div className='thumbnail'>
+          <img src={prop.quiz.thumbnail} />
+        </div>
       </div>
     </Link>
   )

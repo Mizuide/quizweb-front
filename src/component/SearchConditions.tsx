@@ -26,6 +26,7 @@ const SearchConditions: React.FC<prop> = (prop: prop) => {
             <Categories setCategory={setCategory} />
             <OrderList setOrder={setOrder} />
             <WhereTitle setWhereTitle={setWhereTitle} />
+            //TODO:should add tags
             <button onClick={() =>
                 prop.setConditions({ ...prop.conditions, category: category, order: order, title: wheretitle })}>
             絞り込み
