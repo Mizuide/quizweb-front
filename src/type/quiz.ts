@@ -1,5 +1,3 @@
-import question from "./question";
-
 type quiz = {
     id:number,
     crete_username:string,
@@ -9,4 +7,5 @@ type quiz = {
     category:string,
     tag:string,
 }
+
 export default quiz ;

@@ -6,7 +6,7 @@ import WhereTitle from "./WhereTitle";
 import * as categoryConst from '../const/category';
 import * as orderConst from '../const/order';
 
-import { searchConditions } from "../type/fetchQuizParam";
+import  searchConditions  from "../type/searchQuizesConditions";
 
 interface SearchConditions extends ReactElement { }
 

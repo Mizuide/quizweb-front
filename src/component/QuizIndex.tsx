@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from "react";
-import quiz from "../type/quiz";
-import fetchQuizParam, { searchConditions } from "../type/fetchQuizParam";
+import searchConditions from "../type/searchQuizesConditions";
+import fetchQuizParam from "../type/fetchQuizParam";
 import useIndex from "../hooks/useIndex";
 import useFetchQuizes from "../hooks/useFetchQuizes";
 import Pager from "./Pager";
@@ -11,9 +11,6 @@ import SearchConditions from "./SearchConditions";
 
 
 const displayNum = 10;
-const fetchSize = 100;
-const maxPage = fetchSize / displayNum;
-
 
 const QuizIndex: () => ReactElement = () => {
     let [quizes, setFetchQuiz] = useFetchQuizes();
