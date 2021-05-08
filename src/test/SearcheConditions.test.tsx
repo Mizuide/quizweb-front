@@ -2,7 +2,7 @@ import { fireEvent, getByText, render, screen } from '@testing-library/react';
 import SearchConditions from '../component/SearchConditions';
 import * as categoryConst from '../const/category';
 import * as orderConst from '../const/order';
-import { searchConditions } from '../type/fetchQuizParam';
+import searchConditions from '../type/searchQuizesConditions';
 
 test('render', async () => {
     let searchConditions: searchConditions = {
@@ -33,18 +33,18 @@ test('changeCategory', async () => {
     let titleInput = document.querySelector('.input');
 
     if (titleInput !== null)
-       fireEvent.change(titleInput, {target:{value:'テスト'}});
-      
+        fireEvent.change(titleInput, { target: { value: 'テスト' } });
+
 
     let button = screen.getByText('絞り込み');
     fireEvent.click(button);
- 
+
     let expectSearchConditions: searchConditions = {
         category: categoryConst.categoryId.other,
         title: 'テスト',
         order: orderConst.orderId.view
     }
-    
+
     expect(expectSearchConditions).toEqual(searchConditions);
 
 

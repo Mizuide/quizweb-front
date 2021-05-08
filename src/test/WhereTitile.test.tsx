@@ -1,6 +1,5 @@
 import { fireEvent, getByText, render, screen } from '@testing-library/react';
 import WhereTitle from '../component/WhereTitle';
-import * as  categoryConst from '../const/category';
 
 
 test('rendere', async () => {

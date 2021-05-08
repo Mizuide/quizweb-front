@@ -12,9 +12,9 @@ function fetchQuizes(param: fetchQuizParam): Promise<AxiosResponse<quiz[]>> {
 
 }
 
-const useFetchQuizes = function (): [quiz[], (prop: fetchQuizParam) => void] {
-    let [quizes, setQuizes] = useState<quiz[]>([]);
-    let setFetchQuiz = function (prop: fetchQuizParam) {
+const useFetchQuizes: () => [quiz[], (prop: fetchQuizParam) => void] = () => {
+    const [quizes, setQuizes] = useState<quiz[]>([]);
+    const setFetchQuiz = function (prop: fetchQuizParam) {
         fetchQuizes(prop).
             then(res => {
                 if (prop.fetchCount === 0) {
@@ -27,7 +27,5 @@ const useFetchQuizes = function (): [quiz[], (prop: fetchQuizParam) => void] {
 
     return [quizes, setFetchQuiz];
 }
-
-
 
 export default useFetchQuizes;

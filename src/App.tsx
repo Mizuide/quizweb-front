@@ -1,5 +1,5 @@
 import './App.css';
-import GameScreen, { param } from './component/GameScreen';
+import QuizScreen from './component/QuizScreen';
 import {
   BrowserRouter as Router,
   Route,
@@ -16,7 +16,7 @@ function App() {
           <QuizIndex />
         </Route>
         <Route exact path='/game/:id' >
-          <GameScreen />
+          <QuizScreen />
         </Route>
       </Switch>
     </Router>

@@ -1,18 +1,9 @@
-import searchQuizesCondition from './searchQuizesCondition'
-
-import {categoryId} from '../const/category'
-import {orderId} from '../const/order'
+import searchQuizesCondition from './searchQuizesConditions'
 
 
-export type searchConditions = {
-    category:categoryId;
-    title:string;
-    order:orderId;
-}
-
-type fetchQuizParam ={    
-    fetchCount:number;
-    searchConditions:searchQuizesCondition
+type fetchQuizParam = {
+    fetchCount: number;
+    searchConditions: searchQuizesCondition
 }
 
 export default fetchQuizParam;

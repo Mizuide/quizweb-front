@@ -106,8 +106,7 @@ function createTestData(num: number): any {
             category: "test",
             description: 'sample',
             thumbnail: "http://hogehoge.png",
-            tag: "test",
-            questions: []
+            tag: "test"
         })
     }
     return { data: quiz };
