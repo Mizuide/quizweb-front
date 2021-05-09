@@ -12,23 +12,26 @@ type prop = {
     comment: string;
 }
 const Result: React.FC<prop> = (prop: prop): Result => {
-    let displayComment: 'inline' | 'none' = 'inline';
+    let displayAttr: 'inline' | 'none' = 'inline';
     let displayImg;
     switch (prop.answerStatus) {
+        case answerStatus.none:
+            displayAttr = "none";
+            break;            
         case answerStatus.waiting:
-            displayImg = (<img src={waitingImg} />);
-            displayComment = "none";
+            displayImg = (<img alt='読み込み中' src={waitingImg} />);
+            displayAttr = "none";
             break;
         case answerStatus.correct:
-            displayImg = (<img src={correctImg} />);
+            displayImg = (<img alt='正解' src={correctImg} />);
             break;
         case answerStatus.incorrect:
-            displayImg = (<img src={incorrectImg} />);
+            displayImg = (<img alt='不正解'　src={incorrectImg} />);
             break;
     }
 
     const commentDisplay: React.CSSProperties = {
-        display: displayComment,
+        display: displayAttr,
     };
     
     return (
