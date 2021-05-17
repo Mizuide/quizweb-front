@@ -1,3 +1,4 @@
+
 import { ReactElement, useEffect, useState } from "react";
 import searchConditions from "../type/searchQuizesConditions";
 import fetchQuizParam from "../type/fetchQuizParam";
@@ -13,40 +14,41 @@ import SearchConditions from "./SearchConditions";
 const displayNum = 10;
 
 const QuizIndex: () => ReactElement = () => {
-    let [quizes, setFetchQuiz] = useFetchQuizes();
-    let [page, setPage] = useState<number>(1);
-    let [index, setIndex] = useIndex(displayNum);
+    const [quizes, setFetchQuiz] = useFetchQuizes();
+    const [page, setPage] = useState<number>(1);
+    const [index, setIndex] = useIndex(displayNum);
 
     let initialSearchConditions: searchConditions = {
         category: categoryConst.categoryId.all,
         title: '',
-        order: orderConst.orderId.new
+        order: orderConst.orderId.newOrder
     }
-    let [searchConditions, setSearchConditions] = useState<searchConditions>(initialSearchConditions);
+    const [searchConditions, setSearchConditions] = useState<searchConditions>(initialSearchConditions);
 
     let initialFetchParan: fetchQuizParam = {
-        fetchCount: 0,
+        lastQuiz: null,
         searchConditions: searchConditions
     };
-    let [fetchParam, setFetchParam] = useState<fetchQuizParam>(initialFetchParan);
+    const [fetchParam, setFetchParam] = useState<fetchQuizParam>(initialFetchParan);
 
     const changeOnPage = () => {
         setIndex(quizes, page);
-        if (quizes.length - page * displayNum === displayNum) {
-            setFetchParam({ ...fetchParam, fetchCount: fetchParam.fetchCount + 1 });
+        if (quizes.length - page * displayNum <= displayNum) {
+            setFetchParam({ ...fetchParam, lastQuiz: quizes[quizes.length - 1] });
         }
     }
 
     useEffect(() => setIndex(quizes, page), [quizes]);
-    useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions }), [searchConditions, fetchParam]);
+    useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions , lastQuiz: null}), [searchConditions, fetchParam]);
     useEffect(changeOnPage, [page]);
+
 
 
     return (
         <div>
             <SearchConditions conditions={searchConditions} setConditions={setSearchConditions} />
-            <Index dispaly={index} />
-            <Pager page={page} setPage={setPage} />
+            <Index display={index} />
+            <Pager page={page} setPage={setPage} maxFlg={quizes.length <= displayNum*page} />
         </div>
     )
 }
