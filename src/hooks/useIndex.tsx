@@ -12,6 +12,7 @@ import quiz from "../type/quiz";
 const useIndex = function (displayNum: number): [LinkToQuiz[] | null, (quizes: quiz[], page: number) => void] {
     const [index, setIndex] = useState<(ReactElement)[] | null>(null);
     const setDisplay = function (quizes: quiz[], page: number) {
+        
             let links: (LinkToQuiz | null)[] = quizes.map((q) => LinkToQuiz({quiz:q}));
             let disp = links.slice((page - 1) * displayNum, page * displayNum);
             setIndex(disp.filter((l): l is LinkToQuiz => l !== null));
