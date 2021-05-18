@@ -1,8 +1,9 @@
+import quiz from './quiz';
 import searchQuizesCondition from './searchQuizesConditions'
 
 
 type fetchQuizParam = {
-    fetchCount: number;
+    lastQuiz: quiz|null;
     searchConditions: searchQuizesCondition
 }
 

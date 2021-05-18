@@ -5,7 +5,6 @@ type quiz = {
     description:string,
     thumbnail:string,
     category:string,
-    tag:string,
 }
 
 export default quiz ;

@@ -8,7 +8,7 @@ test('render', async () => {
     let searchConditions: searchConditions = {
         category: categoryConst.categoryId.all,
         title: '',
-        order: orderConst.orderId.new
+        order: orderConst.orderId.newOrder
     }
     let setConditions = (value: React.SetStateAction<searchConditions>) => (searchConditions: searchConditions) => value
 
@@ -19,7 +19,7 @@ test('changeCategory', async () => {
     let searchConditions: searchConditions = {
         category: categoryConst.categoryId.all,
         title: '',
-        order: orderConst.orderId.new
+        order: orderConst.orderId.newOrder
     }
     let setConditions = (value: searchConditions) => searchConditions = value
     render(<SearchConditions conditions={searchConditions} setConditions={setConditions} />);
@@ -42,7 +42,7 @@ test('changeCategory', async () => {
     let expectSearchConditions: searchConditions = {
         category: categoryConst.categoryId.other,
         title: 'テスト',
-        order: orderConst.orderId.view
+        order: orderConst.orderId.viewOrder
     }
 
     expect(expectSearchConditions).toEqual(searchConditions);

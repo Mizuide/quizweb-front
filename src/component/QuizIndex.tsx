@@ -1,4 +1,3 @@
-
 import { ReactElement, useEffect, useState } from "react";
 import searchConditions from "../type/searchQuizesConditions";
 import fetchQuizParam from "../type/fetchQuizParam";
@@ -33,13 +32,13 @@ const QuizIndex: () => ReactElement = () => {
 
     const changeOnPage = () => {
         setIndex(quizes, page);
-        if (quizes.length - page * displayNum <= displayNum) {
-            setFetchParam({ ...fetchParam, lastQuiz: quizes[quizes.length - 1] });
+        if (quizes.length !== 0 && quizes.length - page * displayNum <= displayNum) {
+            setFetchQuiz({ ...fetchParam, lastQuiz: quizes[quizes.length - 1] });
         }
     }
 
     useEffect(() => setIndex(quizes, page), [quizes]);
-    useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions , lastQuiz: null}), [searchConditions, fetchParam]);
+    useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions, lastQuiz: null }), [searchConditions]);
     useEffect(changeOnPage, [page]);
 
 
@@ -48,7 +47,7 @@ const QuizIndex: () => ReactElement = () => {
         <div>
             <SearchConditions conditions={searchConditions} setConditions={setSearchConditions} />
             <Index display={index} />
-            <Pager page={page} setPage={setPage} maxFlg={quizes.length <= displayNum*page} />
+            <Pager page={page} setPage={setPage} maxFlg={quizes.length < displayNum * page} />
         </div>
     )
 }

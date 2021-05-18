@@ -25,7 +25,7 @@ const Question: React.FC<questionProp> = (prop: questionProp) => {
                 selectiionNo: answer
             };
             fetchAnswer(param);
-            setAnswerStatus(answerStatusConst.answerStatus.waiting);
+            // setAnswerStatus(answerStatusConst.answerStatus.waiting);
         }
     }, [answer])
 
@@ -52,9 +52,11 @@ const Question: React.FC<questionProp> = (prop: questionProp) => {
 
 type prop = {
     questions: question[];
+    countupNumOfCorrect:() => void; 
+    setComplete:() => void;
 }
 
-const answerStatusContext =
+export const answerStatusContext =
     React.createContext<[answerStatusConst.answerStatus, (answerStatus: answerStatusConst.answerStatus) => void]>
         ([answerStatusConst.answerStatus.none, (answerStatus: answerStatusConst.answerStatus) => console.log('notDefined')]);
 
@@ -62,18 +64,23 @@ const Questions: React.FC<prop> = (prop: prop) => {
     const maxSize: number = prop.questions.length;
 
     const [answerStatus, setAnswerStatus] = useState<answerStatusConst.answerStatus>(answerStatusConst.answerStatus.none);
-
     const [currentNum, setCurrentNum] = useState<number>(0);
+
+    useEffect(() =>{
+        if(answerStatus === answerStatusConst.answerStatus.correct){
+            prop.countupNumOfCorrect();
+        }
+    },[answerStatus])
 
     //if user answer,display next question 
     const onClick = () => {
         if (answerStatus === answerStatusConst.answerStatus.none || answerStatus === answerStatusConst.answerStatus.waiting) {
             return false;
-        } else if(currentNum < maxSize ){
+        } else if(currentNum + 1 < maxSize ){
             setCurrentNum(currentNum + 1);
             setAnswerStatus(answerStatusConst.answerStatus.none);
-        }else if(currentNum === maxSize){
-
+        }else if(currentNum + 1 === maxSize){
+            prop.setComplete();
         }
     }
     const QuestionArray: ReactElement[] = [];

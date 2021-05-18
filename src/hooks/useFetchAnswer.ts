@@ -7,7 +7,7 @@ const useFetchAnswer: () => [number | undefined, (param: fetchAnswerParam) => vo
     const [answer, setAnswer] = useState<number>();
 
     const setFetchAnswer = (param: fetchAnswerParam) => {
-        axios.get<number>(ANSWER_URL, { params: param }).then(res => setAnswer(res.data));
+        axios.post<number>(ANSWER_URL, { ...param }).then(res => setAnswer(res.data));;
     }
 
     return [answer, setFetchAnswer];

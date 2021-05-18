@@ -6,7 +6,7 @@ type quizDetail = {
     description:string,
     thumbnail:string,
     category:string,
-    tag:string,
+    questions:question[]
 }
 
 export type question = {
@@ -20,7 +20,7 @@ export type question = {
 
 export type choice = {
     qusetionId:number,
-    selection_no:number,
+    selectionNo:number,
     content:string,
 }
 export default quizDetail;

@@ -3,12 +3,10 @@ import { useState } from "react";
 import quiz from "../type/quiz";
 import fetchQuizParam from "../type/fetchQuizParam";
 
-
-
-const QUIZ_URL: string = "/quizWeb/getQuizes";
+const QUIZ_URL: string = "/quizWeb/quiz";
 
 function fetchQuizes(param: fetchQuizParam): Promise<AxiosResponse<quiz[]>> {
-    return axios.get<quiz[]>(QUIZ_URL, { params: param });
+    return axios.post<quiz[]>(QUIZ_URL, { ...param });
 
 }
 
@@ -17,7 +15,7 @@ const useFetchQuizes: () => [quiz[], (prop: fetchQuizParam) => void] = () => {
     const setFetchQuiz = function (prop: fetchQuizParam) {
         fetchQuizes(prop).
             then(res => {
-                if (prop.fetchCount === 0) {
+                if (prop.lastQuiz === null) {
                     return res.data;
                 } else {
                     return quizes.concat(res.data);

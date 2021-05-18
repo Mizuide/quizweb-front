@@ -10,8 +10,8 @@ type prop = {
 
 const QuizDescription: React.FC<prop> = (prop: prop): QuizDescription => {
   return(
-    <div className='QuizDescription'>
-        <div className='disCription'>
+    <div className='quizDescription'>
+        <div className='desCription'>
             {prop.quizDetail.description}
         </div>
         <img src={prop.quizDetail.thumbnail}/>

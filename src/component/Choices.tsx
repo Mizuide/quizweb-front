@@ -1,5 +1,6 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useContext, useState } from "react";
 import { choice } from '../type/quizDetail'
+import {answerStatusContext} from './Questions'
 import * as answerStatusConst from "../const/answerStatus";
 
 type choiceProp = {
@@ -12,11 +13,14 @@ type choiceProp = {
 
 
 const Choice: React.FC<choiceProp> = (prop: choiceProp) => {
+
+    const [answerStatus, setAnswerStatus] = useContext(answerStatusContext);
     // const [answer, setAnswer] = prop.answerState;
     return (
         <div className='choice' key={prop.key} onClick={() => {
+            setAnswerStatus(answerStatusConst.answerStatus.waiting);
             if (prop.answer === undefined) {
-                prop.setAnswer(prop.choice.selection_no);
+                prop.setAnswer(prop.choice.selectionNo);
             }
         }
         }>
@@ -71,7 +75,7 @@ const Choices: React.FC<prop> = (prop: prop) => {
         });
     } else {
         prop.choices.forEach((choice, index) => {
-            choices.push(ChoiceResult({ key: index, choice: choice, answer: choice.selection_no === prop.answer, correct: choice.selection_no === prop.correctAnswer }));
+            choices.push(ChoiceResult({ key: index, choice: choice, answer: choice.selectionNo === prop.answer, correct: choice.selectionNo === prop.correctAnswer }));
         });
     }
 

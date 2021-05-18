@@ -15,7 +15,7 @@ jest.mock('axios');
 beforeEach(() => {
     jest.mock("axios");
     const mockedAxios = axios as jest.Mocked<typeof axios>;
-    mockedAxios.get.mockResolvedValueOnce(createTestData(1)).mockResolvedValueOnce(createTestData(2)).mockResolvedValueOnce(createTestData(3));
+    mockedAxios.post.mockResolvedValueOnce(createTestData(1)).mockResolvedValueOnce(createTestData(2)).mockResolvedValueOnce(createTestData(3)).mockResolvedValue(createTestData(4));
 }
 )
 
@@ -43,18 +43,21 @@ test('click', async () => {
 
     let target = screen.getByText('next');
     await new Promise(resolve => setTimeout(resolve, 1)) 
-    // await waitFor(() => expect( screen.getByText(/title1/)).toBeInTheDocument())
-    // let tar =  screen.findAllByText('title100',{},{timeout:4000});
+
+    await waitFor(() => expect( screen.getByText(/title1/)).toBeInTheDocument())
+
     for (let i = 0; i < 10; i++) {
         if (target !== null)
-        fireEvent.click(target);
+            fireEvent.click(target);
+            await new Promise(resolve => setTimeout(resolve, 50)) 
+
     }
     await new Promise(resolve => setTimeout(resolve, 1)) 
-    screen.debug();
     const mockedAxios = axios as jest.Mocked<typeof axios>;
     
-    // console.log(tar);
+    console.log(mockedAxios.post.mock.calls.length);
     // await tar.then(a => console.log(a))
+    // screen.debug();
 })
 
 test('search', async () => {
@@ -83,10 +86,7 @@ test('search', async () => {
     expect(await screen.findByText("title1", {}, { timeout: 40 })).toBeInTheDocument();
     let button = screen.getByText('絞り込み');
     fireEvent.click(button);
-    const mockedAxios = axios as jest.Mocked<typeof axios>;
-    console.log(mockedAxios.get.mock.calls[0][1]);
-    console.log(mockedAxios.get.mock.calls[1][1]);
-    
+
     let target = screen.getByText('next');
     expect(await screen.findByText("title101", {}, { timeout: 40 })).toBeInTheDocument();
 
@@ -106,7 +106,6 @@ function createTestData(num: number): any {
             category: "test",
             description: 'sample',
             thumbnail: "http://hogehoge.png",
-            tag: "test"
         })
     }
     return { data: quiz };

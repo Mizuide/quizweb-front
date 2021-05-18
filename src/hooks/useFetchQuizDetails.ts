@@ -3,7 +3,7 @@ import { useState } from "react";
 import fetchQuizDetailsParam from "../type/fetchQuizDetailParam";
 import quizDetail from '../type/quizDetail';
 
-const QUIZ_DETAIL_URL: string = "/quizWeb/getQuizDetail";
+const QUIZ_DETAIL_URL: string = "/quizWeb/quizDetail";
 
 function fetchQuizDetail(param: fetchQuizDetailsParam): Promise<AxiosResponse<quizDetail>> {
     return axios.get<quizDetail>(QUIZ_DETAIL_URL, { params: param });
@@ -12,6 +12,7 @@ function fetchQuizDetail(param: fetchQuizDetailsParam): Promise<AxiosResponse<qu
 const useFetchQuizDetail: () => [quizDetail|undefined, (param: fetchQuizDetailsParam) => void] = () => {
     const [quizDetail, setQuizDetail] = useState<quizDetail>();
     const setFetchQuizDetail = (param: fetchQuizDetailsParam) => {
+        
         fetchQuizDetail(param).then(res => setQuizDetail(res.data));
     }
         return [quizDetail, setFetchQuizDetail];

@@ -1,25 +1,28 @@
 
 type panelProp = {
-   display: string,
-   onClick: () => void
-
+   display: string;
+   onClick: () => void;
+   disable: boolean;
 }
 
 const Panel: React.FC<panelProp> = (prop) => {
-   return (<div className='panel' onClick={prop.onClick} >{prop.display}</div>)
+   return (<div className={`panel disable ${prop.disable}`} onClick={prop.disable ? () => false : prop.onClick} >{prop.display}</div>)
 }
 
 type prop = {
-   page: number,
-   setPage: (number:number) => void
+   page: number;
+   maxFlg: boolean;
+   setPage: (number: number) => void
 }
 
 const Pager: React.FC<prop> = (prop) => {
 
+
+
    return (<div className='pager'>
-      <Panel display={'next'} onClick={() => prop.setPage(prop.page + 1)} />
+      <Panel display={'next'} onClick={() => prop.setPage(prop.page + 1)} disable={prop.maxFlg} />
       <div className='current_page'>{prop.page}</div>
-      <Panel display={'prev'} onClick={() => prop.setPage(prop.page - 1)} />
+      <Panel display={'prev'} onClick={() => prop.setPage(prop.page - 1)} disable={prop.page <= 1} />
    </div>);
 }
 
