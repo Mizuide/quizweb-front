@@ -4,18 +4,20 @@ type createQuizParam = {
     category: categoryConst.categoryId,
     description: string,
     title: string,
-    questions:createQuestionParam[]
+    questions: createQuestionParam[]
 }
 
 export type createQuestionParam = {
-    content:string,
-    comment:string,
-    choices:createChoiceParam[]
+    indexId:number,
+    content: string,
+    comment: string,
+    choices: createChoiceParam[]
 }
 
 export type createChoiceParam = {
-    selectionNo:number,
-    content:string
+    indexId:number,
+    content: string,
+    correctFlg: boolean
 }
 
 export default createQuizParam;
