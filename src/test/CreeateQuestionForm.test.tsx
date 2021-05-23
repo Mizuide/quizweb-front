@@ -41,17 +41,27 @@ test('delete2', async () => {
     let questions: createQuestionParam[] = [];
     let setQuestions = (param: createQuestionParam[]) => questions = param;
 
-    render(<CreateQuestionForm questions={questions} setQuestions={setQuestions} />)
+    const {rerender} = render(<CreateQuestionForm questions={questions} setQuestions={setQuestions} />)
 
     let addButton = screen.getByText("問題を追加");
     fireEvent.click(addButton);
     fireEvent.click(addButton);
     fireEvent.click(addButton);
+    console.log(questions);
+
     let deleteButton = screen.getAllByText("削除");
     fireEvent.click(deleteButton[1]);
-    fireEvent.click(addButton);
+    rerender(<CreateQuestionForm questions={questions} setQuestions={setQuestions} />)    
+    deleteButton = screen.getAllByText("削除");
     fireEvent.click(deleteButton[0]);
+    rerender(<CreateQuestionForm questions={questions} setQuestions={setQuestions} />)    
+    
+    // let contentWrite = screen.getAllByPlaceholderText(/問題文を入力し/);
+    // fireEvent.change(contentWrite[1],  {target:{value:"テスト"}})
 
+
+    console.log(questions);
+    
     screen.debug();
 
 })

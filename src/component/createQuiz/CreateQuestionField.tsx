@@ -5,7 +5,7 @@ import { createQuestionParam, createChoiceParam } from "../../type/createQuizPar
 type prop = {
     questions: createQuestionParam[];
     setQuestions: (param: createQuestionParam[]) => void;
-    index:number;
+    index: number;
 
 }
 
@@ -14,13 +14,18 @@ const CreateQuestionField: React.FC<prop> = (prop: prop) => {
     const [comment, setComment] = useState<string>("");
     const [choices, setChoices] = useState<createChoiceParam[]>([]);
 
-    const [question, setQuestion] = useState<createQuestionParam>({ content: content, comment: comment, choices: choices });
+    const [question, setQuestion] = useState<createQuestionParam>({ indexId: prop.index, content: content, comment: comment, choices: choices });
 
-    useEffect(() => setQuestion({ ...question }), [content, comment, choices])
-    useEffect(() =>{
-        prop.questions.push(question);
-        prop.setQuestions([...prop.questions]);
-    },[question])
+    useEffect(() => {
+        prop.setQuestions(prop.questions.map(q => {
+            if (q.indexId === prop.index) {
+                return { ...q,content:content,comment:comment,choices:choices}
+            } else {
+                return q;
+            }
+
+        }));
+    }, [content, comment, choices])
 
     return (
         <div className='CreateQuestionField'>
