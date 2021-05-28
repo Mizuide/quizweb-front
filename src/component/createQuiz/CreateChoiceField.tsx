@@ -1,15 +1,21 @@
-import { useState } from "react";
-import { createChoiceParam } from "../../type/createQuizParam"
+import { useContext, useState } from 'react';
+import { createChoiceParam } from '../../type/createQuizParam';
+import Choices from '../Choices';
+import { QuizInfoContext } from './CreateQuizForm';
+
 
 type prop = {
-    choices: createChoiceParam[];
-    setChoices: (param: createChoiceParam[]) => void;
-
-
+    questionIndex: number;
+    choiceIndex: number;
 }
 
 const CreateChoiceField: React.FC<prop> = (prop: prop) => {
-    const [content, setContent] = useState<string>("");
+
+    const [quiz, setQuiz] = useContext(QuizInfoContext);
+
+    const setContent = (value: string) => {
+        quiz.questions[prop.questionIndex].choices[prop.choiceIndex].content = value;
+    };
 
     return (
         <div className='createChoiceField'>

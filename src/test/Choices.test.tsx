@@ -102,7 +102,7 @@ const createChoices = (): choice[] => {
     for (let i = 0; i < 4; i++) {
         choices.push({
             content: 'テスト' + i ,
-            selection_no: i + 1,
+            selectionNo: i + 1,
             qusetionId: 1
         });
     }

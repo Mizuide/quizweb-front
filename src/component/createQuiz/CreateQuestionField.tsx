@@ -1,10 +1,9 @@
-import { ReactElement, useEffect, useState } from "react";
+import { unzip } from "node:zlib";
+import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { createQuestionParam, createChoiceParam } from "../../type/createQuizParam"
-
+import { QuizInfoContext } from "./CreateQuizForm"
 
 type prop = {
-    questions: createQuestionParam[];
-    setQuestions: (param: createQuestionParam[]) => void;
     index: number;
 
 }
@@ -14,17 +13,18 @@ const CreateQuestionField: React.FC<prop> = (prop: prop) => {
     const [comment, setComment] = useState<string>("");
     const [choices, setChoices] = useState<createChoiceParam[]>([]);
 
-    const [question, setQuestion] = useState<createQuestionParam>({ indexId: prop.index, content: content, comment: comment, choices: choices });
+    const [quiz, setQuiz] = useContext(QuizInfoContext);
 
+    //FIXME
     useEffect(() => {
-        prop.setQuestions(prop.questions.map(q => {
+        setQuiz({...quiz,questions:quiz.questions.map(q => {
             if (q.indexId === prop.index) {
-                return { ...q,content:content,comment:comment,choices:choices}
+                return { ...q, content: content, comment: comment, choices: choices }
             } else {
                 return q;
             }
-
-        }));
+        })});
+2
     }, [content, comment, choices])
 
     return (

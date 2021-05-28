@@ -1,52 +1,53 @@
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useContext, useRef, useState } from "react";
 import createQuizParam, { createQuestionParam } from "../../type/createQuizParam"
+import { QuizInfoContext } from "./CreateQuizForm"
 import CreateQuestionField from "./CreateQuestionField";
 
+
 type prop = {
-    questions: createQuestionParam[];
-    setQuestions: (param: createQuestionParam[]) => void;
+
 }
 
 const CreateQuestionForm: React.FC<prop> = (prop: prop) => {
-    const [index, setIndex] = useState<number>(1);
+    const [nextIndex, setNextIndex] = useState<number>(1);
 
     const [addQuestionsZone, setAddQuestionsZone] = useState<ReactElement[]>([]);
 
-    //useRef to de
+    const [quiz, setQuiz] = useContext(QuizInfoContext);
+
+    //useRef to delete
     let addQuestionsZoneRef = useRef<ReactElement[]>([]);
     addQuestionsZoneRef.current = addQuestionsZone;
 
     let questionsArrayRef = useRef<createQuestionParam[]>([]);
-    questionsArrayRef.current = prop.questions;
+    questionsArrayRef.current = quiz.questions;
 
-    const deleteThis = (index: number) => {
-        //use '!=' because reactElement.key`s type is string
-        setAddQuestionsZone(addQuestionsZoneRef.current.filter(element => element.key != index));
-        prop.setQuestions(questionsArrayRef.current.filter(q => q.indexId !== index));
-        // prop.setQuestions(questionsArrayRef.current.filter(q => q.indexId !== index));
-
-    }
-
-    const addQuestion = (index: number) => {
+    
+    const addQuestion = () => {
+        
+        const deleteThis = (index: number) => {
+            //use '!=' because reactElement.key`s type is string
+            setAddQuestionsZone(addQuestionsZoneRef.current.filter(element => element.key != index));
+            setQuiz({ ...quiz, questions: questionsArrayRef.current.filter(q => q.indexId !== index) });
+        }
+        quiz.questions.push({ indexId: nextIndex, content: "", comment: "", choices: [] });
+        setQuiz({ ...quiz, questions: quiz.questions });
+        
         addQuestionsZone.push(
-            <div key={index}>
-                <CreateQuestionField index={index} questions={prop.questions} setQuestions={prop.setQuestions} />
-                <div className="delete" onClick={() => deleteThis(index)}>削除</div>
+            <div key={nextIndex}>
+                <CreateQuestionField index={nextIndex} />
+                <div className="delete" onClick={() => deleteThis(nextIndex)}>削除</div>
             </div>
         )
-        // questionsArrayRef.current.push({ indexId: index, content: "", comment: "", choices: [] });
-        prop.questions.push({ indexId: index, content: "", comment: "", choices: [] });
-        // prop.setQuestions([...prop.questions]);
-
         setAddQuestionsZone([...addQuestionsZone]);
-        setIndex(index + 1);
+        setNextIndex(nextIndex + 1);
     }
 
     return (
         <div className='createQuestionForm'>
-            <CreateQuestionField index={0} questions={prop.questions} setQuestions={prop.setQuestions} />
+            <CreateQuestionField index={0} />
             {addQuestionsZone}
-            <div onClick={() => addQuestion(index)}>問題を追加</div>
+            <div onClick={() => addQuestion()}>問題を追加</div>
         </div>
     )
 }
