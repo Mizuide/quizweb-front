@@ -1,4 +1,5 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useChangeChoice } from '../../hooks/useChangeQuizContext';
 import { createChoiceParam } from '../../type/createQuizParam';
 import Choices from '../Choices';
 import { QuizInfoContext } from './CreateQuizForm';
@@ -10,12 +11,13 @@ type prop = {
 }
 
 const CreateChoiceField: React.FC<prop> = (prop: prop) => {
+    const [content, setContent] = useState("");
+    const changeChoice = useChangeChoice(prop.questionIndex);
 
-    const [quiz, setQuiz] = useContext(QuizInfoContext);
+    useEffect(() => {
+        changeChoice(content , prop.choiceIndex);        
+    }, [content])
 
-    const setContent = (value: string) => {
-        quiz.questions[prop.questionIndex].choices[prop.choiceIndex].content = value;
-    };
 
     return (
         <div className='createChoiceField'>

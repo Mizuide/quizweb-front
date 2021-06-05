@@ -1,8 +1,6 @@
-import { ReactElement, useContext, useRef, useState } from "react";
-import { createChoiceParam } from "../../type/createQuizParam"
+import { ReactElement, useEffect, useRef, useState } from "react";
 import CreateChoiceField from "./CreateChoiceField";
-import { QuizInfoContext } from "./CreateQuizForm"
-
+import { useAddChoice, useChangeCorrectChoice, useDeleteChoice } from "../../hooks/useChangeQuizContext"
 
 type prop = {
     quesitonIndex: number
@@ -10,65 +8,61 @@ type prop = {
 
 const CreateChoiceForm: React.FC<prop> = (prop: prop) => {
     const [nextIndex, setNextIndex] = useState<number>(2);
-
     const [addChoicesZone, setAddChoicesZone] = useState<ReactElement[]>([]);
 
-    const [correct, setCorrect] = useState<number>(0);
+    const changeCorrect = useChangeCorrectChoice(prop.quesitonIndex); 
 
-    const [quiz, setQuiz] = useContext(QuizInfoContext);
-
-    const ownerQuestion = quiz.questions.find(q => q.indexId === prop.quesitonIndex);
-    if (ownerQuestion === undefined) {
-        throw new Error("this QuestionIndex is not find index:" + prop.quesitonIndex);
-    }
+    const addChoiceToContext = useAddChoice(prop.quesitonIndex);
+    const deleteChoise = useDeleteChoice(prop.quesitonIndex);
 
     let addChoicesZoneRef = useRef<ReactElement[]>([]);
     addChoicesZoneRef.current = addChoicesZone;
 
-    let choicesArrayRef = useRef<createChoiceParam[]>([]);
-    choicesArrayRef.current = ownerQuestion.choices;
+    useEffect(() => {
+        addChoice(0);
+        addChoice(1);
+    }, [])
 
-    const deleteThis = (index: number) => {
-        //use '!=' because reactElement.key`s type is string
-        setAddChoicesZone(addChoicesZoneRef.current.filter(element => element.key != index));
-        setQuiz({
-            ...quiz, questions: quiz.questions.map(q => {
-                if (q.indexId === ownerQuestion.indexId) {
-                    return { ...q, choices: choicesArrayRef.current.filter(choice => choice.indexId !== index) };
-                } else {
-                    return q;
-                }
-            })
-        });
-    }
+    const addChoice = (nextIndex:number) => {
+        const deleteThis = (index: number) => {
+            //use '!=' because reactElement.key's type is string
+            setAddChoicesZone(addChoicesZoneRef.current.filter(element => element.key != index));
+            deleteChoise(index);
+        }
 
 
+        addChoiceToContext({ indexId: nextIndex, content: '', correctFlg: false });
 
-    const addQuestion = (index: number) => {
+        //this function is change style correct 
+        const changeCheckValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+            changeCorrect(nextIndex);           
 
-        choicesArrayRef.current.push({ indexId: nextIndex, content: '', correctFlg: false });
-        setQuiz({
-            ...quiz, questions: quiz.questions.map(q => {
-                if (q.indexId === ownerQuestion.indexId) {
-                    return { ...q, choices: [...choicesArrayRef.current] };
-                } else {
-                    return q;
-                }
-            })
-        })
+            const beforeCorrects= document.querySelectorAll(".correct");
+            beforeCorrects.forEach(e => e.className= "");
+
+            if (e.target.parentElement === null)
+                throw new Error('choice zone is invalid,it need parent element');
+            e.target.parentElement.className = "correct"
+
+        }
+
         addChoicesZoneRef.current.push(
-            <div key={nextIndex}>
+            <div key={nextIndex} >
                 <CreateChoiceField questionIndex={prop.quesitonIndex} choiceIndex={nextIndex} />
+                <input id={`${nextIndex}`} value={nextIndex} name="correctCheck" onChange={e => changeCheckValue(e)} type="radio" />
+                <div className="delete" onClick={() => deleteThis(nextIndex)}>この選択肢を削除</div>
             </div>
         );
         setAddChoicesZone([...addChoicesZoneRef.current])
-        setNextIndex(nextIndex + 1);
     }
-
 
     return (
         <div className='createChoiceForm'>
-
+            {addChoicesZone}
+            <div onClick={() => {
+                addChoice(nextIndex);
+                setNextIndex(nextIndex+1);
+            }}>選択肢を追加</div>
         </div>
     )
 }

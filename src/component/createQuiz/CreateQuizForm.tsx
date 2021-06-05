@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useState } from "react";
-import createQuizParam, { createQuestionParam } from "../../type/createQuizParam";
+import createQuizParam, { createChoiceParam, createQuestionParam } from "../../type/createQuizParam";
 import Categories from "../Categories";
 import * as categoryConst from '../../const/category'
 import CreateQuestionForm from "./CreateQuestionForm";
@@ -19,14 +19,13 @@ const CreateQuizForm: React.FC<void> = () => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
 
-    let questions: createQuestionParam[] = [];
 
 
     const [quiz, setQuiz] = useState<createQuizParam>({
         category: category,
         description: description,
         title: title,
-        questions: questions
+        questions: []
     })
 
 
@@ -35,7 +34,7 @@ const CreateQuizForm: React.FC<void> = () => {
             <QuizInfoContext.Provider value={[quiz, setQuiz]}>
                 <Categories setCategory={setCategory} />
                 <div className='title'>
-                    <input type='text' className='input' onChange={(e) => setTitle(e.target.value)} />
+                    <input type='text' className='input' placeholder='クイズのタイトルを入力してください' onChange={(e) => setTitle(e.target.value)} />
                 </div>
                 <div className='description'>
                     <input type='text' className='input' onChange={(e) => setDescription(e.target.value)} />
