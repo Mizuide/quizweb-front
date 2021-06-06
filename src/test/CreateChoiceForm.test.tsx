@@ -79,7 +79,7 @@ test('delete choices', async () => {
     fireEvent.click(deleteChoiceBottuns[1]);
     expect(screen.getAllByPlaceholderText(/選択肢を入力してください/).length === 1).toBeTruthy();
     expect(quiz.questions[0].choices[0].indexId === 0).toBeTruthy();
- 
+
 })
 
 test('add after delete choices', async () => {
@@ -95,9 +95,9 @@ test('add after delete choices', async () => {
     const deleteChoiceBottuns = screen.getAllByText(/この選択肢を削除/);
     fireEvent.click(deleteChoiceBottuns[2]);
     rerender(
-    <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-        <CreateChoiceForm quesitonIndex={0} />
-    </QuizInfoContext.Provider>
+        <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
+            <CreateChoiceForm quesitonIndex={0} />
+        </QuizInfoContext.Provider>
     )
     fireEvent.click(addChoiceButton);
 
@@ -120,12 +120,15 @@ test('check correct', async () => {
         </QuizInfoContext.Provider>
     )
     const addChoiceButton = document.querySelectorAll('input[type="radio"]');
-    
+
     fireEvent.click(addChoiceButton.item(0));
- 
-    screen.debug();
+    expect(addChoiceButton[0].parentElement?.className === 'correct').toBeTruthy();
+    expect(addChoiceButton[1].parentElement?.className !== 'correct').toBeTruthy();
+
     fireEvent.click(addChoiceButton.item(1));
-    //eroor!! 
+    expect(addChoiceButton[0].parentElement?.className !== 'correct').toBeTruthy();
+    expect(addChoiceButton[1].parentElement?.className === 'correct').toBeTruthy();
+
     screen.debug();
 
 })

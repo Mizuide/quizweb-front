@@ -3,7 +3,7 @@ import { useState } from "react";
 import quiz from "../type/quiz";
 import fetchQuizParam from "../type/fetchQuizParam";
 
-const QUIZ_URL: string = "/quizWeb/quiz";
+const QUIZ_URL: string = "/quizWeb/quiz/get";
 
 function fetchQuizes(param: fetchQuizParam): Promise<AxiosResponse<quiz[]>> {
     return axios.post<quiz[]>(QUIZ_URL, { ...param });

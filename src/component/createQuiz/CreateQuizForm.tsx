@@ -3,17 +3,20 @@ import createQuizParam, { createChoiceParam, createQuestionParam } from "../../t
 import Categories from "../Categories";
 import * as categoryConst from '../../const/category'
 import CreateQuestionForm from "./CreateQuestionForm";
+import history from 'history/createBrowserHistory';
+import axios from "axios";
 
 type quizInfonContext = [
     quiz: createQuizParam,
     setQuiz: React.Dispatch<React.SetStateAction<createQuizParam>>
 ]
 
-//QuizInfo is managed  by context
+//QuizInfo is managed by context
 export const QuizInfoContext = React.createContext<quizInfonContext>({} as quizInfonContext);
 
+const CREATE_QUIZ_URL ="/quizWeb/quiz/create";
 
-const CreateQuizForm: React.FC<void> = () => {
+const CreateQuizForm: React.FC = () => {
 
     const [category, setCategory] = useState<categoryConst.categoryId>(categoryConst.categoryId.all);
     const [title, setTitle] = useState<string>('');
@@ -28,6 +31,9 @@ const CreateQuizForm: React.FC<void> = () => {
         questions: []
     })
 
+const submit = () =>{
+    axios.post(CREATE_QUIZ_URL,{createQuizParam:quiz}).then(res => history().push('/'));
+}
 
     return (
         <div className='CreateQuizForm'>
@@ -41,7 +47,10 @@ const CreateQuizForm: React.FC<void> = () => {
                 </div>
                 <CreateQuestionForm />
             </QuizInfoContext.Provider>
-
+            <button className="submit" onClick={e => {
+                (e.target as HTMLButtonElement).disabled=true;
+                submit();
+                }}></button>
         </div>
     )
 }

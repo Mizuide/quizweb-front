@@ -2,10 +2,12 @@ import './App.css';
 import QuizScreen from './component/QuizScreen';
 import {
   BrowserRouter as Router,
+  Link,
   Route,
   Switch
 } from 'react-router-dom'
 import QuizIndex from './component/QuizIndex';
+import CreateQuizForm from './component/createQuiz/CreateQuizForm';
 
 
 function App() {
@@ -14,9 +16,15 @@ function App() {
       <Switch>
         <Route exact path='/'>
           <QuizIndex />
+          <Link to={'/create'} >
+            問題作成
+          </Link>
         </Route>
         <Route exact path='/game/:id' >
           <QuizScreen />
+        </Route>
+        <Route exact path='/create' >
+          <CreateQuizForm />
         </Route>
       </Switch>
     </Router>

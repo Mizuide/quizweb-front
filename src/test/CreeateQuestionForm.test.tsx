@@ -14,79 +14,82 @@ test('render', async () => {
             <CreateQuestionForm />
         </QuizInfoContext.Provider>
     )
-    screen.debug();
-    console.log(quiz);
+    expect(screen.getByPlaceholderText("問題文を入力してください")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("回答後に表示されるコメントを入力してください")).toBeInTheDocument();
+
+})
+
+test('add', async () => {
+    let quiz: createQuizParam = { category: categoryId.all, description: 'test', questions: [], title: 'test' };
+    let setQuiz: SetStateAction<createQuizParam> = (param: createQuizParam) => quiz = param
+
+    render(
+        <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
+            <CreateQuestionForm />
+        </QuizInfoContext.Provider>
+    )
+    let addButton = screen.getByText("問題を追加");
+    fireEvent.click(addButton);
+    expect(screen.getAllByPlaceholderText("問題文を入力してください").length === 2).toBeTruthy;
+    expect(quiz.questions.length === 2).toBeTruthy();
+
+})
+
+test('delete', async () => {
+    let quiz: createQuizParam = { category: categoryId.all, description: 'test', questions: [], title: 'test' };
+    let setQuiz: SetStateAction<createQuizParam> = (param: createQuizParam) => quiz = param
+
+    const {rerender} = render(
+        <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
+            <CreateQuestionForm />
+        </QuizInfoContext.Provider>
+    )
+    let addButton = screen.getByText("問題を追加");
+    fireEvent.click(addButton);
+    let deleteButton = screen.getAllByText("削除");
+    fireEvent.click(deleteButton[0]);
+    expect(screen.getAllByPlaceholderText("問題文を入力してください").length === 1).toBeTruthy;
+    expect(quiz.questions.length === 1).toBeTruthy;
+    //and add
+    rerender(
+        <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
+            <CreateQuestionForm />
+        </QuizInfoContext.Provider>
+    )
+    addButton = screen.getByText("問題を追加");
+    fireEvent.click(addButton);
+    expect(screen.getAllByPlaceholderText("問題文を入力してください").length === 2).toBeTruthy;
+    expect(quiz.questions.length === 2).toBeTruthy();
+
     
 })
 
-// test('add', async () => {
-//     let quiz: createQuizParam = { category: categoryId.all, description: 'test', questions: [], title: 'test' };
-//     let setQuiz: SetStateAction<createQuizParam> = (param: createQuizParam) => quiz = param
+test('changeValueContent', async () => {
+    let quiz: createQuizParam = { category: categoryId.all, description: 'test', questions: [], title: 'test' };
+    let setQuiz: SetStateAction<createQuizParam> = (param: createQuizParam) => quiz = param
+    const {rerender} = render(
+        <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
+            <CreateQuestionForm />
+        </QuizInfoContext.Provider>
+    )
+    let contentWrite = screen.getAllByPlaceholderText(/問題文を入力し/);
+    fireEvent.change(contentWrite[0], { target: { value: "テスト" } })
 
-//     render(
-//         <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-//             <CreateQuestionForm />
-//         </QuizInfoContext.Provider>
-//     )
-//     let addButton = screen.getByText("問題を追加");
-//     fireEvent.click(addButton);
-//     screen.debug();
-//     console.log(quiz);
-// })
+    expect(quiz.questions[0].content==="テスト").toBeTruthy();
+    
+})
 
-// test('delete', async () => {
-//     let quiz: createQuizParam = { category: categoryId.all, description: 'test', questions: [], title: 'test' };
-//     let setQuiz: SetStateAction<createQuizParam> = (param: createQuizParam) => quiz = param
+test('changeValueComment', async () => {
+    let quiz: createQuizParam = { category: categoryId.all, description: 'test', questions: [], title: 'test' };
+    let setQuiz: SetStateAction<createQuizParam> = (param: createQuizParam) => quiz = param
+    const {rerender} = render(
+        <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
+            <CreateQuestionForm />
+        </QuizInfoContext.Provider>
+    )
+    let contentWrite = screen.getAllByPlaceholderText(/コメントを入力し/);
+    fireEvent.change(contentWrite[0], { target: { value: "テスト" } })
 
-//     render(
-//         <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-//             <CreateQuestionForm />
-//         </QuizInfoContext.Provider>
-//     )
-//     let addButton = screen.getByText("問題を追加");
-//     fireEvent.click(addButton);
-//     screen.debug();
-//     let deleteButton = screen.getAllByText("削除");
-//     fireEvent.click(deleteButton[0]);
-//     console.log(quiz);
-
-// })
-
-
-// test('delete2', async () => {
-//     let quiz: createQuizParam = { category: categoryId.all, description: 'test', questions: [], title: 'test' };
-//     let setQuiz: SetStateAction<createQuizParam> = (param: createQuizParam) => quiz = param
-
-//     const { rerender } = render(
-//         <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-//             <CreateQuestionForm />
-//         </QuizInfoContext.Provider>
-//     )
-//     console.log(quiz);
-//     rerender(<QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-//         <CreateQuestionForm />
-//     </QuizInfoContext.Provider>)
-
-//     let addButton = screen.getByText("問題を追加");
-//     fireEvent.click(addButton);
-//     console.log(quiz);
-//     fireEvent.click(addButton);
-//     fireEvent.click(addButton);
-//     let deleteButton = screen.getAllByText("削除");
-//     fireEvent.click(deleteButton[1]);
-//     rerender(<QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-//         <CreateQuestionForm />
-//     </QuizInfoContext.Provider>)
-//     deleteButton = screen.getAllByText("削除");
-//     fireEvent.click(deleteButton[2]);
-//     rerender(<QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-//         <CreateQuestionForm />
-//     </QuizInfoContext.Provider>)
-//     let contentWrite = screen.getAllByPlaceholderText(/問題文を入力し/);
-
-//     fireEvent.change(contentWrite[1], { target: { value: "テスト" } })
-//     console.log(quiz);
-
-//     screen.debug();
-
-// })
+    expect(quiz.questions[0].comment==="テスト").toBeTruthy();
+    
+})

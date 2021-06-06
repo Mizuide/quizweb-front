@@ -1,8 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useChangeChoice } from '../../hooks/useChangeQuizContext';
-import { createChoiceParam } from '../../type/createQuizParam';
-import Choices from '../Choices';
-import { QuizInfoContext } from './CreateQuizForm';
 
 
 type prop = {
