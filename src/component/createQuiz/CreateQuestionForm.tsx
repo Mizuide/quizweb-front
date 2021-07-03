@@ -1,6 +1,9 @@
-import { ReactElement, useEffect, useRef, useState } from "react";
-import CreateQuestionField from "./CreateQuestionField";
+import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { useAddQuestion, useDeleteQuestion } from "../../hooks/useChangeQuizContext";
+import CreateQuestionField from "./CreateQuestionField";
+import css from "../../css/createQuizForm.module.scss"
+import { ZodErrorContext } from "./CreateQuizForm";
+
 
 
 type prop = {
@@ -14,18 +17,38 @@ const CreateQuestionForm: React.FC<prop> = (prop: prop) => {
     const deleteQuestion = useDeleteQuestion();
     const addQuestionToContext = useAddQuestion();
 
-    //useRef to delete
+    const zodError = useContext(ZodErrorContext);
+
+    const [questionNumError, setQuestionNumError] = useState<string>('');
+
+    //useRef to  define delete functon
     let addQuestionsZoneRef = useRef<ReactElement[]>([]);
     addQuestionsZoneRef.current = addQuestionsZone;
-
 
     useEffect(() => {
         addQuestion(0);
     }, [])
 
+    useEffect(() => {
+        setQuestionNumError('');
+
+        if (zodError !== undefined) {
+            const errorOccurQuiz = zodError.issues.filter(is => is.path.length === 1);
+
+            for (let issue of errorOccurQuiz) {
+                if (issue.path.includes('questions'))
+                    setQuestionNumError(issue.message);
+            }
+        }
+
+    }, [zodError])
+
     const addQuestion = (nextIndex: number) => {
+
+        //define delete function
         const deleteThis = (index: number) => {
-            //use '!=' because reactElement.key`s type is string
+            addQuestionsZoneRef.current.forEach(e => console.log(e));
+            //use '!=' because reactElement.key's type is string
             setAddQuestionsZone(addQuestionsZoneRef.current.filter(element => element.key != index));
             deleteQuestion(index);
         }
@@ -35,11 +58,11 @@ const CreateQuestionForm: React.FC<prop> = (prop: prop) => {
         addQuestionsZone.push(
             <div key={nextIndex}>
                 <CreateQuestionField index={nextIndex} />
-                <div className="delete" onClick={() => deleteThis(nextIndex)}>削除</div>
+                <div className="delete" onClick={() => deleteThis(nextIndex)}>この問題を削除</div>
             </div>
         )
-        setAddQuestionsZone([...addQuestionsZone]);
 
+        setAddQuestionsZone([...addQuestionsZone]);
     }
 
     return (
@@ -48,7 +71,8 @@ const CreateQuestionForm: React.FC<prop> = (prop: prop) => {
             <div onClick={() => {
                 addQuestion(nextIndex);
                 setNextIndex(nextIndex + 1);
-            }}>問題を追加</div>
+            }}>問題を追加する</div>
+            <div className={css.error}>{questionNumError}</div>
         </div>
     )
 }

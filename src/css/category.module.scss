@@ -1,0 +1,19 @@
+.category{
+    display: inline-block;
+    width: 7rem;
+    text-align: center;
+    margin: 0.5rem;
+}
+.toggle{
+    display: none;
+}
+
+.category:hover{
+    background-color: greenyellow;
+}
+
+.toggle:checked ~ label{
+    display: inline-block;
+    width: 100%;
+    background-color: gold;
+}

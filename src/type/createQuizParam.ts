@@ -1,9 +1,10 @@
 import * as categoryConst from '../const/category'
+import * as  zod from 'zod'
 
 type createQuizParam = {
     category: categoryConst.categoryId,
-    description: string,
     title: string,
+    description: string,
     questions: createQuestionParam[]
 }
 
@@ -19,5 +20,10 @@ export type createChoiceParam = {
     content: string,
     correctFlg: boolean
 }
+
+export const choiceParamValid = zod.object({
+    content: zod.string().nonempty(),
+    comment: zod.string()
+})
 
 export default createQuizParam;
