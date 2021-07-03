@@ -120,8 +120,9 @@ module.exports = function (webpackEnv) {
         options: {
           // Necessary for external CSS imports to work
           // https://github.com/facebook/create-react-app/issues/2677
-          ident: 'postcss',
-          plugins: () => [
+          // ident: 'postcss',
+          postcssOptions:{
+          plugins:[
             require('postcss-flexbugs-fixes'),
             require('postcss-preset-env')({
               autoprefixer: {
@@ -133,7 +134,7 @@ module.exports = function (webpackEnv) {
             // so that it honors browserslist config in package.json
             // which in turn let's users customize the target behavior as per their needs.
             postcssNormalize(),
-          ],
+          ]},
           sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
         },
       },
@@ -618,7 +619,7 @@ module.exports = function (webpackEnv) {
             module: reactRefreshOverlayEntry,
             // Since we ship a custom dev client and overlay integration,
             // the bundled socket handling logic can be eliminated.
-            sockIntegration: false,
+            sockIntegration: 'wds',
           },
         }),
       // Watcher doesn't work well if you mistype casing in a path so we use
