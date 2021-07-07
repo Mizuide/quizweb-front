@@ -39,25 +39,19 @@ const CreateChoiceForm: React.FC<prop> = (prop: prop) => {
 
         addChoiceToContext({ indexId: nextIndex, content: '', correctFlg: false });
 
-        //this function is change style correct 
-        const changeCheckValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-            const beforeCorrects = document.querySelectorAll(".correct");
-            beforeCorrects.forEach(e => e.className = "");
-
-            if (e.target.parentElement === null)
-                throw new Error('choice zone is invalid,it need parent element');
-            e.target.parentElement.className = "correct"
-
+        if(addChoicesZoneRef.current.length === 4){
+            return false;
         }
+
         let firstFlg = addChoicesZoneRef.current.length === 0;
         addChoicesZone.push(
             <div key={nextIndex} className={css.contentZone}>
-                <input id={`${nextIndex}`} defaultChecked={firstFlg} value={nextIndex} name="correctCheck" onChange={e => {
+                <input id={`${prop.quesitonIndex}_${nextIndex}`} className={css['btn-check']} defaultChecked={firstFlg} name={`${prop.quesitonIndex}_correctCheck`} onChange={e => {
                     changeContext(nextIndex);
                 }} type="radio" />
+                <label className={`${css['btn']} ${css["btn-outline-primary"]}`} htmlFor={`${prop.quesitonIndex}_${nextIndex}`}>正解</label>
                 <CreateChoiceField choiceIndex={nextIndex}  questionIndex={prop.quesitonIndex} />
-                <div className={css.deleteButton} onClick={() => deleteThis(nextIndex)}>この選択肢を削除</div>
+                <div className={`${css["btn-danger"]} ${css["btn"]}`} onClick={() => deleteThis(nextIndex)}><i className={css["bi-x-lg"]}/> 削除</div>
             </div>
         );
         setAddChoicesZone([...addChoicesZone])
@@ -67,12 +61,12 @@ const CreateChoiceForm: React.FC<prop> = (prop: prop) => {
             {e}</div>)})
 
     return (
-        <div className='createChoiceForm'>
+        <div  className={css.createChoiceForm}>
             {disp}
-            <div  onClick={() => {
+            <div className={`${css["btn"]} ${css["btn-secondary"]} ${css.addButton}`} onClick={() => {
                 addChoice(nextIndex);
                 setNextIndex(nextIndex + 1);
-            }}>選択肢を追加</div>
+            }}><i className={css["bi-plus-lg"]}></i> 選択肢を追加</div>
         </div>
     )
 }

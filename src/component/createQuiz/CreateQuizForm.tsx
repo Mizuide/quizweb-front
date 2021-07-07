@@ -6,8 +6,9 @@ import * as categoryConst from '../../const/category';
 import createQuizParamOld from "../../type/createQuizParam";
 import CreateQuizParamValidation from "../../validate/CreateQuizParamValidatiom";
 import Categories from "../Categories";
+import ErrorZone from "./ErrorZone";
 import CreateQuestionForm from "./CreateQuestionForm";
-import css from '../../css/createQuizForm.module.scss'
+import css from "../../css/createQuizForm.module.scss";
 
 type quizInfonContext = [
     quiz: createQuizParamOld,
@@ -71,30 +72,29 @@ const CreateQuizForm: React.FC = () => {
     }
 
     return (
-        <div className='CreateQuizForm'>
+        <div className={css.createQuizForm}>
             <h1>クイズを作成する</h1>
             <QuizInfoContext.Provider value={[quiz, setQuiz]}>
                 <ZodErrorContext.Provider value={zodError}>
                     <Categories setCategory={setCategory} />
-                    <div className={css.createQuizInfo}>
-                        <ul>
-                            <li>タイトル</li>
-                            <div className='title'>
-                                <input type='text' className={css.oneLineInput} placeholder='クイズのタイトルをここに入力してください' onChange={(e) => setTitle(e.target.value)} />
-                                <div className={css.error}>{titleError}</div>
-                            </div>
-                            <li>説明文</li>
-                            <div className='description'>
-                                <input type='text' className={css.contentInput} placeholder='クイズの説明文をここに入力してください' onChange={(e) => setDescription(e.target.value)} />
-                            </div>
-                        </ul>
+                    <div className={css.quizInfo}>
+                        タイトル
+                        <div className='title'>
+                            <input type='text' className={css.oneLineInput} placeholder='クイズのタイトルをここに入力してください' onChange={(e) => setTitle(e.target.value)} />
+                            <ErrorZone errorMessage={titleError} />
+                        </div>
+                        説明文
+                        <div className='description'>
+                            <input type='text' className={css.contentInput} placeholder='クイズの説明文をここに入力してください' onChange={(e) => setDescription(e.target.value)} />
+                        </div>
+                        <CreateQuestionForm />
                     </div>
-                    <CreateQuestionForm />
                 </ZodErrorContext.Provider>
             </QuizInfoContext.Provider>
-            <button className="submit" onClick={e => {
+            <button className={`${css.btn} ${css['btn-success']} ${css.submitButton}`} onClick={e => {
                 submit(e.target as HTMLButtonElement);
-            }}>クイズ作成</button>
+            }}><i className={css['bi-pencil']}/> クイズを作成する
+            </button>
         </div>
     )
 }

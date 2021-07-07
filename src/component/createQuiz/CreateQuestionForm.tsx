@@ -3,7 +3,7 @@ import { useAddQuestion, useDeleteQuestion } from "../../hooks/useChangeQuizCont
 import CreateQuestionField from "./CreateQuestionField";
 import css from "../../css/createQuizForm.module.scss"
 import { ZodErrorContext } from "./CreateQuizForm";
-
+import ErrorZone from "./ErrorZone";
 
 
 type prop = {
@@ -56,23 +56,24 @@ const CreateQuestionForm: React.FC<prop> = (prop: prop) => {
         addQuestionToContext({ indexId: nextIndex, content: "", comment: "", choices: [] });
 
         addQuestionsZone.push(
-            <div key={nextIndex}>
+            <span key={nextIndex}>
+                <div className={`${css["btn-danger"]} ${css["btn"]} ${css.deleteButton}`} onClick={() => deleteThis(nextIndex)}><i className={css["bi-x-lg"]}/> この問題を削除</div>
                 <CreateQuestionField index={nextIndex} />
-                <div className="delete" onClick={() => deleteThis(nextIndex)}>この問題を削除</div>
-            </div>
-        )
-
+            </span>
+    )
         setAddQuestionsZone([...addQuestionsZone]);
     }
-
+    const disp = addQuestionsZone.map((e,index) => {return(
+        <div key={e.key}>問題{index+1}
+            {e}</div>)})
     return (
-        <div className='createQuestionForm'>
-            {addQuestionsZone}
-            <div onClick={() => {
+        <div className={css.createQuestionForm}>
+            {disp}
+            <div className={`${css.btn} ${css['btn-secondary']} ${css.addButton}`} onClick={() => {
                 addQuestion(nextIndex);
                 setNextIndex(nextIndex + 1);
-            }}>問題を追加する</div>
-            <div className={css.error}>{questionNumError}</div>
+            }}><i className={css['bi-journal-plus']}/> 問題を追加する</div>
+            <ErrorZone errorMessage={questionNumError}/>
         </div>
     )
 }

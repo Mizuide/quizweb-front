@@ -2,7 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { useChangeQuestion, useFetchQuestion } from "../../hooks/useChangeQuizContext";
 import CreateChoiceForm from "./CreateChoiceForm";
 import { ZodErrorContext } from "./CreateQuizForm";
-
+import css from "../../css/createQuizForm.module.scss";
+import ErrorZone from "./ErrorZone";
 
 type prop = {
     index: number
@@ -49,10 +50,10 @@ const CreateQuestionField: React.FC<prop> = (prop: prop) => {
 
     return (
         <div className='CreateQuestionField'>
-            <input type="textarea" placeholder="問題文を入力してください" onChange={(e) => setContent(e.target.value)} />
-            <div className='error'>{contentError}</div>
+            <input type="textarea" className={css.contentInput} placeholder="問題文を入力してください" onChange={(e) => setContent(e.target.value)} />
+            <ErrorZone errorMessage={contentError} />
             <CreateChoiceForm quesitonIndex={prop.index} />
-            <div className='error'>{choiceError}</div>
+            <ErrorZone errorMessage={choiceError} />
             <input type="text" placeholder="回答後に表示されるコメントを入力してください" onChange={(e) => setComment(e.target.value)} />
         </div>
     )

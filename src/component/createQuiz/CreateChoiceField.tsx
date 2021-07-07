@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { useChangeChoice, useFetchChoice, useFetchQuestion } from '../../hooks/useChangeQuizContext';
 import { ZodErrorContext } from './CreateQuizForm';
+import css from "../../css/createQuizForm.module.scss"
+import ErrorZone from "./ErrorZone";
 
 
 type prop = {
@@ -39,9 +41,9 @@ const CreateChoiceField: React.FC<prop> = (prop: prop) => {
         }
         } ,[zodError])
     return (
-        <div className='createChoiceField'>
-            <input type="text" placeholder="選択肢を入力してください" onChange={(e) => setContent(e.target.value)} />
-            <div className='error'>{contentError}</div>
+        <div className={css.CreateChoiceField}>
+            <input type="text" className={css.oneLineInput} placeholder="選択肢を入力してください" onChange={(e) => setContent(e.target.value)} />
+            <ErrorZone errorMessage={contentError}/>
         </div>
     )
 }

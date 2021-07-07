@@ -1,27 +1,73 @@
-.createQuizInfo{
-    width: 50rem;
-    border: double 10px burlywood;
-    .oneLineInput{
-        width: 30rem;
-    }
-    .contentInput{
-        width: 30rem;
-        height: 5rem;
-    }
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../../node_modules/bootstrap-icons/font/bootstrap-icons";
+
+[class*="bi-"]::before {
+    display: inline-block;
+    font-family: bootstrap-icons !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-feature-settings: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: -.125em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.contentZone{
+.createQuizForm {
     display: flex;
-    
+    align-items: flex-start;
+    flex-direction: column;
+    width: 60rem;
+    background-color: white;
+
+    .quizInfo {
+        .contentInput {
+            width: 30rem;
+            height: 5rem;
+        }
+        .oneLineInput {
+            width: 20rem;
+            height: 4rem;
+        }
+        .createQuestionForm{
+            width: 60rem;
+        .createChoiceForm{
+            width: 40rem;
+            .contentZone {
+                display: flex;
+                align-items: center;
+                div{
+                    margin-left: 2rem;
+                }
+            }
+
+            .addButton{
+                margin-top:1rem;
+                margin-bottom:1rem;
+            }
+        }
+        .addButton{
+            margin-top:1rem;
+            margin-bottom:1rem;
+        }
+    }
+}
+.submitButton{
+    display: block;
+    margin-left: auto;
+}
 }
 
-.deleteButton{
-    width:10rem;
-} 
-.deleteButton:hover{
+.deleteButton {
+    display: inline-block;
+    margin-left: 2rem;
+}
+.deleteButton:hover {
     background-color: red;
-} 
+}
 
-.error{
-    color:red;
+.error {
+    color: red;
 }

@@ -1,4 +1,3 @@
-import './App.css';
 import QuizScreen from './component/QuizScreen';
 import {
   BrowserRouter as Router,
@@ -8,7 +7,7 @@ import {
 } from 'react-router-dom'
 import QuizIndex from './component/QuizIndex';
 import CreateQuizForm from './component/createQuiz/CreateQuizForm';
-
+import "./App.css"
 
 function App() {
   return (
