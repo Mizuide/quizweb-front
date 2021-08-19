@@ -3,7 +3,8 @@ import searchQuizesCondition from './searchQuizesConditions'
 
 
 type fetchQuizParam = {
-    lastQuiz: quiz|null;
+    // lastQuiz: quiz|null;
+    page:number
     searchConditions: searchQuizesCondition
 }
 
