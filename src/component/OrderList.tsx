@@ -1,13 +1,16 @@
-import { ReactElement } from "react";
+import { ReactElement, useRef, useState } from "react";
+import { Button } from "semantic-ui-react";
 import * as orderConst from "../const/order";
 
 interface OrderList extends ReactElement { }
 
 type prop = {
-    setOrder: (id:orderConst.orderId) => void
+    setOrder: (id: orderConst.orderId) => void
 }
 
 const OrderList: React.FC<prop> = (prop: prop) => {
+    const [active, setActive] = useState<orderConst.orderId>(orderConst.orderId.newOrder);
+
     type orderProp = {
         order: orderConst.order;
         setOrder: (id: orderConst.orderId) => void;
@@ -15,7 +18,12 @@ const OrderList: React.FC<prop> = (prop: prop) => {
     }
 
     const Order: React.FC<orderProp> = (prop: orderProp) => {
-        return (<div className='order' key={prop.key} onClick={() => prop.setOrder(prop.order.id)}>{prop.order.name}</div>)
+        const onClick = (e: any) => {
+            prop.setOrder(prop.order.id);
+            setActive(e.target.name)
+        }
+
+        return (<Button size={"mini"} color={prop.order.id === active ? 'black' : undefined} name={prop.order.id}  key={prop.key} onClick={onClick}>{prop.order.name}</Button>)
     }
 
     let orderList: ReactElement[] = [];
@@ -28,7 +36,7 @@ const OrderList: React.FC<prop> = (prop: prop) => {
         count++;
     }
 
-    return (<div className='orderList'>{orderList}</div>);
+    return (<span className='orderList'>{orderList}</span>);
 }
 
 export default OrderList;

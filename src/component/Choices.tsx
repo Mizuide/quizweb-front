@@ -1,7 +1,7 @@
-import React, { ReactElement, useContext, useState } from "react";
-import { choice } from '../type/quizDetail'
-import {answerStatusContext} from './Questions'
+import React, { ReactElement, useContext } from "react";
 import * as answerStatusConst from "../const/answerStatus";
+import { choice } from '../type/quizDetail';
+import { answerStatusContext } from './Questions';
 
 type choiceProp = {
     key: number;
