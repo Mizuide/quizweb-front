@@ -41,7 +41,7 @@ const CreateChoiceField: React.FC<prop> = (prop: prop) => {
         }
         } ,[zodError])
     return (
-        <div className={css.CreateChoiceField}>
+        <div className={css.createChoiceField}>
             <input type="text" className={css.oneLineInput} placeholder="選択肢を入力してください" onChange={(e) => setContent(e.target.value)} />
             <ErrorZone errorMessage={contentError}/>
         </div>

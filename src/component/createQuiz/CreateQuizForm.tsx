@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { ZodError } from "zod";
 import * as categoryConst from '../../const/category';
-import createQuizParamOld from "../../type/createQuizParam";
+import createQuizParam from "../../type/createQuizParam";
 import CreateQuizParamValidation from "../../validate/CreateQuizParamValidatiom";
 import Categories from "../Categories";
 import ErrorZone from "./ErrorZone";
@@ -11,8 +11,8 @@ import CreateQuestionForm from "./CreateQuestionForm";
 import css from "../../css/createQuizForm.module.scss";
 
 type quizInfonContext = [
-    quiz: createQuizParamOld,
-    setQuiz: React.Dispatch<React.SetStateAction<createQuizParamOld>>
+    quiz: createQuizParam,
+    setQuiz: React.Dispatch<React.SetStateAction<createQuizParam>>
 ]
 
 //QuizInfo is managed by context
@@ -33,7 +33,7 @@ const CreateQuizForm: React.FC = () => {
 
     const [titleError, setTitleError] = useState<string>('');
 
-    const [quiz, setQuiz] = useState<createQuizParamOld>({
+    const [quiz, setQuiz] = useState<createQuizParam>({
         category: category,
         description: description,
         title: title,

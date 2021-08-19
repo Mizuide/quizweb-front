@@ -1,4 +1,3 @@
-import { ReactElement} from "react";
 import css  from "../../css/createQuizForm.module.scss"
  
 type prop = {

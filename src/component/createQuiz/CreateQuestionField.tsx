@@ -54,7 +54,7 @@ const CreateQuestionField: React.FC<prop> = (prop: prop) => {
             <ErrorZone errorMessage={contentError} />
             <CreateChoiceForm quesitonIndex={prop.index} />
             <ErrorZone errorMessage={choiceError} />
-            <input type="text" placeholder="回答後に表示されるコメントを入力してください" onChange={(e) => setComment(e.target.value)} />
+            <input type="text"  className={css.contentInput}  placeholder="回答後に表示されるコメントを入力してください" onChange={(e) => setComment(e.target.value)} />
         </div>
     )
 }
