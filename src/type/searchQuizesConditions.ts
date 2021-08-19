@@ -6,6 +6,7 @@ type searchcondition = {
     category:categoryId;
     title:string;
     order:orderId;
+    displayNum:number;
 }
 
 export default searchcondition;
