@@ -1,4 +1,4 @@
-import { fireEvent, getByText, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Result from '../component/Result';
 
 test('render_correct', async () => {

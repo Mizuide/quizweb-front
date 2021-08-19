@@ -1,4 +1,4 @@
-import { fireEvent, getByText, render, screen } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import WhereTitle from '../component/WhereTitle';
 
 

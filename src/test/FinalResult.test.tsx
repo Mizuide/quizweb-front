@@ -12,6 +12,8 @@ beforeEach(() => {
 )
 
 test('render', async () => {
+    const mockedAxios = axios as jest.Mocked<typeof axios>;
+    mockedAxios.post.mockResolvedValueOnce("");
     render(<FinalResult quiz={quiz} numOfCorrect={5} />)
     expect(screen.getByText(/10問中5問正解でした/)).toBeInTheDocument();
 })
