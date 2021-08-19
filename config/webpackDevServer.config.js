@@ -103,6 +103,26 @@ module.exports = function (proxy, allowedHost) {
     // `proxy` is run between `before` and `after` `webpack-dev-server` hooks
     proxy,
     before(app, server) {
+      //mock設定
+      const api = require('../src/property/api.json')
+      const mocks = require('../mock/mock.json')
+
+      for(const mock of mocks) {
+        const path = api[mock.name].url;
+        const method = mock.method;
+        const data = require('../mock/response/'+mock.data+".json");
+        switch(method) {
+            case 'GET' :
+                app.get(path, function (req, res) {
+                    res.json(data);
+                });
+            case 'POST' :
+                  app.post(path, function (req, res) {
+                      res.json(data);
+                  });
+          }
+    }
+
       // Keep `evalSourceMapMiddleware` and `errorOverlayMiddleware`
       // middlewares before `redirectServedPath` otherwise will not have any effect
       // This lets us fetch source contents from webpack for the error overlay

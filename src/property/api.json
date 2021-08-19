@@ -1,0 +1,10 @@
+{
+    "login":{
+        "url":"/quizWeb/login"
+    },
+    "quiz":{
+        "url":"/quizWeb/quiz/get"
+    }
+    
+
+}
