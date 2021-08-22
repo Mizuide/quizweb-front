@@ -10,24 +10,21 @@ type prop = {
 }
 
 const LinkToQuiz: React.FC<prop> = (prop: prop): LinkToQuiz => {
-  const hist = useHistory();
+  const history = useHistory();
+ 
   return (
-      <Item >
-          <Item.Image size={"small"} src={prop.quiz.thumbnail} />
-        <Item.Content>
-          <Item.Header>
-            <Link to={'/game/' + prop.quiz.id} key={prop.quiz.id}>
-              {prop.quiz.title}
-            </Link>
-          </Item.Header>
-          <Item.Description>
-            <Link to={'/game/' + prop.quiz.id} key={prop.quiz.id}>
-              {prop.quiz.description}
-            </Link>
-          </Item.Description>
-        </Item.Content>
-      </Item>
-    
+    <Item onClick={() => history.push('/game/' + prop.quiz.id)}>
+        <Item.Image size={"small"} src={prop.quiz.thumbnail} />
+      <Item.Content>
+        <Item.Header>
+            {prop.quiz.title}
+        </Item.Header>
+        <Item.Description>
+            {prop.quiz.description}
+        </Item.Description>
+      </Item.Content>
+    </Item>
+
   )
 }
 

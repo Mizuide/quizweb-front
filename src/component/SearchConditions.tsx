@@ -1,13 +1,11 @@
 import { ReactElement, useState } from "react";
-import Categories from './Categories';
-import OrderList from './OrderList';
-import WhereTitle from "./WhereTitle";
-
+import { Input } from "semantic-ui-react";
 import * as categoryConst from '../const/category';
 import * as orderConst from '../const/order';
+import searchConditions from "../type/searchQuizesConditions";
+import OrderList from './OrderList';
 
-import  searchConditions  from "../type/searchQuizesConditions";
-import { Input } from "semantic-ui-react";
+
 
 interface SearchConditions extends ReactElement { }
 
