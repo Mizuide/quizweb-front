@@ -5,9 +5,10 @@ import Choices from "./Choices";
 import fetchAnswerParam from "../type/fetchAnswerParam";
 import useFetchAnswer from "../hooks/useFetchAnswer";
 import Result from "./Result";
+import { Header, Segment } from "semantic-ui-react";
 
 type questionProp = {
-    key:number;
+    questionNo:number;
     question: question;
 }
 
@@ -42,10 +43,12 @@ const Question: React.FC<questionProp> = (prop: questionProp) => {
     
     return (
         <div >
-            <div className='content'>{prop.question.content} </div>
+            <Segment className='content'> 
+                <Header as='h3'>{`第${prop.questionNo + 1}問`}</Header>
+                {prop.question.content} </Segment>
+            <Result comment={prop.question.comment} answerStatus={answerStatus} />
             <Choices choices={prop.question.choices} answer={answer} setAnswer={setAnswer}
                 correctAnswer={correctAnswer} />
-            <Result comment={prop.question.comment} answerStatus={answerStatus} />
         </div>
     );
 }
@@ -84,12 +87,12 @@ const Questions: React.FC<prop> = (prop: prop) => {
         }
     }
     const QuestionArray: ReactElement[] = [];
-    prop.questions.forEach((q,index) => QuestionArray.push(<Question question={q} key={index}/>));
+    prop.questions.forEach((q,index) => {
+        console.log(index);
+        QuestionArray.push(<Question questionNo={index} question={q} key={index}/>
+        )});
     return (
         <div className='questions' onClick={onClick}>
-            <div className='header'>
-                {`第${currentNum + 1}問`}
-            </div>
             <answerStatusContext.Provider value={[answerStatus, setAnswerStatus]}>
                 {QuestionArray[currentNum]}
             </answerStatusContext.Provider>

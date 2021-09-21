@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 import { Item } from "semantic-ui-react";
-import quiz from '../type/quiz'
+import quiz from '../type/quiz';
 
 interface LinkToQuiz extends ReactElement { }
 

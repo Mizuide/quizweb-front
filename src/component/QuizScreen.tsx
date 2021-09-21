@@ -1,10 +1,9 @@
-import React, { ReactElement, useState, useEffect, useRef } from "react";
-import { useParams } from 'react-router-dom'
-import useFetchQuizDetail from '../hooks/useFetchQuizDetails'
-import fetchQuizDetailParam from '../type/fetchQuizDetailParam'
+import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { useParams } from 'react-router-dom';
+import useFetchQuizDetail from '../hooks/useFetchQuizDetails';
+import fetchQuizDetailParam from '../type/fetchQuizDetailParam';
 import FinalResult from "./FinalResult";
 import Questions from "./Questions";
-import QuizDescription from "./QuizDescription";
 
 
 export type routerParam = {
@@ -31,15 +30,15 @@ const QuizScreen: React.FC = () => {
     useEffect(() => { setQuizDetail(fetchQuizDetailParam) }, [])
     useEffect(() => {
         if (quizDetail !== undefined) {
-            setScreen(<QuizDescription quizDetail={quizDetail} onClickStart={() =>
-                setScreen(<Questions questions={quizDetail.questions}
-                    countupNumOfCorrect={() => {
-                        if (correctRef.current !== undefined) {
-                            setNumOfCorrect(correctRef.current + 1)
-                        }
-                    }} setComplete={() => setFinishFlg(true)} />)} />)
+            setScreen(<Questions questions={quizDetail.questions}
+                countupNumOfCorrect={() => {
+                    if (correctRef.current !== undefined) {
+                        setNumOfCorrect(correctRef.current + 1)
+                    }
+                }} setComplete={() => setFinishFlg(true)} />)
         }
-    }, [quizDetail])
+    }
+        , [quizDetail])
 
     useEffect(() => {
         if (finishFlg && quizDetail !== undefined) {
