@@ -1,14 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import { Button, Form, Image } from "semantic-ui-react";
 import { ZodError } from "zod";
 import * as categoryConst from '../../const/category';
 import createQuizParam from "../../type/createQuizParam";
+import semantic_error from "../../type/semantic_error";
 import CreateQuizParamValidation from "../../validate/CreateQuizParamValidatiom";
-import Categories from "../Categories";
-import ErrorZone from "./ErrorZone";
 import CreateQuestionForm from "./CreateQuestionForm";
-import css from "../../css/createQuizForm.module.scss";
+import no_image from '../../img/no_image.png';
 
 type quizInfonContext = [
     quiz: createQuizParam,
@@ -24,14 +24,14 @@ const CREATE_QUIZ_URL = "/quizWeb/quiz/create";
 
 const CreateQuizForm: React.FC = () => {
 
-    const [category, setCategory] = useState<categoryConst.categoryId>(categoryConst.categoryId.all);
+    const [category,] = useState<categoryConst.categoryId>(categoryConst.categoryId.all);
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
+    const [thumbnailImage, setThumbnailImage] = useState<FileList | undefined>(undefined);
     const history = useHistory();
 
     const [zodError, setZodError] = useState<ZodError>();
-
-    const [titleError, setTitleError] = useState<string>('');
+    const [titleError, setTitleError] = useState<semantic_error | undefined>(undefined);
 
     const [quiz, setQuiz] = useState<createQuizParam>({
         category: category,
@@ -45,11 +45,11 @@ const CreateQuizForm: React.FC = () => {
     }, [title, description])
 
     useEffect(() => {
-        setTitleError('');
+        setTitleError(undefined)
         if (zodError !== undefined) {
             for (let issue of zodError.issues) {
                 if (issue.path.includes('title')) {
-                    setTitleError(issue.message);
+                    setTitleError({ content: issue.message, pointing: 'below' });
                 }
             }
         }
@@ -72,30 +72,46 @@ const CreateQuizForm: React.FC = () => {
     }
 
     return (
-        <div className={css.createQuizForm}>
+        <Form>
             <h1>クイズを作成する</h1>
             <QuizInfoContext.Provider value={[quiz, setQuiz]}>
                 <ZodErrorContext.Provider value={zodError}>
-                    <Categories setCategory={setCategory} />
-                    <div className={css.quizInfo}>
-                        タイトル
-                        <div className='title'>
-                            <input type='text' className={css.oneLineInput} placeholder='クイズのタイトルをここに入力してください' onChange={(e) => setTitle(e.target.value)} />
-                            <ErrorZone errorMessage={titleError} />
-                        </div>
-                        説明文
-                        <div className='description'>
-                            <input type='text' className={css.contentInput} placeholder='クイズの説明文をここに入力してください' onChange={(e) => setDescription(e.target.value)} />
-                        </div>
-                        <CreateQuestionForm />
-                    </div>
+                    {/* <Categories setCategory={setCategory} /> */}
+                    <Form.Input error={titleError} label='タイトル' placeholder='クイズのタイトルをここに入力してください'
+                        onChange={(e) => setTitle(e.target.value)} />
+                    <Form.Input label='説明文' placeholder='クイズの説明文をここに入力してください'
+                        onChange={(e) => setDescription(e.target.value)} />
+                    <Form.Field>
+                        <label>サムネイル画像</label>
+                        <input
+                            hidden
+                            type="file"
+                            accept="image/*"
+                            id='thumbnail'
+                            onChange={(e) => {
+                                if (e.target.files)
+                                setThumbnailImage(e.target.files)
+                            }} />
+                        <Image src={no_image} size='medium' verticalAlign='middle' />
+                    </Form.Field>
+                    <Form.Button
+                            size={"tiny"}
+                            content="画像を選択"
+                            labelPosition="left"
+                            icon="image"
+                            onClick={() => {
+                                const t = document.querySelector(`#thumbnail`) as HTMLElement
+                                t.click()
+                            }}
+                        />
+                    {/* サムネイル */}
+                    <CreateQuestionForm />
                 </ZodErrorContext.Provider>
             </QuizInfoContext.Provider>
-            <button className={`${css.btn} ${css['btn-success']} ${css.submitButton}`} onClick={e => {
+            <Form.Button icon={'pencil alternate'} content={'クイズを作成する'} onClick={e => {
                 submit(e.target as HTMLButtonElement);
-            }}><i className={css['bi-pencil']}/> クイズを作成する
-            </button>
-        </div>
+            }} />
+        </Form>
     )
 }
 
