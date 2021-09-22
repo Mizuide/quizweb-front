@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Form, Label, Segment, TextArea } from "semantic-ui-react";
 import css from "../../css/createQuizForm.module.scss";
 import { useAddQuestion, useChangeQuestion, useDeleteQuestion } from "../../hooks/useChangeQuizContext";
+import choiceType from "../../type/choiceType";
 import semantic_error from "../../type/semantic_error";
 import CreateChoiceForm from "./CreateChoiceForm";
-import choiceType from "../../type/choiceType"
 
 type questionFieldProp = {
     questionIndex: number;
@@ -14,31 +14,36 @@ type questionFieldProp = {
 
 const QuestionFields: React.FC<questionFieldProp[]> = (prop: questionFieldProp[]) => {
 
-    const [values, setValues] = useState<{ questionIndex: number, content: string, comment: string, questionType: string }[]>([])
-    const [choiceType,setChoiceType] = useState<choiceType>('single')
+    const [values, setValues] = useState<{ questionIndex: number, content: string, comment: string, choiceType: choiceType }[]>([])
 
     useEffect(() => {
         setValues(prop.map(
-            p => { return { questionIndex: p.questionIndex, content: '', comment: '', questionType: 'singleChoice' } })
+            p => {
+                const targetQuestion = values.find(v => v.questionIndex ===p.questionIndex)
+                if(targetQuestion !== undefined)
+                    return { questionIndex: p.questionIndex, content: targetQuestion.content, comment: targetQuestion.comment, choiceType: targetQuestion.choiceType }
+                return { questionIndex: p.questionIndex, content: '', comment: '', choiceType: 'single' }
+                 }
+                 )
         );
     }, [prop])
 
     const changeQuestion = useChangeQuestion();
 
-    function setValue({ questionIndex, content = undefined, comment = undefined }:
-        { questionIndex: number, content?: string, comment?: string }) {
+    function setValue({ questionIndex, content = undefined, comment = undefined, choiceType = undefined }:
+        { questionIndex: number, content?: string, comment?: string, choiceType?: choiceType }) {
         const targetQuestion = values.find(p => p.questionIndex === questionIndex)
 
         if (targetQuestion === undefined)
             throw new Error('not found questionIndex:' + questionIndex);
 
-        changeQuestion(questionIndex, content || targetQuestion.content, comment || targetQuestion.comment)
+        changeQuestion(questionIndex, content || targetQuestion.content, comment || targetQuestion.comment, choiceType || targetQuestion.choiceType)
         setValues([...values.map(p => {
             if (p.questionIndex === targetQuestion.questionIndex)
                 return {
                     questionIndex: questionIndex, content: content ||
                         targetQuestion.content, comment: comment || targetQuestion.comment,
-                    questionType: p.questionType
+                    choiceType: choiceType || targetQuestion.choiceType
                 };
             return p;
         }
@@ -46,11 +51,10 @@ const QuestionFields: React.FC<questionFieldProp[]> = (prop: questionFieldProp[]
     }
 
     const questionTypeOptions = [{ key: 'single', text: 'テキスト', value: 'single' },
-         { key: 'image', text: '画像', value: 'image' }]
+    { key: 'image', text: '画像', value: 'image' }]
     const fields = prop.map((prop, index) => {
         return (
             <Segment key={prop.questionIndex}>
-
                 <Form.Group unstackable >
                     <Label size={"large"} style={{ fontSize: '1.1rem' }} color='blue' ribbon>
                         問題{index + 1}
@@ -58,17 +62,17 @@ const QuestionFields: React.FC<questionFieldProp[]> = (prop: questionFieldProp[]
                     <Form.Button size='medium' icon='trash' onClick={() => prop.deleteThis()} content='削除' />
                 </Form.Group>
                 <Form.Dropdown
-                label='問題形式'
+                    label='問題形式'
                     fluid
                     selection
                     options={questionTypeOptions}
                     defaultValue={questionTypeOptions[0].value}
-                    onChange={(e: any, option: any) => setChoiceType(option.value)}
+                    onChange={(e: any, option: any) => setValue({ questionIndex: prop.questionIndex, choiceType: option.value })}
                 />
                 <Form.Field control={TextArea} placeholder="問題文を入力してください" label='問題文'
                     onChange={(e: any) => setValue({ questionIndex: prop.questionIndex, content: e.target.value })}
                     error={prop.error} />
-                <CreateChoiceForm questionIndex={prop.questionIndex} choiceType={choiceType}/>
+                <CreateChoiceForm questionIndex={prop.questionIndex} choiceType={(values.find(v => v.questionIndex===prop.questionIndex))?.choiceType as choiceType} />
                 <Form.Input label='コメント' placeholder="回答後に表示されるコメントを入力してください"
                     onChange={(e: any) => setValue({ questionIndex: prop.questionIndex, comment: e.target.value })}
                 />
@@ -100,18 +104,6 @@ const CreateQuestionForm: React.FC<prop> = (prop: prop) => {
 
     useEffect(() => addQuestion(0), [])
 
-    // const zodError = useContext(ZodErrorContext);
-    // useEffect(() => {
-    //     if (zodError !== undefined) {
-    //         const errorOccurQuiz = zodError.issues.filter(is => is.path.length === 1);
-
-    //         for (let issue of errorOccurQuiz) {
-    //             if (issue.path.includes('questions'))
-    //                 setQuestionNumError({ content: issue.message, pointing: 'above' });
-    //         }
-    //     }
-
-    // }, [zodError])
 
     const addQuestion = (nextIndex: number) => {
 
@@ -122,8 +114,7 @@ const CreateQuestionForm: React.FC<prop> = (prop: prop) => {
             deleteQuestion(nextIndex);
         }
 
-        addQuestionToContext({ indexId: nextIndex, content: "", comment: "", choices: [] });
-
+        addQuestionToContext({ indexId: nextIndex, content: "", comment: "", choices: [], choiceType: "single" });
 
         const newQuestionFieldProp: questionFieldProp = {
             questionIndex: nextIndex,

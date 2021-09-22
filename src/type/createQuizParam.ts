@@ -1,5 +1,6 @@
 import * as categoryConst from '../const/category'
 import * as  zod from 'zod'
+import choiceType from './choiceType'
 
 type createQuizParam = {
     category: categoryConst.categoryId,
@@ -9,16 +10,18 @@ type createQuizParam = {
 }
 
 export type createQuestionParam = {
-    indexId:number,
+    indexId: number,
     content: string,
     comment: string,
+    choiceType: choiceType,
     choices: createChoiceParam[]
 }
 
 export type createChoiceParam = {
-    indexId:number,
+    indexId: number,
     content: string,
     correctFlg: boolean
+
 }
 
 export const choiceParamValid = zod.object({
