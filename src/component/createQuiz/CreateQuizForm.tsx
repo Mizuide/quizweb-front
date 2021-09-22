@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../../property/api.json";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Button, Form, Image } from "semantic-ui-react";
@@ -19,8 +20,6 @@ type quizInfonContext = [
 export const QuizInfoContext = React.createContext<quizInfonContext>({} as quizInfonContext);
 
 export const ZodErrorContext = React.createContext<ZodError | undefined>({} as ZodError);
-
-const CREATE_QUIZ_URL = "/quizWeb/quiz/create";
 
 const CreateQuizForm: React.FC = () => {
 
@@ -61,7 +60,7 @@ const CreateQuizForm: React.FC = () => {
             CreateQuizParamValidation.parse(quiz);
             target.disabled = true;
             setZodError(undefined);
-            axios.post(CREATE_QUIZ_URL, { createQuizParam: quiz }).then(res => history.push('/'));
+            axios.post(api.createQuiz.url, { createQuizParam: quiz }).then(res => history.push('/'));
         } catch (e) {
             if (e instanceof ZodError) {
                 setZodError(e);

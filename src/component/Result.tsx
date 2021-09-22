@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import correctImg from '../img/correct.png';
+
 import incorrectImg from '../img/incorrect.png';
 import waitingImg from '../img/waiting.gif';
 
@@ -23,10 +24,10 @@ const Result: React.FC<prop> = (prop: prop): Result => {
             displayAttr = "none";
             break;
         case answerStatus.correct:
-            displayImg = (<img alt='正解' src={correctImg} />);
+            displayImg = (<img  alt='正解' src={correctImg} />);
             break;
         case answerStatus.incorrect:
-            displayImg = (<img alt='不正解'　src={incorrectImg} />);
+            displayImg = (<img  alt='不正解'　src={incorrectImg} />);
             break;
     }
 

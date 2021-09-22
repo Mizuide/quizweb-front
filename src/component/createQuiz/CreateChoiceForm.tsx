@@ -23,7 +23,7 @@ const CreateChoiceForm: React.FC<prop> = (prop: prop) => {
     const changeChoice = useChangeChoice(prop.questionIndex);
 
 
-    let choiceFieldPropsRef = useRef<choiceFiledProp[]>(choiceFieldProps);
+    const choiceFieldPropsRef = useRef<choiceFiledProp[]>(choiceFieldProps);
     choiceFieldPropsRef.current = choiceFieldProps;
 
     useEffect(() => {

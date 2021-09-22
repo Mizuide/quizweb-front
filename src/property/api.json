@@ -4,7 +4,15 @@
     },
     "quiz":{
         "url":"/quizWeb/quiz/get"
+    },
+    "quizDetail":{
+        "url":"/quizWeb/quizDetail"
+    },
+    "answer":{
+        "url":"/quizWeb/answer"
+    },
+    "createQuiz":{
+        "url": "/quizWeb/quiz/create"
     }
-    
 
 }

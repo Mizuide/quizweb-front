@@ -1,15 +1,5 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { Menu } from "semantic-ui-react"
-
-type panelProp = {
-   display: string;
-   onClick: () => void;
-   disable: boolean;
-}
-
-const Panel: React.FC<panelProp> = (prop) => {
-   return (<Menu.Item className={`panel disable ${prop.disable}`} onClick={prop.disable ? () => false : prop.onClick} >{prop.display}</Menu.Item>)
-}
 
 type prop = {
    page: number;
