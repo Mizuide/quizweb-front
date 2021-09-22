@@ -1,13 +1,14 @@
 import { useContext, useRef } from 'react'
 import { QuizInfoContext } from '../component/createQuiz/CreateQuizForm'
+import choiceType from '../type/choiceType';
 import createQuizParam, { createChoiceParam, createQuestionParam } from '../type/createQuizParam'
 
-export const useFetchQuestion = () =>{
+export const useFetchQuestion = () => {
     const [quiz] = useContext(QuizInfoContext);
     const quizRef = useRef<createQuizParam>(quiz);
     quizRef.current = quiz;
 
-    return (index:number) => quizRef.current.questions[index];
+    return (index: number) => quizRef.current.questions[index];
 }
 
 export const useAddQuestion = () => {
@@ -28,13 +29,13 @@ export const useChangeQuestion = () => {
     const quizRef = useRef<createQuizParam>(quiz);
     quizRef.current = quiz;
 
-    return (newContent: string, newComment: string, index: number) => {
+    return (index: number, newContent: string, newComment: string, choiceType: choiceType) => {
         if (quizRef.current.questions.find(q => q.indexId === index) === undefined)
             throw new Error('this argument index is not exists:index' + index);
         setQuiz({
             ...quizRef.current, questions: quizRef.current.questions.map(q => {
                 if (q.indexId === index) {
-                    return { ...q, content: newContent, comment: newComment };
+                    return { ...q, content: newContent, comment: newComment ,choiceType: choiceType  };
                 } else {
                     return q;
                 }
@@ -57,33 +58,53 @@ export const useDeleteQuestion = () => {
     }
 }
 
-export const useFetchChoice = () =>{
+export const useFetchChoice = () => {
     const [quiz] = useContext(QuizInfoContext);
     const quizRef = useRef<createQuizParam>(quiz);
     quizRef.current = quiz;
 
-    return (questionIndex:number,choiceIndex:number) => quizRef.current.questions[questionIndex].choices[choiceIndex];
+    return (questionIndex: number, choiceIndex: number) => quizRef.current.questions[questionIndex].choices[choiceIndex];
 }
 
-export const useAddChoice = (quesitonIndex: number) => {
+export const useIndexOfChoices = (questionIndex: number) => {
+    const [quiz] = useContext(QuizInfoContext);
+    const quizRef = useRef<createQuizParam>(quiz);
+    quizRef.current = quiz;
+
+    return (choiceIndex: number) => {
+        const choices = quizRef.current.questions.find(q => q.indexId === questionIndex)?.choices;
+        if (choices === undefined)
+            throw new Error('this question is not exists:index' + questionIndex);
+        let index = 1;
+        for (let c of choices) {
+            if (choiceIndex === c.indexId) {
+                return index;
+            }
+            index++;
+        }
+    }
+
+}
+
+export const useAddChoice = (questionIndex: number) => {
     const [quiz, setQuiz] = useContext(QuizInfoContext);
     const quizRef = useRef<createQuizParam>(quiz);
     quizRef.current = quiz;
 
     return (choice: createChoiceParam) => {
-        const ownerQuestion = quizRef.current.questions.find(q => q.indexId === quesitonIndex);
+        const ownerQuestion = quizRef.current.questions.find(q => q.indexId === questionIndex);
 
         if (ownerQuestion === undefined)
-            throw new Error('this question is not exists:index' + quesitonIndex);
-        if (ownerQuestion.choices.find(c => c.indexId == choice.indexId) !== undefined)
+            throw new Error('this question is not exists:index' + questionIndex);
+        if (ownerQuestion.choices.find(c => c.indexId === choice.indexId) !== undefined)
             throw new Error('this choice is already exists:index' + choice.indexId);
         let flg = ownerQuestion.choices.length === 0
-        ownerQuestion.choices.push({...choice,correctFlg:flg});
-        
+        ownerQuestion.choices.push({ ...choice, correctFlg: flg });
+
         setQuiz({
             ...quizRef.current, questions:
                 quizRef.current.questions.map(q => {
-                    if (q.indexId === quesitonIndex) {
+                    if (q.indexId === questionIndex) {
                         return ownerQuestion;
                     } else {
                         return q;
@@ -93,24 +114,24 @@ export const useAddChoice = (quesitonIndex: number) => {
     }
 }
 
-export const useChangeChoice = (quesitonIndex: number) => {
+export const useChangeChoice = (questionIndex: number) => {
     const [quiz, setQuiz] = useContext(QuizInfoContext);
     const quizRef = useRef<createQuizParam>(quiz);
 
     quizRef.current = quiz;
 
     return (newContent: string, index: number) => {
-        
-        const ownerQuestion = quizRef.current.questions.find(q => q.indexId === quesitonIndex);
+
+        const ownerQuestion = quizRef.current.questions.find(q => q.indexId === questionIndex);
         if (ownerQuestion === undefined)
-            throw new Error('this question is not exists:index' + quesitonIndex);
+            throw new Error('this question is not exists:index' + questionIndex);
 
         if (ownerQuestion.choices.find(q => q.indexId === index) === undefined)
             throw new Error('this argument index is not exists:index' + index);
         setQuiz({
             ...quizRef.current, questions:
                 quizRef.current.questions.map(q => {
-                    if (q.indexId === quesitonIndex) {
+                    if (q.indexId === questionIndex) {
                         return {
                             ...ownerQuestion, choices: ownerQuestion.choices.map(c => {
                                 if (c.indexId === index) {
@@ -124,27 +145,27 @@ export const useChangeChoice = (quesitonIndex: number) => {
                         return q;
                     }
                 })
-        })        
+        })
     }
 }
 
-export const useDeleteChoice = (quesitonIndex: number) => {
+export const useDeleteChoice = (questionIndex: number) => {
     const [quiz, setQuiz] = useContext(QuizInfoContext);
     const quizRef = useRef<createQuizParam>(quiz);
 
     quizRef.current = quiz;
-      
-    return (index: number) => {        
-        const ownerQuestion = quizRef.current.questions.find(q => q.indexId === quesitonIndex);
+
+    return (index: number) => {
+        const ownerQuestion = quizRef.current.questions.find(q => q.indexId === questionIndex);
         if (ownerQuestion === undefined)
-            throw new Error('this question is not exists:index' + quesitonIndex)     
+            throw new Error('this question is not exists:index' + questionIndex)
         if (ownerQuestion.choices.find(c => c.indexId === index) === undefined)
             throw new Error('this argument index is not exists:index' + index);
         setQuiz({
             ...quizRef.current, questions:
                 quizRef.current.questions.map(q => {
-                    if (q.indexId === quesitonIndex) {
-                        return {...ownerQuestion, choices: ownerQuestion.choices.filter(c => c.indexId !== index)};
+                    if (q.indexId === questionIndex) {
+                        return { ...ownerQuestion, choices: ownerQuestion.choices.filter(c => c.indexId !== index) };
                     } else {
                         return q;
                     }
@@ -153,16 +174,16 @@ export const useDeleteChoice = (quesitonIndex: number) => {
     }
 }
 
-export const useChangeCorrectChoice = (quesitonIndex: number) => {
+export const useChangeCorrectChoice = (questionIndex: number) => {
     const [quiz, setQuiz] = useContext(QuizInfoContext);
     const quizRef = useRef<createQuizParam>(quiz);
 
     quizRef.current = quiz;
 
     return (index: number) => {
-        const ownerQuestion = quizRef.current.questions.find(q => q.indexId === quesitonIndex);
+        const ownerQuestion = quizRef.current.questions.find(q => q.indexId === questionIndex);
         if (ownerQuestion === undefined)
-            throw new Error('this question is not exists:index' + quesitonIndex)
+            throw new Error('this question is not exists:index' + questionIndex)
 
         let targetChoices = ownerQuestion.choices;
         targetChoices = targetChoices.map(c => {
@@ -178,7 +199,7 @@ export const useChangeCorrectChoice = (quesitonIndex: number) => {
         setQuiz({
             ...quizRef.current, questions:
                 quizRef.current.questions.map(q => {
-                    if (q.indexId === quesitonIndex) {
+                    if (q.indexId === questionIndex) {
                         return {
                             ...ownerQuestion, choices: targetChoices
                         };
