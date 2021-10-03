@@ -34,11 +34,11 @@ const QuizIndex: () => ReactElement = () => {
     const [fetchParam] = useState<fetchQuizParam>(initialFetchParan);
 
     const changeOnPage = () => {
-        setFetchQuiz({ ...fetchParam, page:page});
+        setFetchQuiz({ ...fetchParam, page: page });
     }
 
     useEffect(() => setQuizCount(quizesInfo.count), [quizesInfo]);
-    useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions:searchConditions}), [searchConditions]);
+    useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions }), [searchConditions]);
     useEffect(changeOnPage, [page]);
 
     return (

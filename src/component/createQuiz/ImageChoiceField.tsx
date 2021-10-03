@@ -22,13 +22,13 @@ const ImageChoiceFields: React.FC<choiceFieldProp[]> = (prop: choiceFieldProp[])
 
     const fileReader = new FileReader();
     fileReader.onload = (() => {
+      filesRef.current = filesRef.current.filter(f => f.choiceIndex !== prop.choiceIndex);
+      console.log(filesRef.current)
       filesRef.current.push({
         choiceIndex: prop.choiceIndex,
         file: fileReader.result
       })
-      let base64brob = (fileReader.result as string).replace(/^data.*?base64,/,'')
-      console.log(base64brob);
-      prop.changeChoice(base64brob, prop.choiceIndex);
+      prop.changeChoice(fileReader.result as string, prop.choiceIndex);
       setFiles([...filesRef.current])
     })
 
@@ -39,51 +39,50 @@ const ImageChoiceFields: React.FC<choiceFieldProp[]> = (prop: choiceFieldProp[])
     }
 
     return (
-      <>
-        <Segment key={prop.choiceIndex}>
-          <Form.Group unstackable  >
-            <Form.Button size='mini' color={prop.correct ? 'red' : undefined} value={prop.choiceIndex}
-              onClick={prop.chooseCorrect} >
-              <img src={checkImg} />
-            </Form.Button>
-            <Popup
-              content={popupMsg}
-              on='click'
-              pinned
-              trigger={<Form.Button size='medium' icon='trash' onClick={() => {
-                if (propLength === 2 || prop.correct)
-                  return false;
-                prop.deleteThis()
-              }} />}
-            />
-          </Form.Group>
-          <Form.Group unstackable  >
-            <input
-              hidden
-              type="file"
-              accept="image/*"
-              id={`file${index}`}
-              onChange={(e) => {
-                if (e.target.files) {
-                  fileReader.readAsDataURL(e.target.files[0]);
-                }
-              }} />
-            <Image src={filesRef.current.find(f => f.choiceIndex === prop.choiceIndex)?.file || no_image} size='medium' verticalAlign='middle' />
-          </Form.Group>
-          <Form.Group unstackable  >
-            <Form.Button
-              content="画像を選択"
-              labelPosition="left"
-              icon="image"
-              onClick={() => {
-                const t = document.querySelector(`#file${index}`) as HTMLElement
-                t.click()
-              }}
-            />
-          </Form.Group>
-        </Segment>
-
-      </>
+      <Segment key={prop.choiceIndex} >
+        <Form.Group unstackable >
+          <Form.Button size='mini' color={prop.correct ? 'red' : undefined} value={prop.choiceIndex}
+            onClick={prop.chooseCorrect} >
+            <img src={checkImg} />
+          </Form.Button>
+          <Popup
+            content={popupMsg}
+            on='click'
+            pinned
+            trigger={<Form.Button size='medium' icon='trash' onClick={() => {
+              if (propLength === 2 || prop.correct)
+                return false;
+              prop.deleteThis()
+            }} />}
+          />
+        </Form.Group>
+        <Form.Group unstackable >
+          <Image src={filesRef.current.find(f => f.choiceIndex === prop.choiceIndex)?.file || no_image} 
+            size='medium' verticalAlign='middle' />
+          <Form.Input
+          error={prop.contentError}
+            hidden
+            type="file"
+            accept="image/*"
+            id={`file${index}`}
+            onChange={(e) => {
+              if (e.target.files && e.target.files[0]) {
+                fileReader.readAsDataURL(e.target.files[0]);
+              }
+            }} />
+        </Form.Group>
+        <Form.Group unstackable  >
+          <Form.Button
+            content="画像を選択"
+            labelPosition="left"
+            icon="image"
+            onClick={() => {
+              const t = document.querySelector(`#file${index}`) as HTMLElement
+              t.click()
+            }}
+          />
+        </Form.Group>
+      </Segment>
     )
   }))
   useEffect(() => {

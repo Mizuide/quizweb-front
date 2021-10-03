@@ -7,9 +7,10 @@ import { ZodError } from "zod";
 import * as categoryConst from '../../const/category';
 import createQuizParam from "../../type/createQuizParam";
 import semantic_error from "../../type/semantic_error";
-import CreateQuizParamValidation from "../../validate/CreateQuizParamValidatiom";
+import CreateQuizParamValidation from "../../validate/CreateQuizParamValidation";
 import CreateQuestionForm from "./CreateQuestionForm";
 import no_image from '../../img/no_image.png';
+import loginUser from "../../type/loginUser";
 
 type quizInfonContext = [
     quiz: createQuizParam,
@@ -21,12 +22,21 @@ export const QuizInfoContext = React.createContext<quizInfonContext>({} as quizI
 
 export const ZodErrorContext = React.createContext<ZodError | undefined>({} as ZodError);
 
-const CreateQuizForm: React.FC = () => {
+type prop = {
+    loginUser: loginUser | undefined
+}
 
+const CreateQuizForm: React.FC<prop> = (prop: prop) => {
     const [category,] = useState<categoryConst.categoryId>(categoryConst.categoryId.all);
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const [thumbnailImage, setThumbnailImage] = useState<FileList | undefined>(undefined);
+    const [thumbnailImage, setThumbnailImage] = useState<string | undefined>(undefined);
+    const fileReader = new FileReader();
+
+    fileReader.onload = (() => {
+        setThumbnailImage(fileReader.result as string)
+    })
+
     const history = useHistory();
 
     const [zodError, setZodError] = useState<ZodError>();
@@ -35,13 +45,16 @@ const CreateQuizForm: React.FC = () => {
     const [quiz, setQuiz] = useState<createQuizParam>({
         category: category,
         description: description,
+        thumbnail: thumbnailImage || undefined,
         title: title,
         questions: []
     })
 
     useEffect(() => {
-        setQuiz({ ...quiz, title: title, description: description });
-    }, [title, description])
+        setQuiz({
+            ...quiz, title: title, description: description, thumbnail: thumbnailImage || undefined,
+        });
+    }, [title, description, thumbnailImage])
 
     useEffect(() => {
         setTitleError(undefined)
@@ -69,9 +82,13 @@ const CreateQuizForm: React.FC = () => {
             }
         }
     }
-
+    if (!prop.loginUser)
+        return (<>
+            クイズを作成するにはtwitter連携でログインする必要があります<br />
+            <a href="/quizWeb/doAuth">ここ</a>をクリックしてログインしてください
+        </>)
     return (
-        <Form>
+<Form>
             <h1>クイズを作成する</h1>
             <QuizInfoContext.Provider value={[quiz, setQuiz]}>
                 <ZodErrorContext.Provider value={zodError}>
@@ -80,6 +97,7 @@ const CreateQuizForm: React.FC = () => {
                         onChange={(e) => setTitle(e.target.value)} />
                     <Form.Input label='説明文' placeholder='クイズの説明文をここに入力してください'
                         onChange={(e) => setDescription(e.target.value)} />
+
                     <Form.Field>
                         <label>サムネイル画像</label>
                         <input
@@ -88,22 +106,22 @@ const CreateQuizForm: React.FC = () => {
                             accept="image/*"
                             id='thumbnail'
                             onChange={(e) => {
-                                if (e.target.files)
-                                setThumbnailImage(e.target.files)
+                                if (e.target.files && e.target.files[0])
+                                fileReader.readAsDataURL(e.target.files[0]);
                             }} />
-                        <Image src={no_image} size='medium' verticalAlign='middle' />
+                        <Image src={thumbnailImage || no_image} size='medium' verticalAlign='middle' />
                     </Form.Field>
                     <Form.Button
-                            size={"tiny"}
-                            content="画像を選択"
-                            labelPosition="left"
-                            icon="image"
-                            onClick={() => {
-                                const t = document.querySelector(`#thumbnail`) as HTMLElement
-                                t.click()
-                            }}
-                        />
-                    {/* サムネイル */}
+                        size={"tiny"}
+                        content="画像を選択"
+                        labelPosition="left"
+                        icon="image"
+                        onClick={() => {
+                            const t = document.querySelector(`#thumbnail`) as HTMLElement
+                            t.click()
+                        }}
+                    />
+
                     <CreateQuestionForm />
                 </ZodErrorContext.Provider>
             </QuizInfoContext.Provider>

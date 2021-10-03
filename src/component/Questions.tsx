@@ -47,8 +47,8 @@ const Question: React.FC<questionProp> = (prop: questionProp) => {
                 <Header as='h3'>{`第${prop.questionNo + 1}問`}</Header>
                 {prop.question.content} </Segment>
             <Result comment={prop.question.comment} answerStatus={answerStatus} />
-            <Choices choices={prop.question.choices} answer={answer} setAnswer={setAnswer}
-                correctAnswer={correctAnswer} />
+            <Choices choices={prop.question.choices} answer={answer} setAnswer={setAnswer} 
+                choiceType={prop.question.choiceType} correctAnswer={correctAnswer} />
         </div>
     );
 }
