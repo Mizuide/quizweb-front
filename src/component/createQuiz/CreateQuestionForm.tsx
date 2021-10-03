@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Form, Label, Segment, TextArea } from "semantic-ui-react";
 import css from "../../css/createQuizForm.module.scss";
-import { useAddQuestion, useChangeQuestion, useDeleteQuestion } from "../../hooks/useChangeQuizContext";
+import { useAddQuestion, useChangeQuestion, useDeleteQuestion, useFetchQuestion } from "../../hooks/useChangeQuizContext";
 import choiceType from "../../type/choiceType";
 import semantic_error from "../../type/semantic_error";
 import CreateChoiceForm from "./CreateChoiceForm";
+import { ZodErrorContext } from "./CreateQuizForm";
 
 type questionFieldProp = {
     questionIndex: number;
@@ -100,6 +101,32 @@ const CreateQuestionForm: React.FC<prop> = (prop: prop) => {
 
     const deleteQuestion = useDeleteQuestion();
     const addQuestionToContext = useAddQuestion();
+
+    const zodError = useContext(ZodErrorContext);
+    const fetchQuestion = useFetchQuestion();
+    useEffect(() => {
+        type error = { questionIndex: number, message: string }
+        let errors: error[] = [];
+        console.log(zodError);
+        if (zodError !== undefined) {
+            const errorOccurQuestions = zodError.issues.filter(is => is.path.length >= 3 && is.path.length < 5);
+            for (let issue of errorOccurQuestions) {
+                let errorIndex = issue.path.filter(p => typeof p === 'number') as number[];
+                let question = fetchQuestion(errorIndex[0]);
+                if (question !== undefined ) {
+                    errors.push({ questionIndex: question.indexId, message: issue.message })
+                }
+            }
+            setQuestionFieldProps(questionFieldProps.map((p, index) => {
+                let e = errors.find(e => e.questionIndex === p.questionIndex)
+                if (e) {
+                    return { ...p, error: { content: e.message, pointing: 'below' } }
+                }
+                return { ...p, error: undefined };
+            }
+            ))
+        }
+    }, [zodError])
 
 
     useEffect(() => addQuestion(0), [])
