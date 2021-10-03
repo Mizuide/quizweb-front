@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { ReactElement, useContext, useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
-import { Container, Menu, MenuItemProps } from 'semantic-ui-react';
+import { Menu, MenuItemProps } from 'semantic-ui-react';
 import { loginUserContext } from "../../App";
 import api from "../../property/api.json";
 import loginUser from "../../type/loginUser";
+import MediaQuery from "react-responsive";
+
 
 type prop = {
   setLoginUser: React.Dispatch<React.SetStateAction<loginUser | undefined>>
@@ -25,36 +27,64 @@ const Header: React.FC<prop> = (prop: prop) => {
     }
   }, [loginUser])
 
-
   useEffect(() => {
     axios.get(api.login.url).then(res => prop.setLoginUser(res.data)).catch(e => prop.setLoginUser(undefined));
   }, [])
 
-  const [activeItem, setActiveItem] = useState<string|undefined>('ranking');
-  
-  const clickHandler = (e:React.MouseEvent<HTMLAnchorElement, MouseEvent>,data:MenuItemProps) => {
+  const [activeItem, setActiveItem] = useState<string | undefined>('ranking');
+
+  const clickHandler = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: MenuItemProps) => {
     setActiveItem(data.name)
     e.currentTarget.querySelector('a')?.click()
   }
   return (
-      <Menu stackable pointing>
-        <Menu.Item name='ranking' active={activeItem === 'ranking'} onClick={clickHandler}>
-          ランキング
-        </Menu.Item>
-        <Menu.Item name='search' active={activeItem === 'search'} onClick={clickHandler}>
-          <Link to={'/search'} >
-            クイズを探す
-          </Link>
-        </Menu.Item>
-        <Menu.Item name='create' active={activeItem === 'create'} onClick={clickHandler}>
-          <Link to={'/create'} >
-            クイズを作る
-          </Link>
-        </Menu.Item>
-        <Menu.Item position={'right'}>
-          {loginZone}
-        </Menu.Item>
-      </Menu>
+    <>
+      <MediaQuery query='(min-width: 768px)'>
+        <Menu pointing>
+          {/* <Menu.Item name='ranking'
+            active={activeItem === 'ranking'} onClick={clickHandler} >
+            ランキング
+          </Menu.Item> */}
+          <Menu.Item name='search'
+            active={activeItem === 'search'} onClick={clickHandler} >
+            <Link to={'/search'} >
+              クイズを探す
+            </Link>
+          </Menu.Item>
+          <Menu.Item
+            name='create' active={activeItem === 'create'} onClick={clickHandler} >
+            <Link to={'/create'} >
+              クイズを作る
+            </Link>
+          </Menu.Item>
+          <Menu.Item position='right'>
+            {loginZone}
+          </Menu.Item>
+        </Menu>
+      </MediaQuery>
+      <MediaQuery query='(max-width: 767px)'>
+        <Menu style={{'font-size':'0.8rem'}} pointing widths={3}>
+          {/* <Menu.Item name='ranking'
+            active={activeItem === 'ranking'} onClick={clickHandler} >
+            ランキング
+          </Menu.Item> */}
+          <Menu.Item name='search'
+            active={activeItem === 'search'} onClick={clickHandler} >
+            <Link to={'/search'} >
+              クイズを探す
+            </Link>
+          </Menu.Item>
+          <Menu.Item name='create' active={activeItem === 'create'} onClick={clickHandler} >
+            <Link to={'/create'} >
+              クイズを作る
+            </Link>
+          </Menu.Item>
+          <Menu.Item>
+            {loginZone}
+          </Menu.Item>
+        </Menu>
+      </MediaQuery>
+    </>
   )
 }
 
