@@ -1,18 +1,20 @@
 {
-    "login":{
-        "url":"/quizWeb/login"
+    "login": {
+        "url": "/quizWeb/login"
     },
-    "quiz":{
-        "url":"/quizWeb/quiz/get"
+    "quiz": {
+        "url": "/quizWeb/quiz/get"
     },
-    "quizDetail":{
-        "url":"/quizWeb/quizDetail"
+    "quizDetail": {
+        "url": "/quizWeb/quizDetail"
     },
-    "answer":{
-        "url":"/quizWeb/answer"
+    "answer": {
+        "url": "/quizWeb/answer"
     },
-    "createQuiz":{
+    "createQuiz": {
         "url": "/quizWeb/quiz/create"
+    },
+    "tags": {
+        "url": "/quizWeb/quiz/tags"
     }
-
 }

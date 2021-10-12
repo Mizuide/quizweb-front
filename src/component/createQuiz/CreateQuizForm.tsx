@@ -1,16 +1,18 @@
 import axios from "axios";
-import api from "../../property/api.json";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { Button, Form, Image } from "semantic-ui-react";
+import { Form, Image } from "semantic-ui-react";
 import { ZodError } from "zod";
 import * as categoryConst from '../../const/category';
+import no_image from '../../img/no_image.png';
+import api from "../../property/api.json";
 import createQuizParam from "../../type/createQuizParam";
+import loginUser from "../../type/loginUser";
 import semantic_error from "../../type/semantic_error";
+import tag from "../../type/tag";
 import CreateQuizParamValidation from "../../validate/CreateQuizParamValidation";
 import CreateQuestionForm from "./CreateQuestionForm";
-import no_image from '../../img/no_image.png';
-import loginUser from "../../type/loginUser";
+import TagFields from "./TagFields";
 
 type quizInfonContext = [
     quiz: createQuizParam,
@@ -19,7 +21,6 @@ type quizInfonContext = [
 
 //QuizInfo is managed by context
 export const QuizInfoContext = React.createContext<quizInfonContext>({} as quizInfonContext);
-
 export const ZodErrorContext = React.createContext<ZodError | undefined>({} as ZodError);
 
 type prop = {
@@ -31,6 +32,8 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [thumbnailImage, setThumbnailImage] = useState<string | undefined>(undefined);
+    const [tags, setTags] = useState<tag[]>([]);
+
     const fileReader = new FileReader();
 
     fileReader.onload = (() => {
@@ -47,14 +50,16 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
         description: description,
         thumbnail: thumbnailImage || undefined,
         title: title,
+        tags: tags,
         questions: []
     })
 
     useEffect(() => {
         setQuiz({
-            ...quiz, title: title, description: description, thumbnail: thumbnailImage || undefined,
+            ...quiz, title: title, description: description, thumbnail: thumbnailImage || undefined, tags: tags
         });
-    }, [title, description, thumbnailImage])
+        console.log(tags);
+    }, [title, description, thumbnailImage, tags])
 
     useEffect(() => {
         setTitleError(undefined)
@@ -88,9 +93,10 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
             <a href="/quizWeb/doAuth">ここ</a>をクリックしてログインしてください
         </>)
     return (
-<Form>
+        <Form>
             <h1>クイズを作成する</h1>
             <QuizInfoContext.Provider value={[quiz, setQuiz]}>
+                <TagFields setTags={setTags} />
                 <ZodErrorContext.Provider value={zodError}>
                     {/* <Categories setCategory={setCategory} /> */}
                     <Form.Input error={titleError} label='タイトル' placeholder='クイズのタイトルをここに入力してください'
@@ -107,7 +113,7 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
                             id='thumbnail'
                             onChange={(e) => {
                                 if (e.target.files && e.target.files[0])
-                                fileReader.readAsDataURL(e.target.files[0]);
+                                    fileReader.readAsDataURL(e.target.files[0]);
                             }} />
                         <Image src={thumbnailImage || no_image} size='medium' verticalAlign='middle' />
                     </Form.Field>
