@@ -30,7 +30,7 @@ function App() {
                 <QuizScreen />
               </Route>
               <Route exact path='/create' >
-                <CreateQuizForm />
+                <CreateQuizForm loginUser={loginUser}/>
               </Route>
             </Switch>
           </Segment>

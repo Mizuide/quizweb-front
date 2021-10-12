@@ -8,5 +8,15 @@
             "name":"quiz",
             "method":"POST",
             "data":"get_quiz"
+        },
+        {
+            "name":"quizDetail",
+            "method":"GET",
+            "data":"quiz_detail"
+        },
+        {
+            "name":"answer",
+            "method":"POST",
+            "data":"answer"
         }
     ]
