@@ -5,6 +5,7 @@ import incorrectImg from '../img/incorrect.png';
 import waitingImg from '../img/waiting.gif';
 
 import { answerStatus } from '../const/answerStatus'
+import { Image } from "semantic-ui-react";
 
 interface Result extends ReactElement { }
 
@@ -18,23 +19,23 @@ const Result: React.FC<prop> = (prop: prop): Result => {
     switch (prop.answerStatus) {
         case answerStatus.none:
             displayAttr = "none";
-            break;            
+            break;
         case answerStatus.waiting:
-            displayImg = (<img alt='読み込み中' src={waitingImg} />);
+            displayImg = (<Image alt='読み込み中' src={waitingImg} />);
             displayAttr = "none";
             break;
         case answerStatus.correct:
-            displayImg = (<img  alt='正解' src={correctImg} />);
+            displayImg = (<Image alt='正解' src={correctImg} />);
             break;
         case answerStatus.incorrect:
-            displayImg = (<img  alt='不正解'　src={incorrectImg} />);
+            displayImg = (<Image alt='不正解' src={incorrectImg} />);
             break;
     }
 
     const commentDisplay: React.CSSProperties = {
         display: displayAttr,
     };
-    
+
     return (
         <div className='Result'>
             {displayImg}

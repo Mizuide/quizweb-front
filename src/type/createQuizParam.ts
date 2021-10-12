@@ -6,6 +6,7 @@ type createQuizParam = {
     category: categoryConst.categoryId,
     title: string,
     description: string,
+    thumbnail: string | undefined,
     questions: createQuestionParam[]
 }
 

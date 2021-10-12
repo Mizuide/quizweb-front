@@ -23,6 +23,7 @@ function createQuestion () {
                 { selectionNo: 3, content: '選択肢3', qusetionId: i },
                 { selectionNo: 4, content: '選択肢4', qusetionId: i },
             ],
+            choiceType:'single',
             content: `${i+1}問目です`,
             comment: 'コメントです',
             num: i + 1

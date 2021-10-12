@@ -11,10 +11,13 @@ type prop = {
 
 const LinkToQuiz: React.FC<prop> = (prop: prop): LinkToQuiz => {
   const history = useHistory();
- 
+  let url;
+  if(prop.quiz.thumbnail)
+    url = '/quizWeb/img/thumbnail/' + prop.quiz.thumbnail
+
   return (
     <Item onClick={() => history.push('/game/' + prop.quiz.id)}>
-        <Item.Image size={"small"} src={prop.quiz.thumbnail} />
+        <Item.Image size={"small"} src={url} />
       <Item.Content>
         <Item.Header>
             {prop.quiz.title}

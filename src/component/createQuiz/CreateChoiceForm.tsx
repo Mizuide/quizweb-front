@@ -97,7 +97,7 @@ const CreateChoiceForm: React.FC<prop> = (prop: prop) => {
     const choiceFieldRef = useRef<any>();
     if (prop.choiceType === 'single') {
         choiceFieldRef.current = singleChoiceField;
-    }else if(prop.choiceType === 'image'){
+    } else if (prop.choiceType === 'image') {
         choiceFieldRef.current = imageChoiceField;
     }
 
