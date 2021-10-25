@@ -1,5 +1,5 @@
 export const categoryId = {all:'all',anime:'anime',movie:'movie',music:'music',target:'tarent',trivia:'trivia',study:'study',other:'other'} as const;
-export type categoryId =typeof categoryId[keyof typeof categoryId]; //valueのリテラル値を取る、keyと同一名称のためkeyofでも問題なし
+export type categoryId = typeof categoryId[keyof typeof categoryId]; //valueのリテラル値を取る、keyと同一名称のためkeyofでも問題なし
 
 export type category = {
     id:categoryId;

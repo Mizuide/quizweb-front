@@ -15,59 +15,59 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.createQuizForm {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    width: 60rem;
-    background-color: white;
+// .createQuizForm {
+//     display: flex;
+//     align-items: flex-start;
+//     flex-direction: column;
+//     width: 60rem;
+//     background-color: white;
 
-    .quizInfo {
-        .contentInput {
-            width: 30rem;
-            height: 5rem;
-        }
-        .oneLineInput {
-            width: 20rem;
-            height: 4rem;
-        }
-        .createQuestionForm{
-            width: 60rem;
-        .createChoiceForm{
-            width: 40rem;
-            .contentZone {
-                display: flex;
-                align-items: center;
-                div{
-                    margin-left: 2rem;
-                }
-            }
+//     .quizInfo {
+//         .contentInput {
+//             width: 30rem;
+//             height: 5rem;
+//         }
+//         .oneLineInput {
+//             width: 20rem;
+//             height: 4rem;
+//         }
+//         .createQuestionForm{
+//             width: 60rem;
+//         .createChoiceForm{
+//             width: 40rem;
+//             .contentZone {
+//                 display: flex;
+//                 align-items: center;
+//                 div{
+//                     margin-left: 2rem;
+//                 }
+//             }
 
-            .addButton{
-                margin-top:1rem;
-                margin-bottom:1rem;
-            }
-        }
-        .addButton{
-            margin-top:1rem;
-            margin-bottom:1rem;
-        }
-    }
-}
-.submitButton{
-    display: block;
-    margin-left: auto;
-}
-}
+//             .addButton{
+//                 margin-top:1rem;
+//                 margin-bottom:1rem;
+//             }
+//         }
+//         .addButton{
+//             margin-top:1rem;
+//             margin-bottom:1rem;
+//         }
+//     }
+// }
+// .submitButton{
+//     display: block;
+//     margin-left: auto;
+// }
+// }
 
-.deleteButton {
-    display: inline-block;
-    margin-left: 2rem;
-}
-.deleteButton:hover {
-    background-color: red;
-}
+// .deleteButton {
+//     display: inline-block;
+//     margin-left: 2rem;
+// }
+// .deleteButton:hover {
+//     background-color: red;
+// }
 
-.error {
-    color: red;
-}
+// .error {
+//     color: red;
+// }
