@@ -5,7 +5,6 @@ import quiz from "../type/quiz";
 import LinkToQuiz from "./LinkToQuiz";
 
 type prop = {
-    // display: LinkToQuiz[] | null
     quizes:quiz[]   
 }
 

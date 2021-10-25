@@ -96,7 +96,6 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
         <Form>
             <h1>クイズを作成する</h1>
             <QuizInfoContext.Provider value={[quiz, setQuiz]}>
-                <TagFields setTags={setTags} />
                 <ZodErrorContext.Provider value={zodError}>
                     {/* <Categories setCategory={setCategory} /> */}
                     <Form.Input error={titleError} label='タイトル' placeholder='クイズのタイトルをここに入力してください'
@@ -127,7 +126,7 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
                             t.click()
                         }}
                     />
-
+                    <TagFields setTags={setTags} />
                     <CreateQuestionForm />
                 </ZodErrorContext.Provider>
             </QuizInfoContext.Provider>

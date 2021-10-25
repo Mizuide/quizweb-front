@@ -14,9 +14,14 @@
             "method":"GET",
             "data":"quiz_detail"
         },
-        {
+         {
             "name":"answer",
             "method":"POST",
             "data":"answer"
+        },
+        {
+            "name":"tags",
+            "method":"GET",
+            "data":"tags"
         }
     ]

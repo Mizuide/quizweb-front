@@ -1,5 +1,4 @@
 import { ReactElement, useEffect, useState } from "react";
-import * as categoryConst from '../const/category';
 import * as orderConst from '../const/order';
 import useFetchQuizes from "../hooks/useFetchQuizes";
 import fetchQuizParam from "../type/fetchQuizParam";
@@ -20,9 +19,9 @@ const QuizIndex: () => ReactElement = () => {
     const [quizCount, setQuizCount] = useState<number>(0);
 
     let initialSearchConditions: searchConditions = {
-        category: categoryConst.categoryId.all,
         title: '',
-        order: orderConst.orderId.newOrder
+        order: orderConst.orderId.newOrder,
+        tags: []
     }
     const [searchConditions, setSearchConditions] = useState<searchConditions>(initialSearchConditions);
 
@@ -37,16 +36,18 @@ const QuizIndex: () => ReactElement = () => {
         setFetchQuiz({ ...fetchParam, page: page });
     }
 
-    useEffect(() => setQuizCount(quizesInfo.count), [quizesInfo]);
+    useEffect(() => {setQuizCount(quizesInfo.count)
+    console.log(quizesInfo);
+    }, [quizesInfo]);
     useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions }), [searchConditions]);
     useEffect(changeOnPage, [page]);
 
     return (
-        <div>
+        <>
             <SearchConditions conditions={searchConditions} setConditions={setSearchConditions} />
             <Index quizes={quizesInfo.quizes} />
             <Pager page={page} setPage={setPage} quizCount={quizCount} display={displayNum} />
-        </div>
+        </>
     )
 }
 

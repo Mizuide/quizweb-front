@@ -4,6 +4,7 @@ import "./css/AutoCompleteFIeld.css";
 
 type prop = {
     lists: string[],
+    label?: string,
     inputProp: InputProps,
     value: string,
     setValue: React.Dispatch<React.SetStateAction<string>>,
@@ -49,12 +50,17 @@ const AutoCompleteField: React.FC<prop> = (prop: prop) => {
     return (
         <Form.Group grouped widths={10} >
             <Form.Field style={{ "margin": "0px" }} width={10}>
+                <label>{prop.label}</label>
                 <Input
                     {...prop.inputProp}
                     value={prop.value}
                     onChange={(e, data) => {
                         prop.setValue(data.value);
+                        if (prop.preAutoComplete)
+                            prop.preAutoComplete();
                         autoComplete(data.value);
+                        if (prop.preAutoComplete)
+                            prop.preAutoComplete();
                     }}
                     onFocus={() => setForcus(true)}
                     onBlur={() => document.body.addEventListener('click', onBlur)

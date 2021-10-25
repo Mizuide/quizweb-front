@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react"
-import { Icon, Input, InputProps, Label } from "semantic-ui-react"
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import 'react-autocomplete-input/dist/bundle.css';
-import AutoCompleteField from "../common/AutoCompleteField";
+import { Icon, InputProps, Label } from "semantic-ui-react";
+import useFetchTags from "../../hooks/useFetchTags";
 import tag from "../../type/tag";
+import AutoCompleteField from "../common/AutoCompleteField";
 
 type tagProp = {
     content: string,
@@ -29,6 +31,12 @@ const TagFields: React.FC<prop> = (prop: prop) => {
     const [tagProps, setTagProps] = useState<tagProp[]>([]);
     const [field, setField] = useState<any[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
+
+    const [list, setList] = useState<tag[]>([]);
+    const [tagCandidates, setTagCandidates] = useFetchTags();
+
+    useEffect(() => setList(tagCandidates.tags), [tagCandidates])
+
     const tagPropsRef = useRef<tagProp[]>(tagProps);
 
     useEffect(() => {
@@ -38,7 +46,6 @@ const TagFields: React.FC<prop> = (prop: prop) => {
             TagField({ ...p, keyIndex: index })
         ))
     }, [tagProps])
-
 
     const addTag = (inputValue: string) => {
         if (tagProps.find(t => t.content === inputValue))
@@ -55,16 +62,20 @@ const TagFields: React.FC<prop> = (prop: prop) => {
         labelPosition: 'right',
         placeholder: 'タグを入力してください',
     }
-
+    const preAutoComplete = () => {
+        setTagCandidates(inputValue);
+    }
 
     return (
         <>
-            <AutoCompleteField lists={['おじさん', 'おじいさん', '🦀']}
+            <AutoCompleteField
+                label="タグ"
+                lists={list.map(t => t.content)}
                 inputProp={inputProp}
                 value={inputValue}
                 setValue={setInputValue}
+                preAutoComplete={preAutoComplete}
             />
-
             {field}
         </>
     )

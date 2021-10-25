@@ -1,11 +1,11 @@
-import {categoryId} from '../const/category'
-import {orderId} from '../const/order'
+import { orderId } from '../const/order';
+import tag from './tag';
 
 
 type searchcondition = {
-    category:categoryId;
     title:string;
     order:orderId;
+    tags:tag[];
 }
 
 export default searchcondition;

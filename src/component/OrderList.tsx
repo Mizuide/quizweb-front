@@ -23,7 +23,7 @@ const OrderList: React.FC<prop> = (prop: prop) => {
             setActive(e.target.name)
         }
 
-        return (<Button size={"mini"} color={prop.order.id === active ? 'black' : undefined} name={prop.order.id}  key={prop.key} onClick={onClick}>{prop.order.name}</Button>)
+        return (<Button size={"small"} color={prop.order.id === active ? 'black' : undefined} name={prop.order.id}  key={prop.key} onClick={onClick}>{prop.order.name}</Button>)
     }
 
     let orderList: ReactElement[] = [];
