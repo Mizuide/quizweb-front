@@ -1,0 +1,17 @@
+  version: '3'
+
+  services:
+    develop:
+      image: node:15.12.0
+      volumes:
+      - .:/workspace
+      - react_zone:/workspace/build
+      command: /bin/sh -c "while sleep 1000; do :; done"     
+  networks:
+    default:
+        external:
+          name: quizweb_develop_net
+  volumes:
+    react_zone:
+        external:
+            name: quizweb_react_zone
