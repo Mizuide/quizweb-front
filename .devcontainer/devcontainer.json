@@ -12,7 +12,7 @@
 
 	"dockerComposeFile": "../dev-compose.yml",
 	"service": "develop",
-	"workspaceFolder":"/workspace/quizgame",
+	"workspaceFolder":"/workspace",
 
 	// "workspaceFolder": "/workspaces/quizweb",
 	// Set *default* container specific settings.json values on container create.
