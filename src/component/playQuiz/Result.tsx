@@ -1,11 +1,9 @@
 import { ReactElement } from "react";
-import correctImg from '../img/correct.png';
-
-import incorrectImg from '../img/incorrect.png';
-import waitingImg from '../img/waiting.gif';
-
-import { answerStatus } from '../const/answerStatus'
 import { Image } from "semantic-ui-react";
+import { answerStatus } from '../../const/answerStatus';
+import correctImg from '../../img/correct.png';
+import incorrectImg from '../../img/incorrect.png';
+import waitingImg from '../../img/waiting.gif';
 
 interface Result extends ReactElement { }
 

@@ -1,11 +1,11 @@
 import React, { ReactElement, useContext } from "react";
 import { Card, Image } from "semantic-ui-react";
-import * as answerStatusConst from "../const/answerStatus";
-import choiceType from "../type/choiceType";
-import { choice } from '../type/quizDetail';
-import { answerStatusContext } from './Questions';
-import no_image from '../img/no_image.png';
 import { SemanticWIDTHS } from "semantic-ui-react/dist/commonjs/generic";
+import * as answerStatusConst from "../../const/answerStatus";
+import choiceType from "../../type/choiceType";
+import { choice } from '../../type/quizDetail';
+import no_image from '../../img/no_image.png';
+import { answerStatusContext } from './Questions';
 
 
 type choiceProp = {

@@ -1,4 +1,4 @@
-import quizDetail from "../type/quizDetail";
+import quizDetail from "../../type/quizDetail";
 import axios from "axios";
 import { useEffect } from "react";
 

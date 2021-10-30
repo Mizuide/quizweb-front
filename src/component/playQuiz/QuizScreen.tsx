@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useParams } from 'react-router-dom';
-import useFetchQuizDetail from '../hooks/useFetchQuizDetails';
-import fetchQuizDetailParam from '../type/fetchQuizDetailParam';
+import useFetchQuizDetail from '../../hooks/useFetchQuizDetails';
+import fetchQuizDetailParam from '../../type/fetchQuizDetailParam';
 import FinalResult from "./FinalResult";
 import Questions from "./Questions";
 

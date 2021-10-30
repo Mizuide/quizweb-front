@@ -1,5 +1,5 @@
-import { ReactElement,  useState } from "react";
-import LinkToQuiz from "../component/LinkToQuiz";
+import { ReactElement, useState } from "react";
+import LinkToQuiz from "../component/searchQuiz/LinkToQuiz";
 import quiz from "../type/quiz";
 
 const useIndex = function (displayNum: number): [LinkToQuiz[] | null, (quizes: quiz[], page: number) => void] {

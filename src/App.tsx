@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import {
   BrowserRouter as Router, Route,
-  Switch,
-  useHistory
+  Switch
 } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
-import { Container, Grid, Segment } from 'semantic-ui-react';
+import { Container, Segment } from 'semantic-ui-react';
 import Header from "./component/common/Header";
 import CreateQuizForm from './component/createQuiz/CreateQuizForm';
-import LinkToQuiz from './component/LinkToQuiz';
-import QuizIndex from './component/QuizIndex';
-import QuizScreen from './component/QuizScreen';
+import QuizScreen from './component/playQuiz/QuizScreen';
+import LinkToQuiz from './component/searchQuiz/LinkToQuiz';
+import QuizIndex from './component/searchQuiz/QuizIndex';
 import loginUser from './type/loginUser';
 
 export const loginUserContext = React.createContext<loginUser | undefined>(undefined);

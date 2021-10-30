@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Icon, Item, Label } from "semantic-ui-react";
 import quiz from '../../type/quiz';
 import tag from "../../type/tag";
-import no_image from '../img/no_image.png';
+import no_image from '../../img/no_image.png';
 
 interface LinkToQuiz extends ReactElement { }
 

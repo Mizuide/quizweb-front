@@ -1,5 +1,5 @@
-import { ReactElement} from "react";
-import quizDetail from '../type/quizDetail'
+import { ReactElement } from "react";
+import quizDetail from '../../type/quizDetail';
 
 interface QuizDescription extends ReactElement { }
 

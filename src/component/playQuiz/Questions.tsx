@@ -1,11 +1,11 @@
 import React, { ReactElement, useContext, useEffect, useState } from "react";
-import * as answerStatusConst from "../const/answerStatus";
-import { question } from '../type/quizDetail'
-import Choices from "./Choices";
-import fetchAnswerParam from "../type/fetchAnswerParam";
-import useFetchAnswer from "../hooks/useFetchAnswer";
-import Result from "./Result";
 import { Header, Segment } from "semantic-ui-react";
+import * as answerStatusConst from "../../const/answerStatus";
+import useFetchAnswer from "../../hooks/useFetchAnswer";
+import fetchAnswerParam from "../../type/fetchAnswerParam";
+import { question } from '../../type/quizDetail';
+import Choices from "./Choices";
+import Result from "./Result";
 
 type questionProp = {
     questionNo:number;
