@@ -1,6 +1,6 @@
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useState } from "react";
 import { Button } from "semantic-ui-react";
-import * as orderConst from "../const/order";
+import * as orderConst from "../../const/order";
 
 interface OrderList extends ReactElement { }
 

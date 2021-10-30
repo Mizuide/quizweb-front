@@ -1,13 +1,11 @@
 import { ReactElement, useEffect, useState } from "react";
-import * as orderConst from '../const/order';
-import useFetchQuizes from "../hooks/useFetchQuizes";
-import fetchQuizParam from "../type/fetchQuizParam";
-import searchConditions from "../type/searchQuizesConditions";
+import * as orderConst from '../../const/order';
+import useFetchQuizes from "../../hooks/useFetchQuizes";
+import fetchQuizParam from "../../type/fetchQuizParam";
+import searchConditions from "../../type/searchQuizesConditions";
 import Index from "./Index";
 import Pager from "./Pager";
 import SearchConditions from "./SearchConditions";
-
-
 
 const QuizIndex: () => ReactElement = () => {
     //todo:implements change displayNumber 

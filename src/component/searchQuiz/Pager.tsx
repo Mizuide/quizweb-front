@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { Menu } from "semantic-ui-react"
+import { useEffect, useState } from "react";
+import { Menu } from "semantic-ui-react";
 
 type prop = {
    page: number;

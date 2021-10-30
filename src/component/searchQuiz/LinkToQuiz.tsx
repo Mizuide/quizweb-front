@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
 import { useHistory } from 'react-router-dom';
 import { Icon, Item, Label } from "semantic-ui-react";
-import quiz from '../type/quiz';
+import quiz from '../../type/quiz';
+import tag from "../../type/tag";
 import no_image from '../img/no_image.png';
-import tag from "../type/tag";
 
 interface LinkToQuiz extends ReactElement { }
 

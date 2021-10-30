@@ -1,18 +1,13 @@
-import { title } from "process";
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { Dropdown, Grid, Icon, Input, InputProps, Label } from "semantic-ui-react";
-import * as categoryConst from '../const/category';
-import * as orderConst from '../const/order';
-import useFetchTags from "../hooks/useFetchTags";
-import searchConditions from "../type/searchQuizesConditions";
-import tag from "../type/tag";
-import AutoCompleteField from "./common/AutoCompleteField";
+import * as orderConst from '../../const/order';
+import useFetchTags from "../../hooks/useFetchTags";
+import searchConditions from "../../type/searchQuizesConditions";
+import tag from "../../type/tag";
+import AutoCompleteField from ".././common/AutoCompleteField";
 import OrderList from './OrderList';
 
-
-
 interface SearchConditions extends ReactElement { }
-
 
 type tagProp = {
     content: string,

@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { ItemGroup } from "semantic-ui-react";
+import quiz from "../../type/quiz";
 import waitingImg from '../img/waiting.gif';
-import quiz from "../type/quiz";
 import LinkToQuiz from "./LinkToQuiz";
 
 type prop = {
