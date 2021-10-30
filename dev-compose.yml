@@ -6,6 +6,7 @@
       volumes:
       - .:/workspace
       - react_zone:/workspace/build
+      - /home/water/.ssh:/root/.ssh
       command: /bin/sh -c "while sleep 1000; do :; done"     
   networks:
     default:
