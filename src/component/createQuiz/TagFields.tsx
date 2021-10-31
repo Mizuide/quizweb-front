@@ -48,7 +48,7 @@ const TagFields: React.FC<prop> = (prop: prop) => {
     }, [tagProps])
 
     const addTag = (inputValue: string) => {
-        if (tagProps.find(t => t.content === inputValue))
+        if (tagProps.find(t => t.content === inputValue) || inputValue.trim() === '')
             return
         const deleteThis = () => setTagProps(tagPropsRef.current.filter(t => t.content !== inputValue))
         tagProps.push({ content: inputValue, deleteThis: deleteThis })
@@ -58,7 +58,7 @@ const TagFields: React.FC<prop> = (prop: prop) => {
     const inputProp: InputProps = {
         icon: 'tags',
         iconPosition: 'left',
-        label: { tag: true, content: 'タグを追加', onClick: () => addTag(inputValue) },
+        label: { tag: true, content: 'タグを追加', as: 'button', onClick: () => addTag(inputValue) },
         labelPosition: 'right',
         placeholder: 'タグを入力してください',
     }
