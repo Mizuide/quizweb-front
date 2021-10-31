@@ -17,13 +17,13 @@ const AutoCompleteField: React.FC<prop> = (prop: prop) => {
     const [options, setOptions] = useState<string[]>(prop.lists);
     const [forcus, setForcus] = useState<boolean>(false);
     const autoComplete = (inputStr: string) => {
-        let pattern: RegExp = new RegExp('^' + inputStr.trim() + '.*')
+        let pattern: RegExp = new RegExp(`^${inputStr.replace(/[.*+?^=!:${}()|[\]\/\\]/g, '\\$&').trim()}.*`)
         setOptions(prop.lists.filter(o => pattern.test(o)))
     };
 
     const [lists, setLists] = useState<JSX.Element>();
     useEffect(() => {
-        if (forcus) {
+        if (forcus && options.length !== 0) {
             setLists(
                 <ul className={'autocomplete-ul'}
                     onClick={(e: any) => {
