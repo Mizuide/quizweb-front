@@ -57,10 +57,10 @@ const ImageChoiceFields: React.FC<choiceFieldProp[]> = (prop: choiceFieldProp[])
           />
         </Form.Group>
         <Form.Group unstackable >
-          <Image src={filesRef.current.find(f => f.choiceIndex === prop.choiceIndex)?.file || no_image} 
+          <Image src={filesRef.current.find(f => f.choiceIndex === prop.choiceIndex)?.file || no_image}
             size='medium' verticalAlign='middle' />
           <Form.Input
-          error={prop.contentError}
+            error={prop.contentError}
             hidden
             type="file"
             accept="image/*"
@@ -71,7 +71,7 @@ const ImageChoiceFields: React.FC<choiceFieldProp[]> = (prop: choiceFieldProp[])
               }
             }} />
         </Form.Group>
-        <Form.Group unstackable  >
+        <Form.Group unstackable>
           <Form.Button
             content="画像を選択"
             labelPosition="left"
