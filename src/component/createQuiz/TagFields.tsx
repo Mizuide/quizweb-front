@@ -43,7 +43,7 @@ const TagFields: React.FC<prop> = (prop: prop) => {
         tagPropsRef.current = tagProps;
         prop.setTags(tagProps.map(tp => { return { content: tp.content } }))
         setField(tagProps.map((p, index) =>
-            TagField({ ...p, keyIndex: index })
+            <TagField content={p.content} key={index} deleteThis={p.deleteThis} />
         ))
     }, [tagProps])
 
