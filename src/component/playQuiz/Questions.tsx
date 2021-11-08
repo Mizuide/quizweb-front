@@ -88,7 +88,6 @@ const Questions: React.FC<prop> = (prop: prop) => {
     }
     const QuestionArray: ReactElement[] = [];
     prop.questions.forEach((q,index) => {
-        console.log(index);
         QuestionArray.push(<Question questionNo={index} question={q} key={index}/>
         )});
     return (

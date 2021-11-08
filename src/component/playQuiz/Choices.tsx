@@ -18,7 +18,6 @@ type choiceProp = {
 
 
 const Choice: React.FC<choiceProp> = (prop: choiceProp) => {
-    console.log(prop.choiceType);
     const [, setAnswerStatus] = useContext(answerStatusContext);
     if (prop.choiceType === choiceType.single) {
         return (

@@ -35,7 +35,6 @@ const QuizIndex: () => ReactElement = () => {
     }
 
     useEffect(() => {setQuizCount(quizesInfo.count)
-    console.log(quizesInfo);
     }, [quizesInfo]);
     useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions }), [searchConditions]);
     useEffect(changeOnPage, [page]);
