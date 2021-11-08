@@ -58,7 +58,6 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
         setQuiz({
             ...quiz, title: title, description: description, thumbnail: thumbnailImage || undefined, tags: tags
         });
-        console.log(tags);
     }, [title, description, thumbnailImage, tags])
 
     useEffect(() => {

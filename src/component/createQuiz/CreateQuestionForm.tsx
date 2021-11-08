@@ -107,7 +107,6 @@ const CreateQuestionForm: React.FC<prop> = (prop: prop) => {
     useEffect(() => {
         type error = { questionIndex: number, message: string }
         let errors: error[] = [];
-        console.log(zodError);
         if (zodError !== undefined) {
             const errorOccurQuestions = zodError.issues.filter(is => is.path.length >= 3 && is.path.length < 5);
             for (let issue of errorOccurQuestions) {
