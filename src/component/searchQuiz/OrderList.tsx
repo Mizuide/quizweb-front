@@ -1,5 +1,5 @@
 import { ReactElement, useState } from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 import * as orderConst from "../../const/order";
 
 interface OrderList extends ReactElement { }
@@ -23,20 +23,27 @@ const OrderList: React.FC<prop> = (prop: prop) => {
             setActive(e.target.name)
         }
 
-        return (<Button size={"small"} color={prop.order.id === active ? 'black' : undefined} name={prop.order.id}  key={prop.key} onClick={onClick}>{prop.order.name}</Button>)
+        return (<Form.Button size={"small"} color={prop.order.id === active ? 'black' : undefined} name={prop.order.id}
+            key={prop.key} onClick={onClick}>
+            {prop.order.name}
+        </Form.Button>)
     }
 
     let orderList: ReactElement[] = [];
+ 
     let count = 0;
     for (let order of orderConst.orderList) {
-        let orderElement = Order({ order: order, setOrder: prop.setOrder, key: count });
+        let orderElement = <Order order={order} setOrder={prop.setOrder} key={count} />;
         if (orderElement !== null) {
             orderList.push(orderElement);
         }
         count++;
     }
 
-    return (<span className='orderList'>{orderList}</span>);
+    return (<Form.Group inline>
+        <label>表示順：</label>
+        {orderList}
+        </Form.Group>);
 }
 
 export default OrderList;

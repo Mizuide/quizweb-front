@@ -8,18 +8,18 @@ type returnTagsInfo = {
     tags: tag[]
 }
 
-function fetchTags(query: string): Promise<AxiosResponse<returnTagsInfo>> {
+function fetch(query?: string): Promise<AxiosResponse<returnTagsInfo>> {
     return axios.get<returnTagsInfo>(api.tags.url, { params: query });
 }
 
-const useFetchTags: () => [returnTagsInfo, (query: string) => void] = () => {
+const useFetchTags: () => [returnTagsInfo, (query?: string) => void] = () => {
     const [tags, setTags] = useState<returnTagsInfo>({ tags: [], count: 0 });
 
-    const setFetchTags = function (query: string) {
-        fetchTags(query).then(res => setTags(res.data));
+    const fetchTags = function (query?: string) {
+        fetch(query).then(res => setTags(res.data));
     }
 
-    return [tags, setFetchTags];
+    return [tags, fetchTags];
 }
 
 export default useFetchTags;

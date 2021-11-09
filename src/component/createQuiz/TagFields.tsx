@@ -9,13 +9,12 @@ import AutoCompleteField from "../common/AutoCompleteField";
 type tagProp = {
     content: string,
     deleteThis: () => void
-    keyIndex?: number,
 }
 
 const TagField: React.FC<tagProp> = (prop: tagProp) => {
 
     return (
-        <Label key={prop.keyIndex}  >
+        <Label> 
             <Icon name='tag' />
             {prop.content}
             <Icon name='delete' onClick={prop.deleteThis} />
@@ -33,7 +32,7 @@ const TagFields: React.FC<prop> = (prop: prop) => {
     const [inputValue, setInputValue] = useState<string>('');
 
     const [list, setList] = useState<tag[]>([]);
-    const [tagCandidates, setTagCandidates] = useFetchTags();
+    const [tagCandidates, fetchTagCandidates] = useFetchTags();
 
     useEffect(() => setList(tagCandidates.tags), [tagCandidates])
 
@@ -63,16 +62,18 @@ const TagFields: React.FC<prop> = (prop: prop) => {
         placeholder: 'タグを入力してください',
     }
     const preAutoComplete = () => {
-        setTagCandidates(inputValue);
+        fetchTagCandidates(inputValue);
     }
 
     return (
         <>
             <AutoCompleteField
                 label="タグ"
+                width={10}
                 lists={list.map(t => t.content)}
                 inputProp={inputProp}
                 value={inputValue}
+                onListClick={(e) => setInputValue(e.target.innerText)}
                 setValue={setInputValue}
                 preAutoComplete={preAutoComplete}
             />
