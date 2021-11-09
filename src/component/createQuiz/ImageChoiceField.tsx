@@ -23,7 +23,6 @@ const ImageChoiceFields: React.FC<choiceFieldProp[]> = (prop: choiceFieldProp[])
     const fileReader = new FileReader();
     fileReader.onload = (() => {
       filesRef.current = filesRef.current.filter(f => f.choiceIndex !== prop.choiceIndex);
-      console.log(filesRef.current)
       filesRef.current.push({
         choiceIndex: prop.choiceIndex,
         file: fileReader.result
