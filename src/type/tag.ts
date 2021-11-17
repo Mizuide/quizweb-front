@@ -1,6 +1,7 @@
 type tag = {
-    content:string,
-    count?:number
+    id?:number,
+    tag:string,
+    num?:number
 }
 
 export default tag;

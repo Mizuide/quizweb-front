@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import 'react-autocomplete-input/dist/bundle.css';
 import { Icon, InputProps, Label } from "semantic-ui-react";
@@ -14,7 +13,7 @@ type tagProp = {
 const TagField: React.FC<tagProp> = (prop: tagProp) => {
 
     return (
-        <Label> 
+        <Label>
             <Icon name='tag' />
             {prop.content}
             <Icon name='delete' onClick={prop.deleteThis} />
@@ -34,21 +33,30 @@ const TagFields: React.FC<prop> = (prop: prop) => {
     const [list, setList] = useState<tag[]>([]);
     const [tagCandidates, fetchTagCandidates] = useFetchTags();
 
-    useEffect(() => setList(tagCandidates.tags), [tagCandidates])
+    useEffect(() => {
+        setList([...tagCandidates]);
+    }, [tagCandidates])
+    
+    useEffect(() => {
+        fetchTagCandidates(inputValue);
+      }, [inputValue])
 
     const tagPropsRef = useRef<tagProp[]>(tagProps);
 
     useEffect(() => {
         tagPropsRef.current = tagProps;
-        prop.setTags(tagProps.map(tp => { return { content: tp.content } }))
+        prop.setTags(tagProps.map(tp => { return { tag: tp.content } }))
         setField(tagProps.map((p, index) =>
-            <TagField content={p.content} key={index} deleteThis={p.deleteThis} />
-        ))
+            <TagField content={p.content} key={index} deleteThis={p.deleteThis} />))
     }, [tagProps])
-
+    
+    const maxNum = 5;
+    
     const addTag = (inputValue: string) => {
-        if (tagProps.find(t => t.content === inputValue) || inputValue.trim() === '')
-            return
+        if (tagProps.length > maxNum || inputValue.trim().length === 0 ||
+            tagProps.find(t => t.content === inputValue)) {
+            return false;
+        }
         const deleteThis = () => setTagProps(tagPropsRef.current.filter(t => t.content !== inputValue))
         tagProps.push({ content: inputValue, deleteThis: deleteThis })
         setTagProps([...tagProps])
@@ -61,21 +69,18 @@ const TagFields: React.FC<prop> = (prop: prop) => {
         labelPosition: 'right',
         placeholder: 'タグを入力してください',
     }
-    const preAutoComplete = () => {
-        fetchTagCandidates(inputValue);
-    }
+
 
     return (
         <>
             <AutoCompleteField
-                label="タグ"
+                label={`タグ(※${maxNum}個まで設定可能)`}
                 width={10}
-                lists={list.map(t => t.content)}
+                lists={tagCandidates.map(t => t.tag)}
                 inputProp={inputProp}
                 value={inputValue}
                 onListClick={(e) => setInputValue(e.target.innerText)}
                 setValue={setInputValue}
-                preAutoComplete={preAutoComplete}
             />
             {field}
         </>

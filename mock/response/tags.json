@@ -1,29 +1,24 @@
-{
-    "count":100,
-    "tags":[
-        {"content":"漫画","count":10},
-        {"content":"アニメ","count":10},
-        {"content":"むずかしい","count":10},
-        {"content":"アニソン","count":10},
-        {"content":"マジック","count":10},
-        {"content":"進撃の巨人","count":10},
-        {"content":"自民党","count":10},
-        {"content":"ネット右翼","count":10},
-        {"content":"ネット弁慶","count":10},
-        {"content":"アニメカルトクイズ","count":10},
-        {"content":"進撃","count":10},
-        {"content":"漫画みち","count":10},
-        {"content":"漫画版ナウシカ","count":10},
-        {"content":"漫画村","count":10},
-        {"content":"武蔵野市","count":10},
-        {"content":"漫画☆太郎","count":10},
-        {"content":"武蔵","count":10},
-        {"content":"燃えよ剣","count":10},
-        {"content":"大河ドラマ","count":10},
-        {"content":"ドラマ","count":10}
+[
+        {"id":1,"tag":"漫画","num":10},
+        {"id":1,"tag":"アニメ","num":10},
+        {"id":1,"tag":"むずかしい","num":10},
+        {"id":1,"tag":"アニソン","num":10},
+        {"id":1,"tag":"マジック","num":10},
+        {"id":1,"tag":"進撃の巨人","num":10},
+        {"id":1,"tag":"自民党","num":10},
+        {"id":1,"tag":"ネット右翼","num":10},
+        {"id":1,"tag":"ネット弁慶","num":10},
+        {"id":1,"tag":"アニメカルトクイズ","num":10},
+        {"id":1,"tag":"進撃","num":10},
+        {"id":1,"tag":"漫画みち","num":10},
+        {"id":1,"tag":"漫画版ナウシカ","num":10},
+        {"id":1,"tag":"漫画村","num":10},
+        {"id":1,"tag":"武蔵野市","num":10},
+        {"id":1,"tag":"漫画☆太郎","num":10},
+        {"id":1,"tag":"武蔵","num":10},
+        {"id":1,"tag":"燃えよ剣","num":10},
+        {"id":1,"tag":"大河ドラマ","num":10},
+        {"id":1,"tag":"ドラマ","num":10}
 
     ]
 
-
-
-}

@@ -20,7 +20,7 @@
             "data":"answer"
         },
         {
-            "name":"tags",
+            "name":"tag",
             "method":"GET",
             "data":"tags"
         }

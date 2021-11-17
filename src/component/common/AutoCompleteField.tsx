@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Input, InputProps, SemanticWIDTHS } from "semantic-ui-react";
 import "./css/AutoCompleteFIeld.css";
 
@@ -16,14 +16,18 @@ type prop = {
 
 
 const AutoCompleteField: React.FC<prop> = (prop: prop) => {
+
     const [options, setOptions] = useState<string[]>(prop.lists);
     const [forcus, setForcus] = useState<boolean>(false);
+
     const autoComplete = (inputStr: string) => {
+        console.log('autocomplete');
         let pattern: RegExp = new RegExp(`^${inputStr.replace(/[.*+?^=!:${}()|[\]\/\\]/g, '\\$&').trim()}.*`)
         setOptions(prop.lists.filter(o => pattern.test(o)))
     };
 
     const [lists, setLists] = useState<JSX.Element>();
+
     useEffect(() => {
         if (forcus && options.length !== 0) {
             setLists(
@@ -40,7 +44,11 @@ const AutoCompleteField: React.FC<prop> = (prop: prop) => {
             setLists(undefined);
         }
     }, [options, forcus])
-    
+
+    useEffect(() => {
+        autoComplete(prop.value);
+    }, [prop.value, prop.lists])
+
     const onBlur = () => {
         setForcus(false)
         document.body.removeEventListener('click', onBlur)
@@ -54,13 +62,9 @@ const AutoCompleteField: React.FC<prop> = (prop: prop) => {
                 value={prop.value}
                 onChange={(e, data) => {
                     prop.setValue(data.value);
-                    if (prop.preAutoComplete)
-                        prop.preAutoComplete();
-                    autoComplete(data.value);
-                    if (prop.preAutoComplete)
-                        prop.preAutoComplete();
                 }}
                 onFocus={() => setForcus(true)}
+
                 /*
                *  各要素のonclickが先に発火されるように直接setStateを呼び出すのでなく
                *  bodyにeventlistnerを登録する

@@ -14,7 +14,7 @@
     "createQuiz": {
         "url": "/quizWeb/quiz/create"
     },
-    "tags": {
-        "url": "/quizWeb/quiz/tags"
+    "tag": {
+        "url": "/quizWeb/tag"
     }
 }
