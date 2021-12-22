@@ -1,5 +1,5 @@
 import { ReactElement, useState } from "react";
-import { Button, Form } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
 import * as orderConst from "../../const/order";
 
 interface OrderList extends ReactElement { }

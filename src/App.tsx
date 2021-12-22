@@ -19,7 +19,7 @@ function App() {
     <loginUserContext.Provider value={loginUser}>
       <Router basename='/quizWeb/react'>
         <Container>
-            <Header setLoginUser={setLoginUser} />
+          <Header setLoginUser={setLoginUser} />
           <Segment>
             <Switch>
               <Route exact path='/search' component={LinkToQuiz}>
@@ -29,7 +29,7 @@ function App() {
                 <QuizScreen />
               </Route>
               <Route exact path='/create' >
-                <CreateQuizForm loginUser={loginUser}/>
+                <CreateQuizForm loginUser={loginUser} />
               </Route>
             </Switch>
           </Segment>

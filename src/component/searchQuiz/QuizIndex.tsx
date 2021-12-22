@@ -13,7 +13,6 @@ const QuizIndex: () => ReactElement = () => {
 
     const [quizesInfo, setFetchQuiz] = useFetchQuizes();
     const [page, setPage] = useState<number>(1);
-    // const [index, setIndex] = useIndex(displayNum);
     const [quizCount, setQuizCount] = useState<number>(0);
 
     let initialSearchConditions: searchConditions = {
@@ -36,7 +35,9 @@ const QuizIndex: () => ReactElement = () => {
 
     useEffect(() => {setQuizCount(quizesInfo.count)
     }, [quizesInfo]);
+
     useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions }), [searchConditions]);
+    
     useEffect(changeOnPage, [page]);
 
     return (

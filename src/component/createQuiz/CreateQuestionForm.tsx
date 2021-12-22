@@ -20,12 +20,12 @@ const QuestionFields: React.FC<questionFieldProp[]> = (prop: questionFieldProp[]
     useEffect(() => {
         setValues(prop.map(
             p => {
-                const targetQuestion = values.find(v => v.questionIndex ===p.questionIndex)
-                if(targetQuestion !== undefined)
+                const targetQuestion = values.find(v => v.questionIndex === p.questionIndex)
+                if (targetQuestion !== undefined)
                     return { questionIndex: p.questionIndex, content: targetQuestion.content, comment: targetQuestion.comment, choiceType: targetQuestion.choiceType }
                 return { questionIndex: p.questionIndex, content: '', comment: '', choiceType: 'single' }
-                 }
-                 )
+            }
+        )
         );
     }, [prop])
 
@@ -73,7 +73,7 @@ const QuestionFields: React.FC<questionFieldProp[]> = (prop: questionFieldProp[]
                 <Form.Field control={TextArea} placeholder="問題文を入力してください" label='問題文'
                     onChange={(e: any) => setValue({ questionIndex: prop.questionIndex, content: e.target.value })}
                     error={prop.error} />
-                <CreateChoiceForm questionIndex={prop.questionIndex} choiceType={(values.find(v => v.questionIndex===prop.questionIndex))?.choiceType as choiceType} />
+                <CreateChoiceForm questionIndex={prop.questionIndex} choiceType={(values.find(v => v.questionIndex === prop.questionIndex))?.choiceType as choiceType} />
                 <Form.Input label='コメント' placeholder="回答後に表示されるコメントを入力してください"
                     onChange={(e: any) => setValue({ questionIndex: prop.questionIndex, comment: e.target.value })}
                 />
@@ -112,7 +112,7 @@ const CreateQuestionForm: React.FC<prop> = (prop: prop) => {
             for (let issue of errorOccurQuestions) {
                 let errorIndex = issue.path.filter(p => typeof p === 'number') as number[];
                 let question = fetchQuestion(errorIndex[0]);
-                if (question !== undefined ) {
+                if (question !== undefined) {
                     errors.push({ questionIndex: question.indexId, message: issue.message })
                 }
             }

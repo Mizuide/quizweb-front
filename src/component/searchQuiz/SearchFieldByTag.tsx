@@ -15,10 +15,12 @@ const SearchFieldByTag: React.FC<prop> = (prop: prop) => {
         const [value, setValue] = useState<string[]>([]);
         const [searchQuery, setSearchQuery] = useState<string | undefined>('');
 
-
         const onChange = (e: any, data: DropdownProps) => {
             if (data.value) {
-                prop.setTags(((data.value as string[]).map(v => { return { content: v } })));
+                if ((data.value as string[]).length > 10) {
+                    return false;
+                }
+                prop.setTags(((data.value as string[]).map(v => { return { tag: v } })));
                 setValue(data.value as string[]);
             }
         }
@@ -29,22 +31,27 @@ const SearchFieldByTag: React.FC<prop> = (prop: prop) => {
         const onSearchChange = (e: any, data: DropdownProps) => {
             setSearchQuery(data.searchQuery);
             if (data.searchQuery) {
-                if (data.searchQuery.length === 1) {
                     fetchTagsInfo(data.searchQuery);
-                }
             }
         }
         useEffect(() => {
-            fetchTagsInfo();
+            fetchTagsInfo('');
         }, [])
 
         useEffect(() => {
             setList(
-                tagsInfo.tags.map((t, index: any) => {
-                    return { key: index, text: t.content, value: t.content }
-                })
+                tagsInfo.map((t, index: any) =>
+                    ({ key: index, text: t.tag, value: t.tag })
+                )
             )
         }, [tagsInfo])
+
+        const renderLabel = (label: DropdownItemProps) => ({
+            ...label,
+            content: label.text,
+            icon: 'tag',
+            as: 'label'
+        })
 
         return (
             <Form.Dropdown
@@ -56,6 +63,7 @@ const SearchFieldByTag: React.FC<prop> = (prop: prop) => {
                 onChange={onChange}
                 onSearchChange={onSearchChange}
                 searchQuery={searchQuery}
+                renderLabel={renderLabel}
                 value={value}
                 placeholder={'タグを入力してください'}
                 noResultsMessage={'その文字を含むタグはありません'}

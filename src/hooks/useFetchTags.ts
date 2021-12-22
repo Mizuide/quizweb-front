@@ -3,11 +3,6 @@ import { useState } from "react";
 import api from "../property/api.json";
 import tag from "../type/tag";
 
-type returnTagsInfo = {
-    count: number,
-    tags: tag[]
-}
-
 function fetch(query?: string): Promise<AxiosResponse<tag[]>> {
     return axios.get<tag[]>(api.tag.url, { params: { prefix: query } });
 }

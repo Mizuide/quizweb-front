@@ -9,21 +9,12 @@ import SearchFieldByTitle from "./SearchFieldByTitle";
 
 interface SearchConditions extends ReactElement { }
 
-type tagProp = {
-    content: string,
-    deleteThis: () => void
-    keyIndex?: number,
-}
-
-
 type prop = {
     conditions: searchConditions
     setConditions: (searchConditions: searchConditions) => void
 }
 
-
 const SearchConditions: React.FC<prop> = (prop: prop) => {
-    // const [category, setCategory] = useState<categoryConst.categoryId>(categoryConst.categoryId.all);
     const [wheretitle, setWhereTitle] = useState<string>('');
     const [tags, setTags] = useState<tag[]>([]);
 
@@ -32,7 +23,6 @@ const SearchConditions: React.FC<prop> = (prop: prop) => {
     const onSelectOption = (e: any, { value }: any) => {
         setSearchMode(value);
     }
-
 
     const titleSearch = <SearchFieldByTitle width={14} setTitle={setWhereTitle} />
 
@@ -50,7 +40,7 @@ const SearchConditions: React.FC<prop> = (prop: prop) => {
             setSearchField(tagSearch)
     }, [searchMode])
 
-    //
+    
     return (
         <Form>
             <Form.Group widths={16}>
@@ -64,7 +54,6 @@ const SearchConditions: React.FC<prop> = (prop: prop) => {
             </Form.Group>
             <OrderList setOrder={(order: orderConst.orderId) => prop.setConditions({ ...prop.conditions, order: order })} />
         </Form>
-
     )
 }
 

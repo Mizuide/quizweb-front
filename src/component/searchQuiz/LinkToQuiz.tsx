@@ -23,10 +23,10 @@ const LinkToQuiz: React.FC<prop> = (prop: prop): LinkToQuiz => {
   const TagField = (tag: tag, index:number) =>
   (<Label key={index}>
     <Icon name='tag' />
-    {tag.content}
+    {tag.tag}
   </Label>)
 
-const TagFields = prop.quiz.tags.map((t,i) => TagField(t,i));
+const TagFields = prop.quiz.tags?.map((t,i) => TagField(t,i));
 
 
 

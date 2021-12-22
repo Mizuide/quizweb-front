@@ -8,7 +8,10 @@ type prop = {
 
 const SearchFieldByTitle: React.FC<prop> = (prop: prop) => {
     return (
-        <Form.Input width={prop.width} onChange={(e) => prop.setTitle(e.target.value)} />
+        <Form.Input
+        width={prop.width}
+        placeholder="クイズのタイトルを入力してください"
+        onChange={(e) => prop.setTitle(e.target.value)} />
     )
 }
 
