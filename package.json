@@ -47,7 +47,7 @@
     "html-webpack-plugin": "4.5.0",
     "identity-obj-proxy": "3.0.0",
     "jest": "26.6.0",
-    "jest-circus": "26.6.0",
+    "jest-circus": "^27.4.5",
     "jest-resolve": "26.6.0",
     "jest-watch-typeahead": "0.6.1",
     "json-server": "^0.16.3",
@@ -125,7 +125,7 @@
       "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
     ],
     "testEnvironment": "jsdom",
-    "testRunner": "/workspace/quizgame/node_modules/jest-circus/runner.js",
+    "testRunner": "/workspace/node_modules/jest-circus/runner.js",
     "transform": {
       "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
