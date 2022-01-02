@@ -1,15 +1,18 @@
 import axios from "axios";
+import { encode } from "punycode";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Form, Image } from "semantic-ui-react";
 import { ZodError } from "zod";
 import * as categoryConst from '../../const/category';
+import { COOKIE_KEY_QUIZ_TITLE, COOKIE_KEY_QUIZ_URL } from "../../const/const";
 import no_image from '../../img/no_image.png';
 import api from "../../property/api.json";
 import createQuizParam from "../../type/createQuizParam";
 import loginUser from "../../type/loginUser";
 import semantic_error from "../../type/semantic_error";
 import tag from "../../type/tag";
+import { putCookie } from "../../util/cookieUtil";
 import CreateQuizParamValidation from "../../validate/CreateQuizParamValidation";
 import CreateQuestionForm from "./CreateQuestionForm";
 import TagFields from "./TagFields";
@@ -77,7 +80,13 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
             CreateQuizParamValidation.parse(quiz);
             target.disabled = true;
             setZodError(undefined);
-            axios.post(api.createQuiz.url, { createQuizParam: quiz }).then(res => history.push('/'));
+            axios.post(api.createQuiz.url, { createQuizParam: quiz }).then(res => {
+                const encodeTitle = encodeURI(res.data.title);
+                const encodeURL = encodeURI(`${process.env.REACT_APP_FQDN}/${res.data.id}`)
+                putCookie(COOKIE_KEY_QUIZ_TITLE, encodeTitle);
+                putCookie(COOKIE_KEY_QUIZ_URL,encodeURL);
+                history.push(`/create/done`);
+            });
         } catch (e) {
             if (e instanceof ZodError) {
                 setZodError(e);
@@ -96,7 +105,6 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
             <h1>クイズを作成する</h1>
             <QuizInfoContext.Provider value={[quiz, setQuiz]}>
                 <ZodErrorContext.Provider value={zodError}>
-                    {/* <Categories setCategory={setCategory} /> */}
                     <Form.Input error={titleError} label='タイトル' placeholder='クイズのタイトルをここに入力してください'
                         onChange={(e) => setTitle(e.target.value)} />
                     <Form.Input label='説明文' placeholder='クイズの説明文をここに入力してください'

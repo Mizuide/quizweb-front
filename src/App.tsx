@@ -6,6 +6,7 @@ import {
 import 'semantic-ui-css/semantic.min.css';
 import { Container, Segment } from 'semantic-ui-react';
 import Header from "./component/common/Header";
+import Confirmation from './component/createQuiz/Confirmation';
 import CreateQuizForm from './component/createQuiz/CreateQuizForm';
 import QuizScreen from './component/playQuiz/QuizScreen';
 import LinkToQuiz from './component/searchQuiz/LinkToQuiz';
@@ -30,6 +31,9 @@ function App() {
               </Route>
               <Route exact path='/create' >
                 <CreateQuizForm loginUser={loginUser} />
+              </Route>
+              <Route exact path='/create/done' >
+                <Confirmation />
               </Route>
             </Switch>
           </Segment>
