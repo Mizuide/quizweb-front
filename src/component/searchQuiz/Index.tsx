@@ -10,9 +10,11 @@ type prop = {
 
 const Index: React.FC<prop> = (prop: prop) => {
     const display:ReactElement[] = [];
-    for(let q of prop.quizes)
-        display.push(<LinkToQuiz quiz={q}/>)    
-
+    let index = 0;
+    for(let q of prop.quizes){
+        display.push(<LinkToQuiz key={index} quiz={q}/>)    
+        index++;
+    }
     if (prop.quizes === null ||prop.quizes.length===0) {
         return (<nav className='index' ><img alt='読み込み中' src={waitingImg} /></nav>)
     } else {
