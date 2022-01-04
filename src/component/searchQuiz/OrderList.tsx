@@ -14,7 +14,6 @@ const OrderList: React.FC<prop> = (prop: prop) => {
     type orderProp = {
         order: orderConst.order;
         setOrder: (id: orderConst.orderId) => void;
-        key: number;
     }
 
     const Order: React.FC<orderProp> = (prop: orderProp) => {
@@ -23,8 +22,8 @@ const OrderList: React.FC<prop> = (prop: prop) => {
             setActive(e.target.name)
         }
 
-        return (<Form.Button size={"small"} color={prop.order.id === active ? 'black' : undefined} name={prop.order.id}
-            key={prop.key} onClick={onClick}>
+        return (<Form.Button size={"mini"} color={prop.order.id === active ? 'black' : undefined} name={prop.order.id}
+             onClick={onClick}>
             {prop.order.name}
         </Form.Button>)
     }
