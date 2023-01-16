@@ -8,6 +8,17 @@
       - react_zone:/workspace/build
       - /home/water/.ssh:/root/.ssh
       command: /bin/sh -c "while sleep 1000; do :; done"     
+    apache:
+      image: httpd:latest
+      ports:
+      - '80:80'
+      volumes:
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - react_zone:/usr/local/apache2/htdocs
+      networks:
+        default:
+          ipv4_address: 172.22.0.4
+
   networks:
     default:
         external:
