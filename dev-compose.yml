@@ -3,6 +3,7 @@
   services:
     develop:
       image: node:15.12.0
+      # image: node:latest
       volumes:
       - .:/workspace
       - react_zone:/workspace/build

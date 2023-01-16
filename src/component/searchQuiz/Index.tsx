@@ -5,17 +5,17 @@ import waitingImg from '../../img/waiting.gif';
 import LinkToQuiz from "./LinkToQuiz";
 
 type prop = {
-    quizes:quiz[]   
+    quizes: quiz[]
 }
 
 const Index: React.FC<prop> = (prop: prop) => {
-    const display:ReactElement[] = [];
+    const display: ReactElement[] = [];
     let index = 0;
-    for(let q of prop.quizes){
-        display.push(<LinkToQuiz key={index} quiz={q}/>)    
+    for (let q of prop.quizes) {
+        display.push(<LinkToQuiz key={index} quiz={q} />)
         index++;
     }
-    if (prop.quizes === null ||prop.quizes.length===0) {
+    if (prop.quizes === null || prop.quizes.length === 0) {
         return (<nav className='index' ><img alt='読み込み中' src={waitingImg} /></nav>)
     } else {
         return (<ItemGroup divided>{display}</ItemGroup>)

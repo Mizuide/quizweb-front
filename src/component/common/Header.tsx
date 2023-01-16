@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { ReactElement, useContext, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
-import { Menu, MenuItemProps } from 'semantic-ui-react';
+import { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import { Link, useHistory } from 'react-router-dom';
+import { Dropdown, Menu, MenuItemProps, Icon } from 'semantic-ui-react';
 import { loginUserContext } from "../../App";
 import api from "../../property/api.json";
 import loginUser from "../../type/loginUser";
 import MediaQuery from "react-responsive";
+import { url } from 'inspector';
 
 
 type prop = {
@@ -14,11 +15,28 @@ type prop = {
 }
 
 const Header: React.FC<prop> = (prop: prop) => {
+
+  const history = useHistory();
   const loginUser = useContext(loginUserContext)
   const [loginZone, setLoginZone] = useState<ReactElement>(<span />);
+
   useEffect(() => {
     if (loginUser !== undefined) {
-      setLoginZone(<span>ようこそ{loginUser.name}さん</span>);
+      const hamburgerMenu = (
+        <>
+          <Dropdown text='メニュー'
+            floating
+            labeled
+            className='icon'
+            icon='align justify'
+          >
+            <Dropdown.Menu>
+              <Dropdown.Item text='マイページ' icon='user' onClick={() => history.push('/mypage')} />
+              <Dropdown.Item text='ログアウト' icon='log out' />
+            </Dropdown.Menu>
+          </Dropdown>
+        </>)
+      setLoginZone(hamburgerMenu);
     } else {
       const loginHTML: ReactElement = (<a href="/quizWeb/doAuth" >
         <img alt="twitterログイン" src="/quizWeb/img/sign-in-with-twitter-gray.png.img.fullhd.medium.png" />
@@ -32,11 +50,13 @@ const Header: React.FC<prop> = (prop: prop) => {
   }, [])
 
   const [activeItem, setActiveItem] = useState<string | undefined>('ranking');
+  const clickHandler =
+    (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: MenuItemProps) => {
+      setActiveItem(data.name);
+      e.currentTarget.querySelector('a')?.click();
+    }
 
-  const clickHandler = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: MenuItemProps) => {
-    setActiveItem(data.name)
-    e.currentTarget.querySelector('a')?.click()
-  }
+
   return (
     <>
       <MediaQuery query='(min-width: 768px)'>
@@ -53,7 +73,17 @@ const Header: React.FC<prop> = (prop: prop) => {
           </Menu.Item>
           <Menu.Item
             name='create' active={activeItem === 'create'} onClick={clickHandler} >
-            <Link to={'/create'} >
+            {/* <a
+              onClick={(e) => {
+                axios.get(api.createQuiz.url).then(res => history.push(`/edit/${res.data.id}`));
+                // HACK:a要素をクリックするとa要素+itemで2回走ってしまうのでバブリングを抑止する
+                e.stopPropagation();
+              }
+              }
+            >
+              クイズを作る
+            </a> */}
+           <Link to={'/edit/0'} >
               クイズを作る
             </Link>
           </Menu.Item>
@@ -63,7 +93,7 @@ const Header: React.FC<prop> = (prop: prop) => {
         </Menu>
       </MediaQuery>
       <MediaQuery query='(max-width: 767px)'>
-        <Menu style={{'font-size':'0.8rem'}} pointing widths={3}>
+        <Menu style={{ 'font-size': '0.8rem' }} pointing widths={4}>
           {/* <Menu.Item name='ranking'
             active={activeItem === 'ranking'} onClick={clickHandler} >
             ランキング
@@ -74,15 +104,25 @@ const Header: React.FC<prop> = (prop: prop) => {
               クイズを探す
             </Link>
           </Menu.Item>
-          <Menu.Item name='create' active={activeItem === 'create'} onClick={clickHandler} >
-            <Link to={'/create'} >
+          <Menu.Item
+            name='create' active={activeItem === 'create'} onClick={clickHandler} >
+            <a
+              onClick={(e) => {
+                axios.get(api.createQuiz.url).then(res => history.push(`/edit/${res.data.id}`));
+                // HACK:a要素をクリックするとa要素+itemで2回走ってしまうのでバブリングを抑止する
+                e.stopPropagation();
+              }
+              }
+            >
               クイズを作る
-            </Link>
+            </a>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item />
+          <Menu.Item position='right'>
             {loginZone}
           </Menu.Item>
         </Menu>
+
       </MediaQuery>
     </>
   )

@@ -44,7 +44,7 @@ const SearchConditions: React.FC<prop> = (prop: prop) => {
     return (
         <Form>
             <Form.Group widths={16}>
-                <Form.Dropdown　button fluid defaultValue={searchMode} options={[
+                <Form.Dropdown fluid defaultValue={searchMode} options={[
                     { key: 1, text: '問題名で検索', value: 'title' },
                     { key: 2, text: 'タグで検索', value: 'tag' }
                 ]} onChange={onSelectOption} width={3} />

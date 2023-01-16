@@ -27,17 +27,21 @@ const QuizIndex: () => ReactElement = () => {
         page: page,
         searchConditions: searchConditions
     };
+
+    //TODO:bugっぽい,検索条件変えて検索したあとページ遷移すると、初期の検索条件で2ページ目表示しちゃう気がする。
+    // setterいる
     const [fetchParam] = useState<fetchQuizParam>(initialFetchParan);
 
     const changeOnPage = () => {
         setFetchQuiz({ ...fetchParam, page: page });
     }
 
-    useEffect(() => {setQuizCount(quizesInfo.count)
+    useEffect(() => {
+        setQuizCount(quizesInfo.count)
     }, [quizesInfo]);
 
     useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions }), [searchConditions]);
-    
+
     useEffect(changeOnPage, [page]);
 
     return (

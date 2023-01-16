@@ -12,13 +12,15 @@ import QuizScreen from './component/playQuiz/QuizScreen';
 import LinkToQuiz from './component/searchQuiz/LinkToQuiz';
 import QuizIndex from './component/searchQuiz/QuizIndex';
 import loginUser from './type/loginUser';
+// 順番によって変わったり
+import './App.css';
 
 export const loginUserContext = React.createContext<loginUser | undefined>(undefined);
 function App() {
   const [loginUser, setLoginUser] = useState<loginUser>();
   return (
     <loginUserContext.Provider value={loginUser}>
-      <Router basename='/quizWeb/react'>
+      <Router basename='/'>
         <Container>
           <Header setLoginUser={setLoginUser} />
           <Segment>
@@ -30,7 +32,7 @@ function App() {
                 <QuizScreen />
               </Route>
               <Route exact path='/create' >
-                <CreateQuizForm loginUser={loginUser} />
+                <CreateQuizForm />
               </Route>
               <Route exact path='/create/done' >
                 <Confirmation />

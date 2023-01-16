@@ -1,11 +1,12 @@
 import axios from "axios";
-import { encode } from "punycode";
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router";
 import { Form, Image } from "semantic-ui-react";
 import { ZodError } from "zod";
+import { loginUserContext } from "../../App";
 import * as categoryConst from '../../const/category';
 import { COOKIE_KEY_QUIZ_TITLE, COOKIE_KEY_QUIZ_URL } from "../../const/const";
+import useFetchQuizDetail from "../../hooks/useFetchQuizDetails";
 import no_image from '../../img/no_image.png';
 import api from "../../property/api.json";
 import createQuizParam from "../../type/createQuizParam";
@@ -26,11 +27,23 @@ type quizInfonContext = [
 export const QuizInfoContext = React.createContext<quizInfonContext>({} as quizInfonContext);
 export const ZodErrorContext = React.createContext<ZodError | undefined>({} as ZodError);
 
-type prop = {
-    loginUser: loginUser | undefined
+
+type routerParam = {
+    id: string
 }
 
-const CreateQuizForm: React.FC<prop> = (prop: prop) => {
+const CreateQuizForm: React.FC = () => {
+    const routerProp: routerParam = useParams<routerParam>();
+    const loginUser = useContext(loginUserContext);
+
+    const [quizDetail, fetchQuizDetail] = useFetchQuizDetail();
+
+    useEffect(() => fetchQuizDetail({quizId:routerProp.id}),[])
+
+    useEffect(() => {
+        
+    },[quizDetail])
+
     const [category,] = useState<categoryConst.categoryId>(categoryConst.categoryId.all);
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -84,7 +97,7 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
                 const encodeTitle = encodeURI(res.data.title);
                 const encodeURL = encodeURI(`${process.env.REACT_APP_FQDN}/${res.data.id}`)
                 putCookie(COOKIE_KEY_QUIZ_TITLE, encodeTitle);
-                putCookie(COOKIE_KEY_QUIZ_URL,encodeURL);
+                putCookie(COOKIE_KEY_QUIZ_URL, encodeURL);
                 history.push(`/create/done`);
             });
         } catch (e) {
@@ -95,7 +108,6 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
             }
         }
     }
-    if (!prop.loginUser)
         return (<>
             クイズを作成するにはtwitter連携でログインする必要があります<br />
             <a href="/quizWeb/doAuth">ここ</a>をクリックしてログインしてください
