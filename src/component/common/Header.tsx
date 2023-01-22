@@ -38,7 +38,7 @@ const Header: React.FC<prop> = (prop: prop) => {
         </>)
       setLoginZone(hamburgerMenu);
     } else {
-      const loginHTML: ReactElement = (<a href="/quizWeb/doAuth" >
+      const loginHTML: ReactElement = (<a href="/quizWeb/api/doAuth" >
         <img alt="twitterログイン" src="/quizWeb/img/sign-in-with-twitter-gray.png.img.fullhd.medium.png" />
       </a>)
       setLoginZone(loginHTML);
@@ -46,7 +46,7 @@ const Header: React.FC<prop> = (prop: prop) => {
   }, [loginUser])
 
   useEffect(() => {
-    axios.get(api.login.url).then(res => prop.setLoginUser(res.data)).catch(e => prop.setLoginUser(undefined));
+    axios.post(api.login.url).then(res => prop.setLoginUser(res.data)).catch(e => prop.setLoginUser(undefined));
   }, [])
 
   const [activeItem, setActiveItem] = useState<string | undefined>('ranking');
@@ -83,7 +83,10 @@ const Header: React.FC<prop> = (prop: prop) => {
             >
               クイズを作る
             </a> */}
-           <Link to={'/edit/0'} >
+            {/* <Link to={'/edit/0'} >
+              クイズを作る
+            </Link> */}
+            <Link to={'/create'} >
               クイズを作る
             </Link>
           </Menu.Item>
@@ -106,7 +109,11 @@ const Header: React.FC<prop> = (prop: prop) => {
           </Menu.Item>
           <Menu.Item
             name='create' active={activeItem === 'create'} onClick={clickHandler} >
-            <a
+            <Link to={'/create'} >
+              クイズを作る
+            </Link>
+
+            {/* <a
               onClick={(e) => {
                 axios.get(api.createQuiz.url).then(res => history.push(`/edit/${res.data.id}`));
                 // HACK:a要素をクリックするとa要素+itemで2回走ってしまうのでバブリングを抑止する
@@ -115,7 +122,7 @@ const Header: React.FC<prop> = (prop: prop) => {
               }
             >
               クイズを作る
-            </a>
+            </a> */}
           </Menu.Item>
           <Menu.Item />
           <Menu.Item position='right'>
