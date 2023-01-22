@@ -20,7 +20,7 @@ function App() {
   const [loginUser, setLoginUser] = useState<loginUser>();
   return (
     <loginUserContext.Provider value={loginUser}>
-      <Router basename='/'>
+      <Router basename='/quizWeb'>
         <Container>
           <Header setLoginUser={setLoginUser} />
           <Segment>

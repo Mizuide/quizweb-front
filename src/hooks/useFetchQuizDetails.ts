@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from "./axios";
+import { AxiosResponse } from "axios";
 import { useState } from "react";
 import api from "../property/api.json";
 import fetchQuizDetailsParam from "../type/fetchQuizDetailParam";
