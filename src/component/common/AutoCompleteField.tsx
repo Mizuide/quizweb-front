@@ -21,7 +21,7 @@ const AutoCompleteField: React.FC<prop> = (prop: prop) => {
     const [forcus, setForcus] = useState<boolean>(false);
 
     const autoComplete = (inputStr: string) => {
-        let pattern: RegExp = new RegExp(`^${inputStr.replace(/[.*+?^=!:${}()|[\]\/\\]/g, '\\$&').trim()}.*`)
+        let pattern: RegExp = new RegExp(`^${inputStr.replace(/[.*+?^=!:${}()|[\]/\\]/g, '\\$&').trim()}.*`)
         setOptions(prop.lists.filter(o => pattern.test(o)))
     };
 

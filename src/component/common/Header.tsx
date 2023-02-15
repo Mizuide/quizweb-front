@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { Link, useHistory } from 'react-router-dom';
-import { Dropdown, Menu, MenuItemProps, Icon } from 'semantic-ui-react';
+import { Dropdown, Menu, MenuItemProps } from 'semantic-ui-react';
 import { loginUserContext } from "../../App";
 import api from "../../property/api.json";
 import loginUser from "../../type/loginUser";
 import MediaQuery from "react-responsive";
-import { url } from 'inspector';
 
 
 type prop = {
