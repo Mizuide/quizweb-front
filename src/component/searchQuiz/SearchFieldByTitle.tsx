@@ -1,17 +1,21 @@
-import { Form } from "semantic-ui-react";
-import { SemanticWIDTHS } from "semantic-ui-react/dist/commonjs/generic";
+import { Dropdown, Input } from "semantic-ui-react";
 
 type prop = {
-    setTitle: (title: string) => void
-    width: SemanticWIDTHS
+    setTitle: React.Dispatch<React.SetStateAction<string>>
+    dropDown: JSX.Element
 }
 
 const SearchFieldByTitle: React.FC<prop> = (prop: prop) => {
+
     return (
-        <Form.Input
-        width={prop.width}
-        placeholder="クイズのタイトルを入力してください"
-        onChange={(e) => prop.setTitle(e.target.value)} />
+        <>
+            {prop.dropDown}
+            <Input
+                type="search"
+                fluid
+                placeholder="クイズのタイトルを入力してください"
+                onChange={(e) => prop.setTitle(e.target.value)} />
+        </>
     )
 }
 

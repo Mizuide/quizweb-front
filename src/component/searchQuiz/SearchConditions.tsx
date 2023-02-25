@@ -1,9 +1,8 @@
 import { ReactElement, useEffect, useState } from "react";
-import { Form } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, Form } from "semantic-ui-react";
 import * as orderConst from '../../const/order';
 import searchConditions from "../../type/searchQuizesConditions";
 import tag from "../../type/tag";
-import OrderList from './OrderList';
 import SearchFieldByTag from "./SearchFieldByTag";
 import SearchFieldByTitle from "./SearchFieldByTitle";
 
@@ -13,6 +12,7 @@ type prop = {
     conditions: searchConditions
     setConditions: (searchConditions: searchConditions) => void
 }
+
 
 const SearchConditions: React.FC<prop> = (prop: prop) => {
     const [wheretitle, setWhereTitle] = useState<string>('');
@@ -24,12 +24,17 @@ const SearchConditions: React.FC<prop> = (prop: prop) => {
         setSearchMode(value);
     }
 
-    const titleSearch = <SearchFieldByTitle width={14} setTitle={setWhereTitle} />
-
-    const tagSearch = <SearchFieldByTag
-        setTags={setTags}
-        width={14}
+    const dropDowm = <Dropdown
+        simple
+        defaultValue={searchMode}
+        options={[
+            { key: 1, text: 'タイトルで検索', value: 'title' },
+            { key: 2, text: 'タグで検索', value: 'tag' }
+        ]} onChange={onSelectOption}
     />
+    const titleSearch = <SearchFieldByTitle setTitle={setWhereTitle} dropDown={dropDowm} />
+
+    const tagSearch = <SearchFieldByTag setTags={setTags} dropDowm={dropDowm} />
 
     const [searchField, setSearchField] = useState<JSX.Element>();
 
@@ -40,19 +45,25 @@ const SearchConditions: React.FC<prop> = (prop: prop) => {
             setSearchField(tagSearch)
     }, [searchMode])
 
-    
+
+    let orderList: DropdownItemProps[] = [];
+    let count = 1;
+    for (let order of orderConst.orderList) {
+        orderList.push({ key: count, text: order.name, value: order.id });
+        count++;
+    }
     return (
-        <Form>
-            <Form.Group widths={16}>
-                <Form.Dropdown fluid defaultValue={searchMode} options={[
-                    { key: 1, text: '問題名で検索', value: 'title' },
-                    { key: 2, text: 'タグで検索', value: 'tag' }
-                ]} onChange={onSelectOption} width={3} />
-                {searchField}
-                <Form.Button size='medium' content='検索' icon='search' width={2}
-                    onClick={() => prop.setConditions({ ...prop.conditions, order: orderConst.orderId.newOrder, title: wheretitle, tags: tags })} />
-            </Form.Group>
-            <OrderList setOrder={(order: orderConst.orderId) => prop.setConditions({ ...prop.conditions, order: order })} />
+        <Form onSubmit={() => prop.setConditions({ ...prop.conditions, order: orderConst.orderId.newOrder, title: wheretitle, tags: tags })}
+        // HACK: Card.Group > stckableを指定した Indexのせいで LinkToQuizがモバイル表示時に重なってしまうため、merginを追加
+        style={{'margin-bottom':'0.875em'}}
+        >
+            {searchField}
+            <span>表示順：
+                <Dropdown defaultValue={prop.conditions.order} options={orderList}
+                    onChange={(e: any, { value }: any) => {
+                        prop.setConditions({ ...prop.conditions, order: value });
+                    }} />
+            </span>
         </Form>
     )
 }
