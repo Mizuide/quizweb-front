@@ -1,0 +1,5 @@
+.hoverItem:hover {
+    cursor: pointer;
+    z-index: 5;
+    transform: translateY(-3px);
+}
