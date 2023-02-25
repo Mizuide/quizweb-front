@@ -1,32 +1,42 @@
     [
         {
-            "name":"login",
-            "method" :"GET",
-            "data":"login"
+            "name": "login",
+            "method": "GET",
+            "data": "login"
         },
         {
-            "name":"quiz",
-            "method":"POST",
-            "data":"get_quiz"
+            "name": "quiz",
+            "method": "POST",
+            "data": "get_quiz"
         },
         {
-            "name":"quizDetail",
-            "method":"GET",
-            "data":"quiz_detail"
-        },
-         {
-            "name":"answer",
-            "method":"POST",
-            "data":"answer"
+            "name": "quizDetail",
+            "method": "GET",
+            "data": "quiz_detail"
         },
         {
-            "name":"tag",
-            "method":"GET",
-            "data":"tags"
+            "name": "answer",
+            "method": "POST",
+            "data": "answer"
         },
         {
-            "name":"createQuiz",
-            "method":"POST",
-            "data":"createResponse"
+            "name": "createQuiz",
+            "method": "POST",
+            "data": "createResponse"
+        },
+        {
+            "name": "getEditParamByPassword",
+            "method": "GET",
+            "data": "editParam"
+        },
+        {
+            "name": "getEditParamByUser",
+            "method": "GET",
+            "data": "editParam"
+        },
+        {
+            "name": "tag",
+            "method": "GET",
+            "data": "tags"
         }
     ]

@@ -1,22 +1,22 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { Form, Image } from "semantic-ui-react";
 import { ZodError } from "zod";
-import { loginUserContext } from "../../App";
-import * as categoryConst from '../../const/category';
-import { COOKIE_KEY_QUIZ_TITLE, COOKIE_KEY_QUIZ_URL } from "../../const/const";
-import useFetchQuizDetail from "../../hooks/useFetchQuizDetails";
-import no_image from '../../img/no_image.png';
-import api from "../../property/api.json";
-import createQuizParam from "../../type/createQuizParam";
-import loginUser from "../../type/loginUser";
 import semantic_error from "../../type/semantic_error";
+
+import createQuizParam from "../../type/createQuizParam";
 import tag from "../../type/tag";
+
 import { putCookie } from "../../util/cookieUtil";
 import CreateQuizParamValidation from "../../validate/CreateQuizParamValidation";
 import CreateQuestionForm from "./CreateQuestionForm";
 import TagFields from "./TagFields";
+
+import { COOKIE_KEY_QUIZ_TITLE, COOKIE_KEY_QUIZ_URL } from "../../const/const";
+
+import no_image from '../../img/no_image.png';
+import api from "../../property/api.json";
 
 type quizInfonContext = [
     quiz: createQuizParam,
@@ -27,26 +27,14 @@ type quizInfonContext = [
 export const QuizInfoContext = React.createContext<quizInfonContext>({} as quizInfonContext);
 export const ZodErrorContext = React.createContext<ZodError | undefined>({} as ZodError);
 
-
-type routerParam = {
-    id: string
+type prop = {
+    editQuizParam?: createQuizParam,
+    password?: string
 }
 
-const CreateQuizForm: React.FC = () => {
-    const routerProp: routerParam = useParams<routerParam>();
-    const loginUser = useContext(loginUserContext);
-
-    const [quizDetail, fetchQuizDetail] = useFetchQuizDetail();
-
-    useEffect(() => fetchQuizDetail({quizId:routerProp.id}),[])
-
-    useEffect(() => {
-        
-    },[quizDetail])
-
-    const [category,] = useState<categoryConst.categoryId>(categoryConst.categoryId.all);
-    const [title, setTitle] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
+const CreateQuizForm: React.FC<prop> = (prop: prop) => {
+    const [title, setTitle] = useState<string>(prop.editQuizParam?.title || '');
+    const [description, setDescription] = useState<string>(prop.editQuizParam?.description || '');
     const [thumbnailImage, setThumbnailImage] = useState<string | undefined>(undefined);
     const [tags, setTags] = useState<tag[]>([]);
 
@@ -62,13 +50,27 @@ const CreateQuizForm: React.FC = () => {
     const [titleError, setTitleError] = useState<semantic_error | undefined>(undefined);
 
     const [quiz, setQuiz] = useState<createQuizParam>({
-        category: category,
+        title: title,
         description: description,
         thumbnail: thumbnailImage || undefined,
-        title: title,
         tags: tags,
         questions: []
     })
+
+    useEffect(() => {
+        setTitle(prop.editQuizParam?.title || '');
+        setDescription(prop.editQuizParam?.description || '');
+        if (prop.editQuizParam?.thumbnail) {
+            axios.get(prop.editQuizParam.thumbnail, {
+                responseType: 'blob'
+            }).then(res => {
+                fileReader.readAsDataURL(res.data);
+            })
+        }
+        if (prop.editQuizParam?.tags) {
+            setTags([...prop.editQuizParam.tags]);
+        }
+    }, [prop])
 
     useEffect(() => {
         setQuiz({
@@ -88,12 +90,14 @@ const CreateQuizForm: React.FC = () => {
     }, [zodError])
 
 
-    const submit = (target: HTMLButtonElement) => {
+    const putQuiz = (target: HTMLButtonElement) => {
         try {
             CreateQuizParamValidation.parse(quiz);
             target.disabled = true;
             setZodError(undefined);
-            axios.post(api.createQuiz.url, { createQuizParam: quiz }).then(res => {
+            // 編集ならput,新規作成ならpost
+            let axiosPromise = prop.editQuizParam ? axios.put(api.createQuiz.url, { createQuizParam: quiz }) : axios.post(api.createQuiz.url, { createQuizParam: quiz });
+            axiosPromise.then(res => {
                 const encodeTitle = encodeURI(res.data.title);
                 const encodeURL = encodeURI(`${process.env.REACT_APP_FQDN}/${res.data.id}`)
                 putCookie(COOKIE_KEY_QUIZ_TITLE, encodeTitle);
@@ -108,19 +112,16 @@ const CreateQuizForm: React.FC = () => {
             }
         }
     }
-        return (<>
-            クイズを作成するにはtwitter連携でログインする必要があります<br />
-            <a href="/quizWeb/doAuth">ここ</a>をクリックしてログインしてください
-        </>)
+
     return (
         <Form>
-            <h1>クイズを作成する</h1>
+            {/* <h1>クイズを作成する</h1> */}
             <QuizInfoContext.Provider value={[quiz, setQuiz]}>
                 <ZodErrorContext.Provider value={zodError}>
                     <Form.Input error={titleError} label='タイトル' placeholder='クイズのタイトルをここに入力してください'
-                        onChange={(e) => setTitle(e.target.value)} />
+                        value={quiz.title} onChange={(e) => setTitle(e.target.value)} />
                     <Form.Input label='説明文' placeholder='クイズの説明文をここに入力してください'
-                        onChange={(e) => setDescription(e.target.value)} />
+                        value={quiz.description} onChange={(e) => setDescription(e.target.value)} />
 
                     <Form.Field>
                         <label>サムネイル画像</label>
@@ -145,12 +146,15 @@ const CreateQuizForm: React.FC = () => {
                             t.click()
                         }}
                     />
-                    <TagFields setTags={setTags} />
-                    <CreateQuestionForm />
+                    <TagFields tags={tags} setTags={setTags} />
+                    <CreateQuestionForm questions={prop.editQuizParam?.questions} />
                 </ZodErrorContext.Provider>
             </QuizInfoContext.Provider>
-            <Form.Button icon={'pencil alternate'} content={'クイズを作成する'} onClick={e => {
-                submit(e.target as HTMLButtonElement);
+            <Form.Button icon={'save'} content={'保存'} onClick={e => {
+                putQuiz(e.target as HTMLButtonElement);
+            }} />
+            <Form.Button icon={'pencil alternate'} content={'作成'} onClick={e => {
+                putQuiz(e.target as HTMLButtonElement);
             }} />
         </Form>
     )

@@ -1,10 +1,8 @@
-import * as categoryConst from '../const/category'
 import * as  zod from 'zod'
 import choiceType from './choiceType'
 import tag from './tag'
 
 type createQuizParam = {
-    category: categoryConst.categoryId,
     title: string,
     description: string,
     thumbnail: string | undefined,

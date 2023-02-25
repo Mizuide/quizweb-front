@@ -1,20 +1,22 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import css from "../../css/createQuizForm.module.scss";
 import { useAddChoice, useChangeChoice, useChangeCorrectChoice, useDeleteChoice, useFetchChoice, useFetchQuestion } from "../../hooks/useChangeQuizContext";
-import choiceFiledProp from "../../type/choiceFieldProp";
+import choiceFieldProp from "../../type/choiceFieldProp";
 import { ZodErrorContext } from "./CreateQuizForm";
 import ImageChoiceFields from "./ImageChoiceField";
-import SingleChoiceField from "./SingleChoiceField";
+import SingleChoiceFields from "./SingleChoiceField";
 import choiceType from "../../type/choiceType"
+import { createChoiceParam } from "../../type/createQuizParam";
 
 type prop = {
     questionIndex: number
     choiceType: choiceType
+    choices?: createChoiceParam[]
 }
 
 const CreateChoiceForm: React.FC<prop> = (prop: prop) => {
     const [nextIndex, setNextIndex] = useState<number>(2);
-    const [choiceFieldProps, setChoiceFieldProps] = useState<choiceFiledProp[]>([]);
+    const [choiceFieldProps, setChoiceFieldProps] = useState<choiceFieldProp[]>([]);
 
     const addChoiceToContext = useAddChoice(prop.questionIndex);
     const deleteChoise = useDeleteChoice(prop.questionIndex);
@@ -23,13 +25,17 @@ const CreateChoiceForm: React.FC<prop> = (prop: prop) => {
     const changeChoice = useChangeChoice(prop.questionIndex);
 
 
-    const choiceFieldPropsRef = useRef<choiceFiledProp[]>(choiceFieldProps);
+    const choiceFieldPropsRef = useRef<choiceFieldProp[]>(choiceFieldProps);
     choiceFieldPropsRef.current = choiceFieldProps;
 
     useEffect(() => {
         addChoice(0);
         addChoice(1);
     }, [])
+
+    useEffect(() => {
+        restorePropChoices(prop.choices);
+    }, [prop.choices])
 
     const zodError = useContext(ZodErrorContext);
     const fetchQuestion = useFetchQuestion();
@@ -59,13 +65,14 @@ const CreateChoiceForm: React.FC<prop> = (prop: prop) => {
         }
     }, [zodError])
 
-    const addChoice = (nextIndex: number) => {
+    const addChoice = (nextIndex: number, choice?: createChoiceParam) => {
         if (choiceFieldPropsRef.current.length === 4)
             return
 
         const deleteThis = () => {
             deleteChoise(nextIndex);
             setChoiceFieldProps([...choiceFieldPropsRef.current.filter(p => p.choiceIndex !== nextIndex)]);
+            choiceFieldPropsRef.current = choiceFieldPropsRef.current.filter(p => p.choiceIndex !== nextIndex);
         }
         const chooseCorrect = () => {
             changeCorrect(nextIndex);
@@ -80,20 +87,31 @@ const CreateChoiceForm: React.FC<prop> = (prop: prop) => {
             choiceIndex: nextIndex,
             deleteThis: deleteThis,
             chooseCorrect: chooseCorrect,
-            correct: choiceFieldPropsRef.current.length === 0,
+            correct: choice?.correctFlg !== undefined ? choice.correctFlg : choiceFieldPropsRef.current.length === 0,
             index: choiceFieldProps.length,
-            changeChoice: changeChoice
+            changeChoice: changeChoice,
+            content: choice?.content || ''
         }
 
         choiceFieldPropsRef.current.push(newChoiceProp);
 
         setChoiceFieldProps([...choiceFieldPropsRef.current]);
-        addChoiceToContext({ indexId: nextIndex, content: '', correctFlg: false });
+        addChoiceToContext({ indexId: nextIndex, content: choice?.content || '', correctFlg: false });
 
     }
-
-    const singleChoiceField = SingleChoiceField(choiceFieldProps);
+    const restorePropChoices = (choices?: createChoiceParam[]) => {
+        if (!choices) {
+            return;
+        }
+        choiceFieldPropsRef.current.forEach(c => c.deleteThis());
+        choices.forEach((c, index) => addChoice(nextIndex + index, c));
+        setNextIndex(nextIndex + choices.length);
+    }
+    
+    // if の中にコンポーネント入れると "Rendered more hooks than during the previous render." になる
+    const singleChoiceField = SingleChoiceFields(choiceFieldProps);
     const imageChoiceField = ImageChoiceFields(choiceFieldProps);
+
     const choiceFieldRef = useRef<any>();
     if (prop.choiceType === 'single') {
         choiceFieldRef.current = singleChoiceField;

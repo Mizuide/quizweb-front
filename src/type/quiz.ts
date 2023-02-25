@@ -2,12 +2,12 @@ import tag from "./tag";
 
 type quiz = {
     id: number,
-    crete_username: string,
+    createUserid:number,
     title: string,
     description: string,
     thumbnail: string,
     tags: tag[],
-    category: string,
+    authOnPasswordFlg:boolean
 }
 
 export default quiz;

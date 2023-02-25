@@ -1,5 +1,5 @@
 type loginUser = {
-    id:string;
+    id:number;
     name:string;
 }
 

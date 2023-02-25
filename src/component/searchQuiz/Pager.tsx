@@ -9,7 +9,7 @@ type prop = {
 }
 
 const Pager: React.FC<prop> = (prop) => {
-   const pageNum: number =  Math.ceil(prop.quizCount / prop.display);
+   const pageNum: number = Math.ceil(prop.quizCount / prop.display);
    const panel: React.FC<number> = (num) => (
       <Menu.Item key={num} active={prop.page === num} onClick={() => {
          prop.setPage(num)
@@ -50,12 +50,16 @@ const Pager: React.FC<prop> = (prop) => {
    }
 
    const disp = extract(panels, prop.page);
-   return (
-      <div className='pager'>
-         <Menu pagination>
-            {disp}
-         </Menu>
-      </div>);
+   if (prop.quizCount === 0) {
+      return null
+   } else {
+      return (
+         <div className='pager'>
+            <Menu pagination>
+               {disp}
+            </Menu>
+         </div>);
+   }
 }
 
 export default Pager;

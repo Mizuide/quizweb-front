@@ -3,25 +3,26 @@
     "quizes": [
         {
             "id": 0,
-            "crete_username": "test",
+            "createUserid": 1,
             "title": "テスト",
             "description": "説明文",
-            "thumbnail": "https://livedoor.sp.blogimg.jp/psycologic/imgs/6/4/64cf7f1a.png",
+            "authOnPasswordFlg": false,
             "tags": [
                 {
-                    "content": "test",
+                    "tag": "test",
                     "count": 2
                 }
             ]
         },
         {
             "id": 1,
-            "crete_username": "test",
+            "createUserid": 2,
             "title": "テスト",
             "description": "説明文",
+            "authOnPasswordFlg": true,
             "tags": [
                 {
-                    "content": "test",
+                    "tag": "test",
                     "count": 2
                 }
             ]

@@ -1,7 +1,8 @@
 import semantic_error from "./semantic_error";
 
-type choiceFiledProp = {
+type choiceFieldProp = {
     choiceIndex: number;
+    content?: string;
     deleteThis: () => void;
     correct: boolean;
     chooseCorrect: () => void;
@@ -9,4 +10,4 @@ type choiceFiledProp = {
     changeChoice: (arg0: string, arg1: number) => void;
 }
 
-export default choiceFiledProp;
+export default choiceFieldProp;

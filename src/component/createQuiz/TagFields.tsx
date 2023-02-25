@@ -22,6 +22,7 @@ const TagField: React.FC<tagProp> = (prop: tagProp) => {
 }
 
 type prop = {
+    tags: tag[],
     setTags: React.Dispatch<React.SetStateAction<tag[]>>
 }
 
@@ -36,10 +37,10 @@ const TagFields: React.FC<prop> = (prop: prop) => {
     useEffect(() => {
         setList([...tagCandidates]);
     }, [tagCandidates])
-    
+
     useEffect(() => {
         fetchTagCandidates(inputValue);
-      }, [inputValue])
+    }, [inputValue])
 
     const tagPropsRef = useRef<tagProp[]>(tagProps);
 
@@ -49,9 +50,9 @@ const TagFields: React.FC<prop> = (prop: prop) => {
         setField(tagProps.map((p, index) =>
             <TagField content={p.content} key={index} deleteThis={p.deleteThis} />))
     }, [tagProps])
-    
+
     const maxNum = 5;
-    
+
     const addTag = (inputValue: string) => {
         if (tagProps.length > maxNum || inputValue.trim().length === 0 ||
             tagProps.find(t => t.content === inputValue)) {
@@ -61,6 +62,8 @@ const TagFields: React.FC<prop> = (prop: prop) => {
         tagProps.push({ content: inputValue, deleteThis: deleteThis })
         setTagProps([...tagProps])
     }
+
+    useEffect(() => { prop.tags.forEach(t => addTag(t.tag)) }, [prop]);
 
     const inputProp: InputProps = {
         icon: 'tags',

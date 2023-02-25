@@ -5,7 +5,7 @@ type searchcondition = {
     title?: string;
     order?: orderId;
     tags?: tag[];
-    createUserId?: string;
+    createUserId?: number;
 }
 
 export default searchcondition;
