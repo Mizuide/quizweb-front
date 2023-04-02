@@ -36,7 +36,7 @@ const MyQuizes: React.FC<prop> = (prop: prop) => {
 
   useEffect(() => setFetchQuiz(fetchParam), [page])
   useEffect(() => {{
-    setDispaly(quizesInfo.quizes.map(q => <MyQuiz quiz={q} />));
+    setDispaly(quizesInfo.quizInfoList.map(qi => <MyQuiz quiz={qi.quiz} />));
     setQuizCount(quizesInfo.count);
   }}, [quizesInfo])
 

@@ -101,7 +101,7 @@ function createTestData(num: number): any {
     for (let i = (num - 1) * 100; i < num * 100; i++) {
         quiz.push({
             id: i,
-            crete_username: "user",
+            create_username: "user",
             title: "title" + i,
             category: "test",
             description: 'sample',

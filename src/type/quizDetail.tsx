@@ -1,4 +1,4 @@
-import choiceType from "./choiceType";
+import choicetype from "./choicetype";
 
 type quizDetail = {
     id:number,
@@ -15,7 +15,7 @@ export type question = {
     name:string,
     content:string,
     comment:string,
-    choiceType:choiceType,
+    choicetype:choicetype,
     choices:choice[]
 }
 

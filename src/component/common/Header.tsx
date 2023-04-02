@@ -10,7 +10,6 @@ import MediaQuery from "react-responsive";
 
 type prop = {
   setLoginUser: React.Dispatch<React.SetStateAction<loginUser | undefined>>
-
 }
 
 const Header: React.FC<prop> = (prop: prop) => {

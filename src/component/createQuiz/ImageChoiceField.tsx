@@ -6,7 +6,7 @@ import no_image from '../../img/no_image.png';
 import choiceFieldProp from "../../type/choiceFieldProp";
 
 type fileSet = {
-  choiceIndex: number,
+  choiceId: number,
   file: string | ArrayBuffer | null
 }
 
@@ -31,9 +31,9 @@ const ImageChoiceField: React.FC<tmpProp> = (prop: tmpProp) => {
     }
   }, [prop.choiceFieldProp])
 
-  return (<Segment key={prop.choiceFieldProp.choiceIndex} >
+  return (<Segment key={prop.choiceFieldProp.choiceId} >
     <Form.Group unstackable >
-      <Form.Button size='mini' color={prop.choiceFieldProp.correct ? 'red' : undefined} value={prop.choiceFieldProp.choiceIndex}
+      <Form.Button size='mini' color={prop.choiceFieldProp.correct ? 'red' : undefined} value={prop.choiceFieldProp.choiceId}
         onClick={prop.choiceFieldProp.chooseCorrect} >
         <img src={checkImg} />
       </Form.Button>
@@ -49,7 +49,7 @@ const ImageChoiceField: React.FC<tmpProp> = (prop: tmpProp) => {
       />
     </Form.Group>
     <Form.Group unstackable >
-      <Image src={prop.filesRef.current.find(f => f.choiceIndex === prop.choiceFieldProp.choiceIndex)?.file || no_image}
+      <Image src={prop.filesRef.current.find(f => f.choiceId === prop.choiceFieldProp.choiceId)?.file || no_image}
         size='small' verticalAlign='middle' />
       <Form.Input
         error={prop.choiceFieldProp.contentError}
@@ -80,7 +80,7 @@ const ImageChoiceField: React.FC<tmpProp> = (prop: tmpProp) => {
 
 const ImageChoiceFields: React.FC<choiceFieldProp[]> = (prop: choiceFieldProp[]) => {
   type fileSet = {
-    choiceIndex: number,
+    choiceId: number,
     file: string | ArrayBuffer | null
   }
   const [files, setFiles] = useState<fileSet[]>([]);
@@ -95,12 +95,12 @@ const ImageChoiceFields: React.FC<choiceFieldProp[]> = (prop: choiceFieldProp[])
 
     const fileReader = new FileReader();
     fileReader.onload = (() => {
-      filesRef.current = filesRef.current.filter(f => f.choiceIndex !== prop.choiceIndex);
+      filesRef.current = filesRef.current.filter(f => f.choiceId !== prop.choiceId);
       filesRef.current.push({
-        choiceIndex: prop.choiceIndex,
+        choiceId: prop.choiceId,
         file: fileReader.result
       })
-      prop.changeChoice(fileReader.result as string, prop.choiceIndex);
+      prop.changeChoice(fileReader.result as string, prop.choiceId);
       setFiles([...filesRef.current])
     })
 
@@ -111,7 +111,7 @@ const ImageChoiceFields: React.FC<choiceFieldProp[]> = (prop: choiceFieldProp[])
     }
 
     return (
-      <ImageChoiceField choiceFieldProp={prop} propLength={propLength} popupMsg={popupMsg} filesRef={filesRef} fileReader={fileReader} index={index} />
+      <ImageChoiceField key={prop.choiceId} choiceFieldProp={prop} propLength={propLength} popupMsg={popupMsg} filesRef={filesRef} fileReader={fileReader} index={index} />
     )
   }))
 

@@ -13,54 +13,60 @@ import CreateQuizParamValidation from "../../validate/CreateQuizParamValidation"
 import CreateQuestionForm from "./CreateQuestionForm";
 import TagFields from "./TagFields";
 
-import { COOKIE_KEY_QUIZ_TITLE, COOKIE_KEY_QUIZ_URL } from "../../const/const";
+import { COOKIE_KEY_QUIZ_TITLE, COOKIE_KEY_QUIZ_URL, GUEST_ID } from "../../const/const";
 
-import no_image from '../../img/no_image.png';
-import api from "../../property/api.json";
+import * as api from "../../const/api";
+import ResizedImageField from "../common/ResizedImageField";
 
 type quizInfonContext = [
     quiz: createQuizParam,
     setQuiz: React.Dispatch<React.SetStateAction<createQuizParam>>
 ]
 
+type zodErrorContext = [
+    zodError: ZodError | undefined,
+    setZodError: React.Dispatch<React.SetStateAction<ZodError | undefined>>
+]
+
 //QuizInfo is managed by context
 export const QuizInfoContext = React.createContext<quizInfonContext>({} as quizInfonContext);
-export const ZodErrorContext = React.createContext<ZodError | undefined>({} as ZodError);
+export const ZodErrorContext = React.createContext<zodErrorContext>({} as zodErrorContext);
 
 type prop = {
-    editQuizParam?: createQuizParam,
-    password?: string
+    editQuizParam: createQuizParam,
 }
 
 const CreateQuizForm: React.FC<prop> = (prop: prop) => {
-    const [title, setTitle] = useState<string>(prop.editQuizParam?.title || '');
-    const [description, setDescription] = useState<string>(prop.editQuizParam?.description || '');
+    const [title, setTitle] = useState<string>(prop.editQuizParam.title || '');
+    const [description, setDescription] = useState<string>(prop.editQuizParam.description || '');
     const [thumbnailImage, setThumbnailImage] = useState<string | undefined>(undefined);
     const [tags, setTags] = useState<tag[]>([]);
 
     const fileReader = new FileReader();
 
     fileReader.onload = (() => {
-        setThumbnailImage(fileReader.result as string)
+        setThumbnailImage(fileReader.result as string);
+        saveEdit('thumbnail', fileReader.result);
     })
 
     const history = useHistory();
 
     const [zodError, setZodError] = useState<ZodError>();
     const [titleError, setTitleError] = useState<semantic_error | undefined>(undefined);
-
     const [quiz, setQuiz] = useState<createQuizParam>({
+        id: prop.editQuizParam.id,
         title: title,
         description: description,
         thumbnail: thumbnailImage || undefined,
         tags: tags,
+        createUserId: prop.editQuizParam.createUserId,
         questions: []
     })
 
     useEffect(() => {
-        setTitle(prop.editQuizParam?.title || '');
-        setDescription(prop.editQuizParam?.description || '');
-        if (prop.editQuizParam?.thumbnail) {
+        setTitle(prop.editQuizParam.title);
+        setDescription(prop.editQuizParam.description);
+        if (prop.editQuizParam.thumbnail) {
             axios.get(prop.editQuizParam.thumbnail, {
                 responseType: 'blob'
             }).then(res => {
@@ -74,32 +80,47 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
 
     useEffect(() => {
         setQuiz({
-            ...quiz, title: title, description: description, thumbnail: thumbnailImage || undefined, tags: tags
+            ...quiz, id: prop.editQuizParam.id, title: title, description: description, thumbnail: thumbnailImage || undefined, tags: tags, createUserId: prop.editQuizParam.createUserId
         });
-    }, [title, description, thumbnailImage, tags])
+    }, [prop, title, description, thumbnailImage, tags])
 
     useEffect(() => {
-        setTitleError(undefined)
         if (zodError !== undefined) {
             for (let issue of zodError.issues) {
                 if (issue.path.includes('title')) {
                     setTitleError({ content: issue.message, pointing: 'below' });
                 }
             }
+            setZodError(undefined);
         }
     }, [zodError])
 
+    const saveEdit = (property: string, value: any) => {
+        if (quiz.createUserId !== GUEST_ID) {
+            let param = {
+                [property]: value
+            };
+            api.editQuiz({ quiz: { ...param, id: quiz.id } });
+        }
+    }
+
+    const addTagFunction = (tag: string) => {
+        if (quiz.createUserId !== GUEST_ID) {
+            api.addTag({ quizId: quiz.id, tag: tag })
+        }
+    }
 
     const putQuiz = (target: HTMLButtonElement) => {
         try {
             CreateQuizParamValidation.parse(quiz);
-            target.disabled = true;
+            // テスト中だけ外す
+            // target.disabled = true;
             setZodError(undefined);
-            // 編集ならput,新規作成ならpost
-            let axiosPromise = prop.editQuizParam ? axios.put(api.createQuiz.url, { createQuizParam: quiz }) : axios.post(api.createQuiz.url, { createQuizParam: quiz });
+            let axiosPromise = quiz.createUserId !== GUEST_ID ? api.publish({ quizId: quiz.id }) : api.createQuiz({ createQuizParam: quiz });
             axiosPromise.then(res => {
                 const encodeTitle = encodeURI(res.data.title);
-                const encodeURL = encodeURI(`${process.env.REACT_APP_FQDN}/${res.data.id}`)
+                const encodeURL = encodeURI(`${process.env.REACT_APP_FQDN}/${res.data.quizId}`);
+                console.log(encodeTitle, encodeURL);
                 putCookie(COOKIE_KEY_QUIZ_TITLE, encodeTitle);
                 putCookie(COOKIE_KEY_QUIZ_URL, encodeURL);
                 history.push(`/create/done`);
@@ -115,13 +136,20 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
 
     return (
         <Form>
-            {/* <h1>クイズを作成する</h1> */}
             <QuizInfoContext.Provider value={[quiz, setQuiz]}>
-                <ZodErrorContext.Provider value={zodError}>
+                <ZodErrorContext.Provider value={[zodError, setZodError]}>
                     <Form.Input error={titleError} label='タイトル' placeholder='クイズのタイトルをここに入力してください'
-                        value={quiz.title} onChange={(e) => setTitle(e.target.value)} />
+                        value={title} onChange={(e) => {
+                            console.log(titleError);
+                            setTitle(e.target.value);
+                            saveEdit('title', e.target.value);
+                        }} />
                     <Form.Input label='説明文' placeholder='クイズの説明文をここに入力してください'
-                        value={quiz.description} onChange={(e) => setDescription(e.target.value)} />
+                        value={description} onChange={(e) => {
+                            setDescription(e.target.value);
+                            saveEdit('description', e.target.value);
+                        }} />
+                    {/* <ResizedImageField label={'サムネイル画像'} inputId={'thumbnail'}/> */}
 
                     <Form.Field>
                         <label>サムネイル画像</label>
@@ -134,9 +162,10 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
                                 if (e.target.files && e.target.files[0])
                                     fileReader.readAsDataURL(e.target.files[0]);
                             }} />
-                        <Image src={thumbnailImage || no_image} size='medium' verticalAlign='middle' />
+                        <Image src={thumbnailImage} size='medium' verticalAlign='middle' />
                     </Form.Field>
                     <Form.Button
+                        type="button"
                         size={"tiny"}
                         content="画像を選択"
                         labelPosition="left"
@@ -146,13 +175,11 @@ const CreateQuizForm: React.FC<prop> = (prop: prop) => {
                             t.click()
                         }}
                     />
-                    <TagFields tags={tags} setTags={setTags} />
-                    <CreateQuestionForm questions={prop.editQuizParam?.questions} />
+                    <TagFields addTagFunction={addTagFunction} tags={tags} setTags={setTags} />
+                    <CreateQuestionForm quizId={prop.editQuizParam.id} questions={prop.editQuizParam.questions} />
                 </ZodErrorContext.Provider>
             </QuizInfoContext.Provider>
-            <Form.Button icon={'save'} content={'保存'} onClick={e => {
-                putQuiz(e.target as HTMLButtonElement);
-            }} />
+
             <Form.Button icon={'pencil alternate'} content={'作成'} onClick={e => {
                 putQuiz(e.target as HTMLButtonElement);
             }} />

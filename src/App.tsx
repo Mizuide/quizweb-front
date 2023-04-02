@@ -7,15 +7,16 @@ import 'semantic-ui-css/semantic.min.css';
 import { Container, Segment } from 'semantic-ui-react';
 import Header from "./component/common/Header";
 import Confirmation from './component/createQuiz/Confirmation';
-import CreateQuizForm from './component/createQuiz/CreateQuizForm';
 import QuizScreen from './component/playQuiz/QuizScreen';
 import QuizIndex from './component/searchQuiz/QuizIndex';
 import loginUser from './type/loginUser';
 // 順番によって変わったり
-import './App.css';
+import CreateQuiz from './component/createQuiz/CreateQuiz';
+import EditError from './component/editQuiz/EditError';
 import EditQuiz from './component/editQuiz/EditQuiz';
 import InputEditPassword from './component/editQuiz/InputEditPassword';
-import EditError from './component/editQuiz/EditError';
+
+import './App.css';
 
 export const loginUserContext = React.createContext<loginUser | undefined>(undefined);
 function App() {
@@ -34,7 +35,7 @@ function App() {
                 <QuizScreen />
               </Route>
               <Route exact path='/create' >
-                <CreateQuizForm />
+                <CreateQuiz />
               </Route>
               <Route exact path='/inputpass/:id' >
                 <InputEditPassword />

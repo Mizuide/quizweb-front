@@ -45,7 +45,10 @@ const SearchConditions: React.FC<prop> = (prop: prop) => {
             setSearchField(tagSearch)
     }, [searchMode])
 
-
+    useEffect(() => prop.setConditions({
+        ...prop.conditions, order: orderConst.orderId.newOrder,
+        title: wheretitle, tags: tags
+        }), [wheretitle, tags])
     let orderList: DropdownItemProps[] = [];
     let count = 1;
     for (let order of orderConst.orderList) {
@@ -53,9 +56,13 @@ const SearchConditions: React.FC<prop> = (prop: prop) => {
         count++;
     }
     return (
-        <Form onSubmit={() => prop.setConditions({ ...prop.conditions, order: orderConst.orderId.newOrder, title: wheretitle, tags: tags })}
-        // HACK: Card.Group > stckableを指定した Indexのせいで LinkToQuizがモバイル表示時に重なってしまうため、merginを追加
-        style={{'margin-bottom':'0.875em'}}
+        <Form
+            //  onSubmit={() => prop.setConditions({
+            //     ...prop.conditions, order: orderConst.orderId.newOrder,
+            //     title: wheretitle, tags: tags
+            // })}
+            // HACK: Card.Group > stckableを指定した Indexのせいで LinkToQuizがモバイル表示時に重なってしまうため、merginを追加
+            style={{ 'margin-bottom': '0.875em' }}
         >
             {searchField}
             <span>表示順：
@@ -64,6 +71,10 @@ const SearchConditions: React.FC<prop> = (prop: prop) => {
                         prop.setConditions({ ...prop.conditions, order: value });
                     }} />
             </span>
+            {/* enterkeyでsubmitされるようにsubmitkeyを隠しておく、なおinputが1つの場合に限りenterkey押下でsubmitされる現象がある
+            https://stackoverflow.com/questions/1370021/why-does-forms-with-single-input-field-submit-upon-pressing-enter-key-in-input
+            */}
+            {/* <input type="submit" style={{ display: 'none' }} /> */}
         </Form>
     )
 }

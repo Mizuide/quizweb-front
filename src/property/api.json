@@ -2,8 +2,17 @@
     "login": {
         "url": "/quizWeb/api/login"
     },
+    "newQuiz":{
+        "url":"/quizWeb/api/quiz/new"
+    },
+    "newQuestion":{
+        "url":"/quizWeb/api/question/new"
+    },
+    "newChoice":{
+        "url":"/quizWeb/api/choice/new"
+    },
     "quiz": {
-        "url": "/quizWeb/api/quiz/get"
+        "url": "/quizWeb/api/quiz/getlist"
     },
     "quizDetail": {
         "url": "/quizWeb/api/quizDetail"
@@ -12,15 +21,21 @@
         "url": "/quizWeb/api/answer"
     },
     "createQuiz": {
-        "url": "/quizWeb/api/quiz/create"
-    },
-    "getEditParamByPassword":{
-        "url": "/quizWeb/api/quiz/onpasswordauth/edit/param"
+        "url": "/quizWeb/api/insert/inbulk"
     },
     "getEditParamByUser":{
-        "url": "/quizWeb/api/quiz/onuserauth/edit/param"
+        "url": "/quizWeb/api/test/test"
     },
+    "editQuiz":{
+        "url":"/quizWeb/api/quiz/edit/save"
+    },
+    "editQuestion":{
+        "url":"/quizWeb/api/question/edit"
+    },
+    "editChoice":{
+        "url":"/quizWeb/api/choice/edit"
+    },    
     "tag": {
-        "url": "/quizWeb/api/tag"
+        "url": "/quizWeb/api/taglist/prefix"
     }
 }

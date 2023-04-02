@@ -107,21 +107,38 @@ module.exports = function (proxy, allowedHost) {
       const api = require('../src/property/api.json')
       const mocks = require('../mock/mock.json')
 
-      for(const mock of mocks) {
+      for (const mock of mocks) {
         const path = api[mock.name].url;
         const method = mock.method;
-        const data = require('../mock/response/'+mock.data+".json");
-        switch(method) {
-            case 'GET' :
-                app.get(path, function (req, res) {
-                    res.json(data);
-                });
-            case 'POST' :
-                  app.post(path, function (req, res) {
-                      res.json(data);
-                  });
-          }
-    }
+        const data = require('../mock/response/' + mock.data + ".json");
+
+        // let sequenseCountUp = function () {
+        //   let index = 0;
+        //   return () => index++
+        // }();
+        
+        // クロージャ
+        let index = 0
+        switch (method) {
+          case 'GET':
+            app.get(path, function (req, res) {
+              let k;
+              for (let key in data) {
+                if (data[key] === 'sequense') {
+                  k = key;
+                }
+              }
+              if (k !== undefined)
+                res.json({ ...data, [k]: index++ });
+              else
+                res.json(data)
+            });
+          case 'POST':
+            app.post(path, function (req, res) {
+              res.json(data);
+            });
+        }
+      }
 
       // Keep `evalSourceMapMiddleware` and `errorOverlayMiddleware`
       // middlewares before `redirectServedPath` otherwise will not have any effect

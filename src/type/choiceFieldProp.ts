@@ -1,7 +1,8 @@
 import semantic_error from "./semantic_error";
 
 type choiceFieldProp = {
-    choiceIndex: number;
+    choiceId: number;
+    createUserId: number;
     content?: string;
     deleteThis: () => void;
     correct: boolean;

@@ -11,7 +11,7 @@
             "name": "第一問",
             "content": "内容です",
             "comment": "コメントです",
-            "choiceType":"single",
+            "choicetype":"single",
             "choices": [
                 {
                     "questionId": 0,
@@ -41,7 +41,7 @@
             "name": "第2問",
             "content": "内容です",
             "comment": "コメントです",
-            "choiceType":"image",
+            "choicetype":"image",
             "choices": [
                 {
                     "questionId": 1,

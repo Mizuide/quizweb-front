@@ -1,28 +1,32 @@
 import * as  zod from 'zod'
-import choiceType from './choiceType'
+import choicetype from './choicetype'
 import tag from './tag'
 
 type createQuizParam = {
+    id: number,
     title: string,
     description: string,
-    thumbnail: string | undefined,
+    thumbnail?: string,
     tags: tag[],
     questions: createQuestionParam[]
+    createUserId: number,
 }
 
 export type createQuestionParam = {
-    indexId: number,
+    id: number,
+    quizId: number,
     content: string,
     comment: string,
-    choiceType: choiceType,
-    choices: createChoiceParam[]
+    choicetype: choicetype,
+    choices: createChoiceParam[],
+    createUserId: number,
 }
 
 export type createChoiceParam = {
-    indexId: number,
+    id: number,
     content: string,
-    correctFlg: boolean
-
+    correctFlg: boolean,
+    createUserId: number
 }
 
 export const choiceParamValid = zod.object({

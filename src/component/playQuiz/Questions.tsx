@@ -23,7 +23,7 @@ const Question: React.FC<questionProp> = (prop: questionProp) => {
         if (answer !== undefined) {
             let param: fetchAnswerParam = {
                 questionId: prop.question.id,
-                selectiionNo: answer
+                selectionNo: answer
             };
             fetchAnswer(param);
             // setAnswerStatus(answerStatusConst.answerStatus.waiting);
@@ -48,7 +48,7 @@ const Question: React.FC<questionProp> = (prop: questionProp) => {
                 {prop.question.content} </Segment>
             <Result comment={prop.question.comment} answerStatus={answerStatus} />
             <Choices choices={prop.question.choices} answer={answer} setAnswer={setAnswer} 
-                choiceType={prop.question.choiceType} correctAnswer={correctAnswer} />
+                choicetype={prop.question.choicetype} correctAnswer={correctAnswer} />
         </div>
     );
 }

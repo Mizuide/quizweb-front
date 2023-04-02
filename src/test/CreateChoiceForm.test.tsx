@@ -20,7 +20,7 @@ const setQuiz: SetStateAction<createQuizParam> = (param: createQuizParam) => qui
 test('render', async () => {
     const { rerender } = render(
         <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-            <CreateChoiceForm questionIndex={0} />
+            <CreateChoiceForm questionId={0} />
         </QuizInfoContext.Provider>
     )
 
@@ -32,7 +32,7 @@ test('render', async () => {
 test('add choices', async () => {
     const { rerender } = render(
         <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-            <CreateChoiceForm questionIndex={0} />
+            <CreateChoiceForm questionId={0} />
         </QuizInfoContext.Provider>
     )
 
@@ -51,7 +51,7 @@ test('delete choices', async () => {
 
     const { rerender } = render(
         <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-            <CreateChoiceForm questionIndex={0} />
+            <CreateChoiceForm questionId={0} />
         </QuizInfoContext.Provider>
     )
 
@@ -66,7 +66,7 @@ test('add after delete choices', async () => {
 
     const { rerender } = render(
         <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-            <CreateChoiceForm questionIndex={0} />
+            <CreateChoiceForm questionId={0} />
         </QuizInfoContext.Provider>
     )
     const addChoiceButton = screen.getByText(/選択肢を追加/);
@@ -76,7 +76,7 @@ test('add after delete choices', async () => {
     fireEvent.click(deleteChoiceBottuns[2]);
     rerender(
         <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-            <CreateChoiceForm questionIndex={0} />
+            <CreateChoiceForm questionId={0} />
         </QuizInfoContext.Provider>
     )
     fireEvent.click(addChoiceButton);
@@ -96,7 +96,7 @@ test('check correct', async () => {
 
     const { rerender } = render(
         <QuizInfoContext.Provider value={[quiz, setQuiz as React.Dispatch<React.SetStateAction<createQuizParam>>]} >
-            <CreateChoiceForm questionIndex={0} />
+            <CreateChoiceForm questionId={0} />
         </QuizInfoContext.Provider>
     )
     const changeCorrectRadio = document.querySelectorAll('input[type="radio"]');

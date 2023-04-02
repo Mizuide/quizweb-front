@@ -6,8 +6,6 @@ type quiz = {
     title: string,
     description: string,
     thumbnail: string,
-    tags: tag[],
-    authOnPasswordFlg:boolean
 }
 
 export default quiz;

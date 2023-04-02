@@ -9,6 +9,7 @@ type prop = {
 }
 
 const Pager: React.FC<prop> = (prop) => {
+   console.log(prop);
    const pageNum: number = Math.ceil(prop.quizCount / prop.display);
    const panel: React.FC<number> = (num) => (
       <Menu.Item key={num} active={prop.page === num} onClick={() => {

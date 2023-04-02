@@ -1,7 +1,7 @@
-const choiceType =
+const choicetype =
  {single:'single',
  image:'image'} as const;
-type choiceType = typeof choiceType[keyof typeof choiceType];
+type choicetype = typeof choicetype[keyof typeof choicetype];
  //valueのリテラル値を取る、keyと同一名称のためkeyofでも問題なし
 
- export default choiceType;
+ export default choicetype;

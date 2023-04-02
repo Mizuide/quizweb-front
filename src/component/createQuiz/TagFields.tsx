@@ -24,6 +24,7 @@ const TagField: React.FC<tagProp> = (prop: tagProp) => {
 type prop = {
     tags: tag[],
     setTags: React.Dispatch<React.SetStateAction<tag[]>>
+    addTagFunction: (p: string) => any
 }
 
 const TagFields: React.FC<prop> = (prop: prop) => {
@@ -58,6 +59,7 @@ const TagFields: React.FC<prop> = (prop: prop) => {
             tagProps.find(t => t.content === inputValue)) {
             return false;
         }
+        prop.addTagFunction(inputValue);
         const deleteThis = () => setTagProps(tagPropsRef.current.filter(t => t.content !== inputValue))
         tagProps.push({ content: inputValue, deleteThis: deleteThis })
         setTagProps([...tagProps])

@@ -5,6 +5,21 @@
             "data": "login"
         },
         {
+            "name": "newQuiz",
+            "method": "GET",
+            "data": "newId"
+        },
+        {
+            "name": "newQuestion",
+            "method": "GET",
+            "data": "newId"
+        },
+        {
+            "name": "newChoice",
+            "method": "GET",
+            "data": "newId"
+        },
+        {
             "name": "quiz",
             "method": "POST",
             "data": "get_quiz"

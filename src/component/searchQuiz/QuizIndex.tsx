@@ -9,7 +9,7 @@ import SearchConditions from "./SearchConditions";
 
 const QuizIndex: () => ReactElement = () => {
     //todo:implements change displayNumber 
-    const [displayNum, setDisplayNum] = useState<number>(10);
+    const [displayNum, setDisplayNum] = useState<number>(12);
 
     const [quizesInfo, setFetchQuiz] = useFetchQuizes();
     const [page, setPage] = useState<number>(1);
@@ -40,14 +40,15 @@ const QuizIndex: () => ReactElement = () => {
         setQuizCount(quizesInfo.count)
     }, [quizesInfo]);
 
-    useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions }), [searchConditions]);
+    useEffect(() => setFetchQuiz({ ...fetchParam, searchConditions: searchConditions }),
+        [searchConditions]);
 
     useEffect(changeOnPage, [page]);
 
     return (
         <>
             <SearchConditions conditions={searchConditions} setConditions={setSearchConditions} />
-            <Index quizes={quizesInfo.quizes} />
+            <Index quizInfoList={quizesInfo.quizInfoList} />
             <Pager page={page} setPage={setPage} quizCount={quizCount} display={displayNum} />
         </>
     )

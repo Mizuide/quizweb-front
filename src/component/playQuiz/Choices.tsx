@@ -2,7 +2,7 @@ import React, { ReactElement, useContext } from "react";
 import { Card, Image } from "semantic-ui-react";
 import { SemanticWIDTHS } from "semantic-ui-react/dist/commonjs/generic";
 import * as answerStatusConst from "../../const/answerStatus";
-import choiceType from "../../type/choiceType";
+import choicetype from "../../type/choicetype";
 import { choice } from '../../type/quizDetail';
 import no_image from '../../img/no_image.png';
 import { answerStatusContext } from './Questions';
@@ -11,7 +11,7 @@ import { answerStatusContext } from './Questions';
 type choiceProp = {
     key: number;
     choice: choice;
-    choiceType: choiceType;
+    choicetype: choicetype;
     answer: number | undefined;
     setAnswer: (no: number) => void;
 }
@@ -19,7 +19,7 @@ type choiceProp = {
 
 const Choice: React.FC<choiceProp> = (prop: choiceProp) => {
     const [, setAnswerStatus] = useContext(answerStatusContext);
-    if (prop.choiceType === choiceType.single) {
+    if (prop.choicetype === choicetype.single) {
         return (
             <Card fluid color='blue' key={prop.key} header={prop.choice.content}
                 onClick={() => {
@@ -32,7 +32,7 @@ const Choice: React.FC<choiceProp> = (prop: choiceProp) => {
                 }>
             </Card>
         )
-    } else if (prop.choiceType === choiceType.image) {
+    } else if (prop.choicetype === choicetype.image) {
         const url = '/quizWeb/img/choice/' + prop.choice.content;
         return (
             <Card color='blue' onClick={() => {
@@ -54,7 +54,7 @@ const Choice: React.FC<choiceProp> = (prop: choiceProp) => {
 type choiceResultProp = {
     key: number,
     choice: choice;
-    choiceType: choiceType;
+    choicetype: choicetype;
     answer: boolean;
     correct: boolean;
 }
@@ -73,12 +73,12 @@ const ChoiceResult: React.FC<choiceResultProp> = (prop: choiceResultProp) => {
         style = { background: "aqua" };
     }
 
-    if (prop.choiceType === choiceType.single) {
+    if (prop.choicetype === choicetype.single) {
         return (
             <Card style={style} fluid color='blue' header={prop.choice.content} key={prop.key} />
 
         )
-    } else if (prop.choiceType === choiceType.image){
+    } else if (prop.choicetype === choicetype.image){
         const url = '/quizWeb/img/choice/' + prop.choice.content;
         return(
             <Card  style={style} key={prop.key}  header={prop.choice.content}>
@@ -93,7 +93,7 @@ interface Choices extends ReactElement { }
 
 type prop = {
     choices: choice[];
-    choiceType: choiceType;
+    choicetype: choicetype;
     answer: number | undefined;
     setAnswer: (no: number) => void;
     correctAnswer: number | undefined;
@@ -103,15 +103,15 @@ const Choices: React.FC<prop> = (prop: prop) => {
     let choices: (ReactElement | null)[] = [];
     if (prop.correctAnswer === undefined || prop.answer === undefined) {
         prop.choices.forEach((choice, index) => {
-            choices.push(Choice({ key: index, choice: choice, answer: prop.answer, setAnswer: prop.setAnswer, choiceType: prop.choiceType }));
+            choices.push(Choice({ key: index, choice: choice, answer: prop.answer, setAnswer: prop.setAnswer, choicetype: prop.choicetype }));
         });
     } else {
         prop.choices.forEach((choice, index) => {
-            choices.push(ChoiceResult({ key: index, choice: choice, answer: choice.selectionNo === prop.answer, correct: choice.selectionNo === prop.correctAnswer, choiceType: prop.choiceType }));
+            choices.push(ChoiceResult({ key: index, choice: choice, answer: choice.selectionNo === prop.answer, correct: choice.selectionNo === prop.correctAnswer, choicetype: prop.choicetype }));
         });
     }
     let rowNum = 1;
-    if (prop.choiceType === choiceType.image)
+    if (prop.choicetype === choicetype.image)
         rowNum = 2;
     return (
         <Card.Group itemsPerRow={rowNum as SemanticWIDTHS}>

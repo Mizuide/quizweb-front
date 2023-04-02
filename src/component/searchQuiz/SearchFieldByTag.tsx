@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Dropdown, DropdownItemProps, DropdownProps, Form } from "semantic-ui-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Dropdown, DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import useFetchTags from "../../hooks/useFetchTags";
 import tag from "../../type/tag";
 
@@ -11,8 +11,11 @@ type prop = {
 
 const SearchFieldByTag: React.FC<prop> = (prop: prop) => {
 
-    const [value, setValue] = useState<string[]>([]);
+    const [value, setValue] = useState<tag[]>([]);
     const [searchQuery, setSearchQuery] = useState<string | undefined>('');
+
+    const [list, setList] = useState<DropdownItemProps[]>([]);
+    const [tagsInfo, fetchTagsInfo] = useFetchTags();
 
     const onChange = (e: any, data: DropdownProps) => {
         if (data.value) {
@@ -20,30 +23,32 @@ const SearchFieldByTag: React.FC<prop> = (prop: prop) => {
                 return false;
             }
             prop.setTags(((data.value as string[]).map(v => { return { tag: v } })));
-            setValue(data.value as string[]);
         }
+        let tagsList: tag[] = [];
+        (data.value as string[]).forEach(s => {
+            tagsList.push({ id: tagsInfo.find(t => t.tag === s)?.id, tag: s });
+        }
+        )
+        setValue(tagsList);
+        setSearchQuery('');
     }
-
-    const [list, setList] = useState<DropdownItemProps[]>([]);
-    const [tagsInfo, fetchTagsInfo] = useFetchTags();
 
     const onSearchChange = (e: any, data: DropdownProps) => {
         setSearchQuery(data.searchQuery);
-        if (data.searchQuery) {
-            fetchTagsInfo(data.searchQuery);
-        }
     }
     useEffect(() => {
-        fetchTagsInfo('');
-    }, [])
+        fetchTagsInfo(searchQuery || '');
+    }, [searchQuery])
 
     useEffect(() => {
+        // 選択したタグ情報は選択肢のリストの中に残さないと正常にフィールド内に表示されない
+        const usedTagList = value.map((t) => ({ key: t.id, text: t.tag, value: t.tag }))
+        const tagsInfoReduceUsedTag = tagsInfo.map(t => ({ key: t.id, text: t.tag, value: t.tag })).
+            filter(t => usedTagList.findIndex(used => t.key === used.key) === -1)
         setList(
-            tagsInfo.map((t, index: any) =>
-                ({ key: index, text: t.tag, value: t.tag })
-            )
+            [...usedTagList, ...tagsInfoReduceUsedTag]
         )
-    }, [tagsInfo])
+    }, [tagsInfo, value])
 
     const renderLabel = (label: DropdownItemProps) => ({
         ...label,
@@ -54,21 +59,20 @@ const SearchFieldByTag: React.FC<prop> = (prop: prop) => {
 
     return (
         <>
-                {prop.dropDowm}
-                <Dropdown
-                    search
-                    fluid
-                    multiple
-                    selection
-                    options={list}
-                    onChange={onChange}
-                    onSearchChange={onSearchChange}
-                    searchQuery={searchQuery}
-                    renderLabel={renderLabel}
-                    value={value}
-                    placeholder={'タグを入力してください'}
-                    noResultsMessage={'その文字を含むタグはありません'}
-                />
+            {prop.dropDowm}
+            <Dropdown
+                search
+                fluid
+                multiple
+                selection
+                options={list}
+                onChange={onChange}
+                onSearchChange={onSearchChange}
+                searchQuery={searchQuery}
+                renderLabel={renderLabel}
+                placeholder={'タグを入力してください'}
+                noResultsMessage={'その文字を含むタグはありません'}
+            />
         </>
     )
 

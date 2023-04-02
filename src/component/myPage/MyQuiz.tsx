@@ -7,7 +7,6 @@ type prop = {
 }
 
 const MyQuiz: React.FC<prop> = (prop: prop) => {
-
   let url;
   if (prop.quiz.thumbnail) {
     url = '/quizWeb/img/thumbnail/' + prop.quiz.thumbnail

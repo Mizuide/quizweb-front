@@ -1,6 +1,6 @@
 type fetchAnswerParam = {
     questionId:number;
-    selectiionNo:number;
+    selectionNo:number;
 }
 
 export default fetchAnswerParam;

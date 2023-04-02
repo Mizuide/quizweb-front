@@ -5,27 +5,29 @@ import createQuizParam from "../type/createQuizParam";
 import { AxiosResponse } from "axios";
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { GUEST_ID } from '../const/const';
 
 
 // ログインユーザによる認証
 function fetchEditQuizParam(id: number): Promise<AxiosResponse<createQuizParam>> {
-    return axios.get<createQuizParam>(api.getEditParamByPassword.url, { params: { id: id } });
+    return axios.get<createQuizParam>(api.getEditParamByUser.url, { params: { quizId: id } });
 }
 
-function fetchEditQuizParamByPassword(id: number, password: string): Promise<AxiosResponse<createQuizParam>> {
-    return axios.get<createQuizParam>(api.getEditParamByUser.url, { params: { id: id, password: password } });
-}
-
-const useFetchEditQuizParam: () => [createQuizParam | undefined, (id: number, password?: string) => void] = () => {
-    const [createQuizParam, setQuizParam] = useState<createQuizParam | undefined>(undefined);
+const useFetchEditQuizParam: () => [createQuizParam, (id: number, password?: string) => void] = () => {
+    const [createQuizParam, setQuizParam] = useState<createQuizParam>(
+        {
+            id: 0,
+            thumbnail: undefined,
+            title: '',
+            description: '',
+            createUserId: GUEST_ID,
+            questions: [],
+            tags: [],
+        });
     const history = useHistory();
 
     const setFetchQuiz = function (id: number, password?: string) {
-        if (password !== undefined) {
-            fetchEditQuizParamByPassword(id, password).then(res => setQuizParam(res.data)).catch(e => history.push('/editerror'));
-        } else {
-            fetchEditQuizParam(id).then(res => setQuizParam(res.data)).catch(e => history.push('/editerror'));
-        }
+        fetchEditQuizParam(id).then(res => setQuizParam(res.data)).catch(e => history.push('/editerror'));
     }
 
     return [createQuizParam, setFetchQuiz];

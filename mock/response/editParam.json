@@ -8,7 +8,7 @@
             "indexId": 1,
             "content": "内容です",
             "comment": "コメントです",
-            "choiceType": "single",
+            "choicetype": "single",
             "choices": [
                 {
                     "indexId": 0,
@@ -35,7 +35,7 @@
         {
             "content": "ゴリラ",
             "comment": "ゴリラの学名はゴリラ・ゴリラ",
-            "choiceType": "image",
+            "choicetype": "image",
             "choices": [
                 {
                     "indexId": 0,
